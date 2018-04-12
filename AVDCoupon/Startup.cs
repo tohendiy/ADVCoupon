@@ -27,23 +27,23 @@ namespace AVDCoupon
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-                                                        options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+                                                        options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
-//            services.AddAuthentication().AddFacebook(facebookOptions =>
-//            {
-//                facebookOptions.AppId = "361145121039996";
-//                facebookOptions.AppSecret = "a91edb12c74efc6bbec613f3739423bd";
-//            });
-//            //"524019256020-tvunscj8vecpqp6jphk173nu98kdn76r.apps.googleusercontent.com"
-//            services.AddAuthentication().AddGoogle(googleOptions =>
-//{
-//                googleOptions.ClientId = "524019256020-tvunscj8vecpqp6jphk173nu98kdn76r.apps.googleusercontent.com";
-//                googleOptions.ClientSecret = "VaEY4B_N59e5Y0eZ-FmR8DIp";
-//});
+            services.AddAuthentication().AddFacebook(facebookOptions =>
+            {
+                facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
+                facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
+            });
+            //"524019256020-tvunscj8vecpqp6jphk173nu98kdn76r.apps.googleusercontent.com"
+            services.AddAuthentication().AddGoogle(googleOptions =>
+            {
+                googleOptions.ClientId = Configuration["Authentication:Google:ClientId"];
+                googleOptions.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
+            });
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
 
