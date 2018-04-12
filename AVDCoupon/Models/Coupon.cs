@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.ComponentModel.DataAnnotations;
 
 namespace AVDCoupon.Models
 {
     public class Coupon
     {
+        [Key]
         public Guid CouponGuid { get; set; }
         public int Capacity { get; set; }
         public string CouponImage { get; set; }
