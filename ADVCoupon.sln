@@ -2,7 +2,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27428.2002
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ADVCoupon", "AVDCoupon\ADVCoupon.csproj", "{67BB131F-81A8-4F22-B3B3-6CA23C3AEFAE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ADVCoupon", "AVDCoupon\ADVCoupon.csproj", "{AAC47E28-7DD4-4A40-ABBA-ACBF28CF16A4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -10,10 +10,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{67BB131F-81A8-4F22-B3B3-6CA23C3AEFAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{67BB131F-81A8-4F22-B3B3-6CA23C3AEFAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{67BB131F-81A8-4F22-B3B3-6CA23C3AEFAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{67BB131F-81A8-4F22-B3B3-6CA23C3AEFAE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AAC47E28-7DD4-4A40-ABBA-ACBF28CF16A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AAC47E28-7DD4-4A40-ABBA-ACBF28CF16A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AAC47E28-7DD4-4A40-ABBA-ACBF28CF16A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AAC47E28-7DD4-4A40-ABBA-ACBF28CF16A4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

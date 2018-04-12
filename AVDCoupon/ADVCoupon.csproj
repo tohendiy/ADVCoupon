@@ -3,11 +3,14 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <UserSecretsId>aspnet-AVDCoupon-D3D090A7-B8B8-4F6D-B0C1-6918C70A7840</UserSecretsId>
+    <!-- <Authentication:Facebook:AppId>361145121039996</Authentication:Facebook:AppId>
+    <Authentication:Facebook:AppSecret>a91edb12c74efc6bbec613f3739423bd</Authentication:Facebook:AppSecret> -->
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.5" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.1" PrivateAssets="All" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.2" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.0.2" />
   </ItemGroup>
 
   <ItemGroup>
@@ -18,6 +21,9 @@
 
   <ItemGroup>
     <Folder Include="Data\Migrations\" />
+    <Folder Include="ViewModel\" />
+    <Folder Include="ViewModel\AccountViewModels\" />
+    <Folder Include="ViewModel\ManageViewModels\" />
+    <Folder Include="Migrations\" />
   </ItemGroup>
-
 </Project>
