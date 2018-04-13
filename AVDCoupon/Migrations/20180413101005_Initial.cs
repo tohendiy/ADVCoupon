@@ -162,10 +162,11 @@ namespace ADVCoupon.Migrations
                 columns: table => new
                 {
                     CouponGuid = table.Column<Guid>(nullable: false),
-                    Capacity = table.Column<int>(nullable: false),
                     CouponImage = table.Column<string>(nullable: true),
                     CouponName = table.Column<string>(nullable: true),
-                    MerchantUserId = table.Column<string>(nullable: true)
+                    CurrentCapacity = table.Column<int>(nullable: false),
+                    MerchantUserId = table.Column<string>(nullable: true),
+                    TotalCapacity = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {

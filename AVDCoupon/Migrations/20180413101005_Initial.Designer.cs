@@ -11,14 +11,14 @@ using System;
 namespace ADVCoupon.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20180412090405_Initial")]
+    [Migration("20180413101005_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.0.1-rtm-125")
+                .HasAnnotation("ProductVersion", "2.0.2-rtm-10011")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("AVDCoupon.Models.ApplicationUser", b =>
@@ -83,13 +83,15 @@ namespace ADVCoupon.Migrations
                     b.Property<Guid>("CouponGuid")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("Capacity");
-
                     b.Property<string>("CouponImage");
 
                     b.Property<string>("CouponName");
 
+                    b.Property<int>("CurrentCapacity");
+
                     b.Property<string>("MerchantUserId");
+
+                    b.Property<int>("TotalCapacity");
 
                     b.HasKey("CouponGuid");
 
