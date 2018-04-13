@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -28,8 +28,7 @@ namespace AVDCoupon
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-                                                        options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-
+                                                        options.UseSqlite(Configuration.GetConnectionString("DefaultDevConnection")));
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();

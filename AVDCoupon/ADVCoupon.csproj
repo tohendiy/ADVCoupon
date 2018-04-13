@@ -25,5 +25,9 @@
     <Folder Include="ViewModel\AccountViewModels\" />
     <Folder Include="ViewModel\ManageViewModels\" />
     <Folder Include="Migrations\" />
+    <Folder Include="ViewModel\CouponViewModel\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="Views\Coupon\Index.cshtml" />
   </ItemGroup>
 </Project>
