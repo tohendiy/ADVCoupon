@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using AVDCoupon.Data;
 using AVDCoupon.Models;
 using AVDCoupon.Services;
+using ADVCoupon.Services;
 
 namespace AVDCoupon
 {
@@ -29,10 +30,10 @@ namespace AVDCoupon
             services.AddDbContext<ApplicationDbContext>(options =>
                                                         options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
+            
             services.AddAuthentication().AddFacebook(facebookOptions =>
             {
                 facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
@@ -46,6 +47,7 @@ namespace AVDCoupon
             });
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
+            services.AddTransient<ICouponService, CouponService>();
 
             services.AddMvc();
         }
