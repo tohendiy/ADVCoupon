@@ -1,4 +1,4 @@
-﻿@model IEnumerable<AVDCoupon.Models.Coupon>
+﻿@model IEnumerable<ADVCoupon.ViewModel.CouponViewModel.CouponEditItemViewModel>
 
 @{
     ViewData["Title"] = "Index";
@@ -13,7 +13,10 @@
     <thead>
         <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.Capacity)
+                    @Html.DisplayNameFor(model => model.TotalCapacity)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CurrentCapacity)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.CouponImage)
@@ -28,7 +31,10 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Capacity)
+                @Html.DisplayFor(modelItem => item.TotalCapacity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CurrentCapacity)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CouponImage)

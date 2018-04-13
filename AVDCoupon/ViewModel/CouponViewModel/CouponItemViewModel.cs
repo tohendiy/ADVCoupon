@@ -8,7 +8,7 @@ namespace ADVCoupon.ViewModel.CouponViewModel
 {
     public class CouponItemViewModel
     {
-        
+
         public int TotalCapacity { get; set; }
 
         public int CurrentCapacity { get; set; }

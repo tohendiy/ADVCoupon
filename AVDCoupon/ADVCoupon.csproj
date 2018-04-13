@@ -24,6 +24,7 @@
     <Folder Include="ViewModel\" />
     <Folder Include="ViewModel\AccountViewModels\" />
     <Folder Include="ViewModel\ManageViewModels\" />
+    <Folder Include="Migrations\" />
     <Folder Include="ViewModel\CouponViewModel\" />
   </ItemGroup>
   <ItemGroup>

@@ -1,4 +1,4 @@
-﻿@model AVDCoupon.Models.Coupon
+﻿@model ADVCoupon.ViewModel.CouponViewModel.CouponEditItemViewModel
 
 @{
     ViewData["Title"] = "Details";
@@ -11,10 +11,16 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Capacity)
+            @Html.DisplayNameFor(model => model.TotalCapacity)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Capacity)
+            @Html.DisplayFor(model => model.TotalCapacity)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CurrentCapacity)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CurrentCapacity)
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.CouponImage)

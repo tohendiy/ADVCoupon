@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AVDCoupon.Data;
 using AVDCoupon.Models;
+using ADVCoupon.ViewModel.CouponViewModel;
 
 namespace ADVCoupon.Controllers
 {
@@ -22,7 +23,17 @@ namespace ADVCoupon.Controllers
         // GET: Coupons
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Coupons.ToListAsync());
+            var coupons = await _context.Coupons.ToListAsync();
+            var couponsListViewModel = new List<CouponEditItemViewModel>(coupons.Count);
+            couponsListViewModel = coupons.Select(item => new CouponEditItemViewModel
+            {
+                CouponGuid = item.CouponGuid,
+                CouponName = item.CouponName,
+                CouponImage = item.CouponImage,
+                TotalCapacity = item.TotalCapacity,
+                CurrentCapacity = item.CurrentCapacity
+            }).ToList();
+            return View(couponsListViewModel);
         }
 
         // GET: Coupons/Details/5
@@ -39,8 +50,15 @@ namespace ADVCoupon.Controllers
             {
                 return NotFound();
             }
-
-            return View(coupon);
+            var couponViewModel = new CouponEditItemViewModel
+            {
+                CouponGuid = coupon.CouponGuid,
+                CouponName = coupon.CouponName,
+                CouponImage = coupon.CouponImage,
+                TotalCapacity = coupon.TotalCapacity,
+                CurrentCapacity = coupon.CurrentCapacity
+            };
+            return View(couponViewModel);
         }
 
         // GET: Coupons/Create
@@ -54,16 +72,23 @@ namespace ADVCoupon.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CouponGuid,Capacity,CouponImage,CouponName")] Coupon coupon)
+        public async Task<IActionResult> Create(CouponItemViewModel couponItem)
         {
             if (ModelState.IsValid)
             {
-                coupon.CouponGuid = Guid.NewGuid();
+                var coupon = new Coupon
+                {
+                    TotalCapacity = couponItem.TotalCapacity,
+                    CurrentCapacity = couponItem.CurrentCapacity,
+                    CouponImage = couponItem.CouponImage,
+                    CouponName = couponItem.CouponName,
+                    CouponGuid = Guid.NewGuid()
+                };
                 _context.Add(coupon);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(coupon);
+            return View(couponItem);
         }
 
         // GET: Coupons/Edit/5
@@ -79,7 +104,15 @@ namespace ADVCoupon.Controllers
             {
                 return NotFound();
             }
-            return View(coupon);
+            var couponViewModel = new CouponEditItemViewModel
+            {
+                CouponGuid = coupon.CouponGuid,
+                CouponName = coupon.CouponName,
+                CouponImage = coupon.CouponImage,
+                TotalCapacity = coupon.TotalCapacity,
+                CurrentCapacity = coupon.CurrentCapacity
+            };
+            return View(couponViewModel);
         }
 
         // POST: Coupons/Edit/5
@@ -87,9 +120,9 @@ namespace ADVCoupon.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("CouponGuid,Capacity,CouponImage,CouponName")] Coupon coupon)
+        public async Task<IActionResult> Edit(Guid id, CouponEditItemViewModel couponItem)
         {
-            if (id != coupon.CouponGuid)
+            if (id != couponItem.CouponGuid)
             {
                 return NotFound();
             }
@@ -99,12 +132,20 @@ namespace ADVCoupon.Controllers
             {
                 try
                 {
+                    var coupon = new Coupon
+                    {
+                        TotalCapacity = couponItem.TotalCapacity,
+                        CurrentCapacity = couponItem.CurrentCapacity,
+                        CouponName = couponItem.CouponName,
+                        CouponImage = couponItem.CouponImage,
+                        CouponGuid = couponItem.CouponGuid
+                    };
                     _context.Update(coupon);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CouponExists(coupon.CouponGuid))
+                    if (!CouponExists(couponItem.CouponGuid))
                     {
                         return NotFound();
                     }
@@ -115,7 +156,7 @@ namespace ADVCoupon.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(coupon);
+            return View(couponItem);
         }
 
         // GET: Coupons/Delete/5
@@ -132,8 +173,15 @@ namespace ADVCoupon.Controllers
             {
                 return NotFound();
             }
-
-            return View(coupon);
+            var couponViewModel = new CouponEditItemViewModel
+            {
+                CouponGuid = coupon.CouponGuid,
+                CouponName = coupon.CouponName,
+                CouponImage = coupon.CouponImage,
+                TotalCapacity = coupon.TotalCapacity,
+                CurrentCapacity = coupon.CurrentCapacity
+            };
+            return View(couponViewModel);
         }
 
         // POST: Coupons/Delete/5
