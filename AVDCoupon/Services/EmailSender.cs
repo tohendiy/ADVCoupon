@@ -18,7 +18,7 @@ namespace AVDCoupon.Services
             {
                 var emailMessage = new MimeMessage();
 
-                emailMessage.From.Add(new MailboxAddress("ADV Coupon", Constants.EMAIL_NOREPLY_FROM));
+                emailMessage.From.Add(new MailboxAddress(Constants.SMTP_EMAIL_NAME, Constants.SMTP_EMAIL_FROM));
                 emailMessage.To.Add(new MailboxAddress("", email));
                 emailMessage.Subject = subject;
                 emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Html)
@@ -28,8 +28,8 @@ namespace AVDCoupon.Services
 
                 using (var client = new SmtpClient())
                 {
-                    await client.ConnectAsync("smtp.gmail.com", 465, true);
-                    await client.AuthenticateAsync(Constants.EMAIL_NOREPLY_FROM, "A80962432409");
+                    await client.ConnectAsync(Constants.SMTP_SERVER, Constants.SMTP_PORT, Constants.SMTP_SSL);
+                    await client.AuthenticateAsync(Constants.SMTP_EMAIL_FROM, Constants.SMTP_EMAIL_PASSWORD);
                     await client.SendAsync(emailMessage);
 
                     await client.DisconnectAsync(true);
@@ -37,9 +37,7 @@ namespace AVDCoupon.Services
                 }
             }
             catch(Exception ex)
-            {
-                var test = ex;
-            }
+            { }
 
         }
     }
