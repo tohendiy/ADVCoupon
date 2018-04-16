@@ -30,4 +30,7 @@
   <ItemGroup>
     <Content Remove="Views\Coupon\Index.cshtml" />
   </ItemGroup>
+  <ItemGroup>
+    <None Remove="app.db" />
+  </ItemGroup>
 </Project>

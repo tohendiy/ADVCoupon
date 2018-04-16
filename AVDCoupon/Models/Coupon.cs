@@ -1,5 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
+using ADVCoupon.Models;
 
 namespace AVDCoupon.Models
 {
@@ -12,5 +14,7 @@ namespace AVDCoupon.Models
         public string CouponImage { get; set; }
         public string CouponName { get; set; }
         public ApplicationUser MerchantUser { get; set; }
+
+        public List<UserCoupon> UserCoupons { get; set; }
     }
 }

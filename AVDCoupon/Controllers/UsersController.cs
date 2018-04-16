@@ -7,22 +7,26 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AVDCoupon.Data;
 using AVDCoupon.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace ADVCoupon.Controllers
 {
     public class UsersController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public UsersController(ApplicationDbContext context)
+
+        public UsersController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Users
         public async Task<IActionResult> Index()
         {
-            return View(await _context.ApplicationUser.ToListAsync());
+            return View(await _userManager.Users.ToListAsync());
         }
 
         // GET: Users/Details/5
@@ -33,7 +37,7 @@ namespace ADVCoupon.Controllers
                 return NotFound();
             }
 
-            var applicationUser = await _context.ApplicationUser
+            var applicationUser = await _userManager.Users
                 .SingleOrDefaultAsync(m => m.Id == id);
             if (applicationUser == null)
             {
@@ -58,8 +62,8 @@ namespace ADVCoupon.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(applicationUser);
-                await _context.SaveChangesAsync();
+                await _userManager.CreateAsync(applicationUser);
+                //await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(applicationUser);
@@ -73,7 +77,7 @@ namespace ADVCoupon.Controllers
                 return NotFound();
             }
 
-            var applicationUser = await _context.ApplicationUser.SingleOrDefaultAsync(m => m.Id == id);
+            var applicationUser = await _userManager.Users.SingleOrDefaultAsync(m => m.Id == id);
             if (applicationUser == null)
             {
                 return NotFound();
@@ -97,8 +101,7 @@ namespace ADVCoupon.Controllers
             {
                 try
                 {
-                    _context.Update(applicationUser);
-                    await _context.SaveChangesAsync();
+                    await _userManager.UpdateAsync(applicationUser);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -124,7 +127,7 @@ namespace ADVCoupon.Controllers
                 return NotFound();
             }
 
-            var applicationUser = await _context.ApplicationUser
+            var applicationUser = await _userManager.Users
                 .SingleOrDefaultAsync(m => m.Id == id);
             if (applicationUser == null)
             {
@@ -139,15 +142,14 @@ namespace ADVCoupon.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var applicationUser = await _context.ApplicationUser.SingleOrDefaultAsync(m => m.Id == id);
-            _context.ApplicationUser.Remove(applicationUser);
-            await _context.SaveChangesAsync();
+            var applicationUser = await _userManager.Users.SingleOrDefaultAsync(m => m.Id == id);
+            await _userManager.DeleteAsync(applicationUser);
             return RedirectToAction(nameof(Index));
         }
 
         private bool ApplicationUserExists(string id)
         {
-            return _context.ApplicationUser.Any(e => e.Id == id);
+            return _userManager.Users.Any(e => e.Id == id);
         }
     }
 }

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using AVDCoupon.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ADVCoupon.ViewModel.CouponViewModel
 {
@@ -19,5 +21,9 @@ namespace ADVCoupon.ViewModel.CouponViewModel
 
         [Required]
         public string CouponName { get; set; }
+
+        public string MerchantUserId { get; set; }
+
+        public SelectList Users { get; set; }
     }
 }

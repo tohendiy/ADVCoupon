@@ -8,16 +8,20 @@ using Microsoft.EntityFrameworkCore;
 using AVDCoupon.Data;
 using AVDCoupon.Models;
 using ADVCoupon.ViewModel.CouponViewModel;
+using Microsoft.AspNetCore.Identity;
 
 namespace ADVCoupon.Controllers
 {
     public class CouponsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public CouponsController(ApplicationDbContext context)
+
+        public CouponsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Coupons
@@ -56,7 +60,7 @@ namespace ADVCoupon.Controllers
                 CouponName = coupon.CouponName,
                 CouponImage = coupon.CouponImage,
                 TotalCapacity = coupon.TotalCapacity,
-                CurrentCapacity = coupon.CurrentCapacity
+                CurrentCapacity = coupon.CurrentCapacity,
             };
             return View(couponViewModel);
         }
@@ -64,7 +68,12 @@ namespace ADVCoupon.Controllers
         // GET: Coupons/Create
         public IActionResult Create()
         {
-            return View();
+            var users = _userManager.Users.Select(x => new { Id = x.Id, Value = x.Email });
+
+            var model = new CouponItemViewModel();
+            model.Users = new SelectList(users, "Id", "Value");
+
+            return View(model);
         }
 
         // POST: Coupons/Create
@@ -82,7 +91,8 @@ namespace ADVCoupon.Controllers
                     CurrentCapacity = couponItem.CurrentCapacity,
                     CouponImage = couponItem.CouponImage,
                     CouponName = couponItem.CouponName,
-                    CouponGuid = Guid.NewGuid()
+                    CouponGuid = Guid.NewGuid(),
+                    MerchantUser = _userManager.Users.FirstOrDefault(item => item.Id == couponItem.MerchantUserId)
                 };
                 _context.Add(coupon);
                 await _context.SaveChangesAsync();
