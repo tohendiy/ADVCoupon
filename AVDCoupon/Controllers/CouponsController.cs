@@ -85,6 +85,9 @@ namespace ADVCoupon.Controllers
         {
             if (ModelState.IsValid)
             {
+                // for test only! AA
+                var location = Helpers.CookiesHelper.GetGeolocation(HttpContext);
+
                 var coupon = new Coupon
                 {
                     TotalCapacity = couponItem.TotalCapacity,
@@ -92,7 +95,8 @@ namespace ADVCoupon.Controllers
                     CouponImage = couponItem.CouponImage,
                     CouponName = couponItem.CouponName,
                     CouponGuid = Guid.NewGuid(),
-                    MerchantUser = _userManager.Users.FirstOrDefault(item => item.Id == couponItem.MerchantUserId)
+                    MerchantUser = _userManager.Users.FirstOrDefault(item => item.Id == couponItem.MerchantUserId),
+                    
                 };
                 _context.Add(coupon);
                 await _context.SaveChangesAsync();

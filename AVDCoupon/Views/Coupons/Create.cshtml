@@ -4,6 +4,23 @@
     ViewData["Title"] = "Create";
 }
 
+<script>
+    navigator.geolocation.getCurrentPosition(positionSuccess, positionError)
+
+    function positionSuccess(geo) {
+        document.cookie = 'latitude=' + geo.coords.latitude;
+        document.cookie = 'longitude=' + geo.coords.longitude;
+        document.cookie = 'accuracy=' + geo.coords.accuracy;
+    }
+
+    function positionError(geo) {
+        document.cookie = 'latitude=; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
+        document.cookie = 'longitude=; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
+        document.cookie = 'accuracy=; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
+    }
+</script>
+
+
 <h2>Create</h2>
 
 <h4>Coupon</h4>
@@ -17,7 +34,7 @@
                 <input asp-for="TotalCapacity" class="form-control" />
                 <span asp-validation-for="TotalCapacity" class="text-danger"></span>
             </div>
-             <div class="form-group">
+            <div class="form-group">
                 <label asp-for="CurrentCapacity" class="control-label"></label>
                 <input asp-for="CurrentCapacity" class="form-control" />
                 <span asp-validation-for="CurrentCapacity" class="text-danger"></span>
