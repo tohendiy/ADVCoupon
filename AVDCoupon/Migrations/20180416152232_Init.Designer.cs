@@ -11,14 +11,15 @@ using System;
 namespace ADVCoupon.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20180416110509_Initial")]
-    partial class Initial
+    [Migration("20180416152232_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.0.2-rtm-10011");
+                .HasAnnotation("ProductVersion", "2.0.2-rtm-10011")
+                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("ADVCoupon.Models.UserCoupon", b =>
                 {
@@ -88,7 +89,8 @@ namespace ADVCoupon.Migrations
 
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
-                        .HasName("UserNameIndex");
+                        .HasName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
                 });
@@ -98,7 +100,7 @@ namespace ADVCoupon.Migrations
                     b.Property<Guid>("CouponGuid")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("CouponImage");
+                    b.Property<byte[]>("CouponImage");
 
                     b.Property<string>("CouponName");
 
@@ -133,7 +135,8 @@ namespace ADVCoupon.Migrations
 
                     b.HasIndex("NormalizedName")
                         .IsUnique()
-                        .HasName("RoleNameIndex");
+                        .HasName("RoleNameIndex")
+                        .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles");
                 });
