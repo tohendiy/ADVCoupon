@@ -11,6 +11,7 @@ using ADVCoupon.ViewModel.CouponViewModel;
 using Microsoft.AspNetCore.Identity;
 using System.IO;
 using System.Net.Http.Headers;
+using ADVCoupon.Services;
 
 namespace ADVCoupon.Controllers
 {
@@ -18,12 +19,14 @@ namespace ADVCoupon.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly ICouponService _couponService;
 
 
-        public CouponsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public CouponsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, ICouponService couponService)
         {
             _context = context;
             _userManager = userManager;
+            _couponService = couponService;
         }
 
         // GET: Coupons
