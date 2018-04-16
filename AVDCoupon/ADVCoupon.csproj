@@ -3,6 +3,8 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <UserSecretsId>aspnet-AVDCoupon-D3D090A7-B8B8-4F6D-B0C1-6918C70A7840</UserSecretsId>
+    <LangVersion>latest</LangVersion>
+    <StartupObject></StartupObject>
     <!-- <Authentication:Facebook:AppId>361145121039996</Authentication:Facebook:AppId>
     <Authentication:Facebook:AppSecret>a91edb12c74efc6bbec613f3739423bd</Authentication:Facebook:AppSecret> -->
   </PropertyGroup>

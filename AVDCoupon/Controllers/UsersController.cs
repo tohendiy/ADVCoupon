@@ -8,9 +8,12 @@ using Microsoft.EntityFrameworkCore;
 using AVDCoupon.Data;
 using AVDCoupon.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
+using ADVCoupon.Helpers;
 
 namespace ADVCoupon.Controllers
 {
+    [Authorize(Roles = Constants.ADMIN_ROLE)]
     public class UsersController : Controller
     {
         private readonly ApplicationDbContext _context;
