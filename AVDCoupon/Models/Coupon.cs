@@ -11,7 +11,7 @@ namespace AVDCoupon.Models
         public Guid CouponGuid { get; set; }
         public int TotalCapacity { get; set; }
         public int CurrentCapacity { get; set; }
-        public string CouponImage { get; set; }
+        public byte[] CouponImage { get; set; }
         public string CouponName { get; set; }
         public ApplicationUser MerchantUser { get; set; }
 

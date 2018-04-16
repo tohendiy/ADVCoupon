@@ -1,4 +1,4 @@
-﻿@model ADVCoupon.ViewModel.CouponViewModel.CouponEditItemViewModel
+﻿@model ADVCoupon.ViewModel.CouponViewModel.CouponDetailItemViewModel
 
 @{
     ViewData["Title"] = "Delete";
@@ -27,7 +27,7 @@
             @Html.DisplayNameFor(model => model.CouponImage)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.CouponImage)
+            <img style='width:80px; height:80px;' src="data:image/jpeg;base64,@(Convert.ToBase64String(Model.CouponImage))" />
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.CouponName)

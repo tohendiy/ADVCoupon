@@ -1,0 +1,21 @@
+﻿@model IEnumerable<ADVCoupon.ViewModel.CouponViewModel.CouponClientGridViewModel>
+
+@{
+    ViewData["Title"] = "Coupons";
+}
+
+<div class="container">
+    <div class="row">
+        @foreach (var item in Model) {
+            <div class="col-xl-2 col-lg-3 col-md-4 col-xs-6 ">
+                <div class="card">
+                    <img style='width:200px; height:200px;' class="img-fluid card-img-top" src="data:image/jpeg;base64,@(Convert.ToBase64String(item.CouponImage))" />
+                    <h4 class="card-title">@item.CouponName</h4>
+                    <a class="btn btn-primary" asp-action="ClientDetail" asp-route-id="Model.CouponGuid">Get Coupon</a>
+                </div>
+
+            </div>
+        }
+    </div>
+    
+</div>

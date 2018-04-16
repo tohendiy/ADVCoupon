@@ -9,6 +9,8 @@ using AVDCoupon.Data;
 using AVDCoupon.Models;
 using ADVCoupon.ViewModel.CouponViewModel;
 using Microsoft.AspNetCore.Identity;
+using System.IO;
+using System.Net.Http.Headers;
 
 namespace ADVCoupon.Controllers
 {
@@ -28,14 +30,14 @@ namespace ADVCoupon.Controllers
         public async Task<IActionResult> Index()
         {
             var coupons = await _context.Coupons.ToListAsync();
-            var couponsListViewModel = new List<CouponEditItemViewModel>(coupons.Count);
-            couponsListViewModel = coupons.Select(item => new CouponEditItemViewModel
+            var couponsListViewModel = new List<CouponDetailItemViewModel>(coupons.Count);
+            couponsListViewModel = coupons.Select(item => new CouponDetailItemViewModel
             {
                 CouponGuid = item.CouponGuid,
                 CouponName = item.CouponName,
-                CouponImage = item.CouponImage,
                 TotalCapacity = item.TotalCapacity,
-                CurrentCapacity = item.CurrentCapacity
+                CurrentCapacity = item.CurrentCapacity,
+                CouponImage = item.CouponImage
             }).ToList();
             return View(couponsListViewModel);
         }
@@ -54,14 +56,15 @@ namespace ADVCoupon.Controllers
             {
                 return NotFound();
             }
-            var couponViewModel = new CouponEditItemViewModel
+            var couponViewModel = new CouponDetailItemViewModel
             {
                 CouponGuid = coupon.CouponGuid,
                 CouponName = coupon.CouponName,
-                CouponImage = coupon.CouponImage,
                 TotalCapacity = coupon.TotalCapacity,
                 CurrentCapacity = coupon.CurrentCapacity,
+                CouponImage = coupon.CouponImage
             };
+
             return View(couponViewModel);
         }
 
@@ -92,12 +95,16 @@ namespace ADVCoupon.Controllers
                 {
                     TotalCapacity = couponItem.TotalCapacity,
                     CurrentCapacity = couponItem.CurrentCapacity,
-                    CouponImage = couponItem.CouponImage,
                     CouponName = couponItem.CouponName,
                     CouponGuid = Guid.NewGuid(),
                     MerchantUser = _userManager.Users.FirstOrDefault(item => item.Id == couponItem.MerchantUserId),
                     
                 };
+                using (var memoryStream = new MemoryStream())
+                {
+                    await couponItem.CouponImage.CopyToAsync(memoryStream);
+                    coupon.CouponImage = memoryStream.ToArray();
+                }
                 _context.Add(coupon);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -122,9 +129,9 @@ namespace ADVCoupon.Controllers
             {
                 CouponGuid = coupon.CouponGuid,
                 CouponName = coupon.CouponName,
-                CouponImage = coupon.CouponImage,
                 TotalCapacity = coupon.TotalCapacity,
-                CurrentCapacity = coupon.CurrentCapacity
+                CurrentCapacity = coupon.CurrentCapacity,
+                CouponViewImage = coupon.CouponImage
             };
             return View(couponViewModel);
         }
@@ -151,9 +158,17 @@ namespace ADVCoupon.Controllers
                         TotalCapacity = couponItem.TotalCapacity,
                         CurrentCapacity = couponItem.CurrentCapacity,
                         CouponName = couponItem.CouponName,
-                        CouponImage = couponItem.CouponImage,
                         CouponGuid = couponItem.CouponGuid
                     };
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        await couponItem.CouponImage.CopyToAsync(memoryStream);
+                        if (memoryStream != null)
+                        {
+                            coupon.CouponImage = memoryStream.ToArray();
+                        }
+                    }
+
                     _context.Update(coupon);
                     await _context.SaveChangesAsync();
                 }
@@ -187,13 +202,13 @@ namespace ADVCoupon.Controllers
             {
                 return NotFound();
             }
-            var couponViewModel = new CouponEditItemViewModel
+            var couponViewModel = new CouponDetailItemViewModel
             {
                 CouponGuid = coupon.CouponGuid,
                 CouponName = coupon.CouponName,
-                CouponImage = coupon.CouponImage,
                 TotalCapacity = coupon.TotalCapacity,
-                CurrentCapacity = coupon.CurrentCapacity
+                CurrentCapacity = coupon.CurrentCapacity,
+                CouponImage = coupon.CouponImage
             };
             return View(couponViewModel);
         }
@@ -213,5 +228,44 @@ namespace ADVCoupon.Controllers
         {
             return _context.Coupons.Any(e => e.CouponGuid == id);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Grid()
+        {
+            var coupons = await _context.Coupons.ToListAsync();
+            var couponsListViewModel = new List<CouponClientGridViewModel>(coupons.Count);
+            couponsListViewModel = coupons.Select(item => new CouponClientGridViewModel
+            {
+                CouponGuid = item.CouponGuid,
+                CouponName = item.CouponName,
+                CouponImage = item.CouponImage
+            }).ToList();
+            return View(couponsListViewModel);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ClientDetail(Guid? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var coupon = await _context.Coupons
+                .SingleOrDefaultAsync(m => m.CouponGuid == id);
+            if (coupon == null)
+            {
+                return NotFound();
+            }
+            var couponViewModel = new CouponClientGridViewModel
+            {
+                CouponGuid = coupon.CouponGuid,
+                CouponName = coupon.CouponName,
+                CouponImage = coupon.CouponImage
+            };
+
+            return View(couponViewModel);
+        }
+
     }
 }
