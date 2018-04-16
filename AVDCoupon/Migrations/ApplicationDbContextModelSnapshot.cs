@@ -17,8 +17,24 @@ namespace ADVCoupon.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.0.2-rtm-10011")
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("ProductVersion", "2.0.2-rtm-10011");
+
+            modelBuilder.Entity("ADVCoupon.Models.UserCoupon", b =>
+                {
+                    b.Property<string>("UserId");
+
+                    b.Property<Guid>("CouponId");
+
+                    b.Property<DateTime>("Created");
+
+                    b.Property<string>("Geoposition");
+
+                    b.HasKey("UserId", "CouponId");
+
+                    b.HasIndex("CouponId");
+
+                    b.ToTable("UserCoupon");
+                });
 
             modelBuilder.Entity("AVDCoupon.Models.ApplicationUser", b =>
                 {
@@ -71,8 +87,7 @@ namespace ADVCoupon.Migrations
 
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
-                        .HasName("UserNameIndex")
-                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+                        .HasName("UserNameIndex");
 
                     b.ToTable("AspNetUsers");
                 });
@@ -117,8 +132,7 @@ namespace ADVCoupon.Migrations
 
                     b.HasIndex("NormalizedName")
                         .IsUnique()
-                        .HasName("RoleNameIndex")
-                        .HasFilter("[NormalizedName] IS NOT NULL");
+                        .HasName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles");
                 });
@@ -207,10 +221,23 @@ namespace ADVCoupon.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("ADVCoupon.Models.UserCoupon", b =>
+                {
+                    b.HasOne("AVDCoupon.Models.Coupon", "Coupon")
+                        .WithMany("UserCoupons")
+                        .HasForeignKey("CouponId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("AVDCoupon.Models.ApplicationUser", "ClientUser")
+                        .WithMany("UserCoupons")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("AVDCoupon.Models.Coupon", b =>
                 {
                     b.HasOne("AVDCoupon.Models.ApplicationUser", "MerchantUser")
-                        .WithMany("UserCoupons")
+                        .WithMany()
                         .HasForeignKey("MerchantUserId");
                 });
 
