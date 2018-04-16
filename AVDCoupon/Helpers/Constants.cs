@@ -11,5 +11,7 @@ namespace ADVCoupon.Helpers
         public const string USER_ROLE = "user";
         public const string MERCHANT_ROLE = "merchant";
 
+        public const string EMAIL_NOREPLY_FROM = "user.atc28@gmail.com";
+
     }
 }
