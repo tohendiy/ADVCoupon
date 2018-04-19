@@ -8,10 +8,19 @@
 {
     <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" id="logoutForm" class="navbar-right">
         <ul class="nav navbar-nav navbar-right">
-
+                
+                @if(User.IsInRole("user"))
+                {
             <li>
-                <a asp-area="" asp-controller="Coupons" asp-action="Index">Coupons</a>
+                <a asp-area="" asp-controller="Coupons" asp-action="Grid">Coupons Client</a>
             </li>
+                }
+            @if(User.IsInRole("admin"))
+            {
+            <li>
+                <a asp-area="" asp-controller="Coupons" asp-action="Index">Coupons Admin</a>
+            </li>
+            }
             <li>
                 <a asp-area="" asp-controller="Manage" asp-action="Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
             </li>

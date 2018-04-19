@@ -7,7 +7,7 @@ namespace ADVCoupon.ViewModel.CouponViewModel
 {
     public class CouponEditItemViewModel
     {
-        public Guid CouponGuid { get; set; }
+        public Guid Id { get; set; }
 
         public int TotalCapacity { get; set; }
 
