@@ -32,7 +32,6 @@
     <Folder Include="ViewModel\AccountViewModels\" />
     <Folder Include="ViewModel\ManageViewModels\" />
     <Folder Include="ViewModel\CouponViewModel\" />
-    <Folder Include="Migrations\" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="Views\Coupon\Index.cshtml" />
