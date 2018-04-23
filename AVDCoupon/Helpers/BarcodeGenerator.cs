@@ -1,8 +1,4 @@
 ﻿using System;
-using ZXing;
-using ZXing.Common;
-using ZXing.Rendering;
-using ImageProcessorCore;
 using System.Text;
 
 namespace ADVCoupon.Helpers

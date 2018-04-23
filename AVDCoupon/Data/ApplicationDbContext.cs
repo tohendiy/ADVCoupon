@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using AVDCoupon.Models;
 using ADVCoupon.Models;
+using Microsoft.EntityFrameworkCore.Design;
 
 namespace AVDCoupon.Data
 {
@@ -58,6 +59,16 @@ namespace AVDCoupon.Data
             // Customize the ASP.NET Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
+        }
+    }
+
+    public class ApplicationContextFactory : IDesignTimeDbContextFactory<ApplicationDbContext>
+    {
+        public ApplicationDbContext CreateDbContext(string[] args)
+        {
+            var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
+            optionsBuilder.UseNpgsql("Host=advcoupon.postgres.database.azure.com;Database=advcoupon;Username=adminuser@advcoupon;Password=,thtu123");
+            return new ApplicationDbContext(optionsBuilder.Options);
         }
     }
 }
