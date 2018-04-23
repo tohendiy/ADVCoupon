@@ -9,25 +9,16 @@ namespace AVDCoupon.Models
     {
         [Key]
         public Guid Id { get; set; }
-
-        public int TotalCapacity { get; set; }
-        public int CurrentCapacity { get; set; }
-        public byte[] CouponImage { get; set; }
-        public string CouponName { get; set; }
+        public string Caption { get; set; }
         public double? DiscountAbsolute { get; set; }
         public double? DiscountPercentage { get; set; }
-
-        public string BarCode { get; set; }
-
-        public bool IsApproved { get; set; }
-
         public DateTime StartDate { get; set; }
-
         public DateTime EndDate { get; set; }
+        public int TotalCapacity { get; set; }
+        public int CurrentCapacity { get; set; }
 
+        public List<Product> Products { get; set; }
         public List<Network> Networks { get; set; }
-
-        public ProductCategory ParentProductCategory { get; set; }
 
         public List<UserCoupon> UserCoupons { get; set; }
 

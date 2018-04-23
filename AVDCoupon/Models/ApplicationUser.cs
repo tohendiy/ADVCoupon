@@ -11,11 +11,14 @@ namespace AVDCoupon.Models
     public class ApplicationUser : IdentityUser
     {
         public List<UserCoupon> UserCoupons { get; set; }
-
+        public Network Network { get; set; }
+        public Provider Provider { get; set; }
         // statistics data
         
         public DateTime Birthday { get; set; }
         public string City { get; set; }
         public int ChildNumber { get; set; }
+
+
     }
 }

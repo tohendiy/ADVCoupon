@@ -14,6 +14,6 @@ namespace ADVCoupon.Models
 
         public DateTime Created { get; set; }
 
-        public string Geoposition { get; set; }
+        public Geoposition Geoposition { get; set; }
     }
 }

@@ -14,8 +14,12 @@ namespace ADVCoupon.Models
 
         public byte[] LogoImage { get; set; }
 
+        public ProductCategory ProductCategory { get; set; }
+
         public List<ApplicationUser> MerchantUsers { get; set; }
 
         public List<Coupon> Coupons { get; set; }
+
+        public List<NetworkPoint> NetworkPoints { get; set; }
     }
 }

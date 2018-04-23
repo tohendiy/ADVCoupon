@@ -20,5 +20,12 @@ namespace ADVCoupon.Helpers
         public const bool SMTP_SSL = true;
 
 
+        #region Barcode generation
+
+        public const string BARCODE_GENERATION_URL = "http://www.barcodes4.me/barcode/";
+
+        #endregion
+
+
     }
 }
