@@ -18,7 +18,7 @@ namespace AVDCoupon.Models
         public int CurrentCapacity { get; set; }
 
         public List<Product> Products { get; set; }
-        public List<Network> Networks { get; set; }
+        public List<NetworkCoupon> NetworkCoupons { get; set; }
 
         public List<UserCoupon> UserCoupons { get; set; }
 

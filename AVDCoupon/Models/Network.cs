@@ -18,7 +18,7 @@ namespace ADVCoupon.Models
 
         public List<ApplicationUser> MerchantUsers { get; set; }
 
-        public List<Coupon> Coupons { get; set; }
+        public List<NetworkCoupon> NetworkCoupons { get; set; }
 
         public List<NetworkPoint> NetworkPoints { get; set; }
     }

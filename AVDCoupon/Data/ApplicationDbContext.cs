@@ -42,6 +42,19 @@ namespace AVDCoupon.Data
                    .HasOne(uc => uc.ClientUser)
                    .WithMany(uc => uc.UserCoupons)
                    .HasForeignKey(uc => uc.UserId);
+
+
+            builder.Entity<NetworkCoupon>()
+                   .HasKey(uc => new { uc.NetworkId, uc.CouponId });
+            builder.Entity<NetworkCoupon>()
+                   .HasOne(uc => uc.Coupon)
+                   .WithMany(uc => uc.NetworkCoupons)
+                   .HasForeignKey(uc => uc.CouponId);
+
+            builder.Entity<NetworkCoupon>()
+                   .HasOne(uc => uc.Network)
+                   .WithMany(uc => uc.NetworkCoupons)
+                   .HasForeignKey(uc => uc.NetworkId);
             // Customize the ASP.NET Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
