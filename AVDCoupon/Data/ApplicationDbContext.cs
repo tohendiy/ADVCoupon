@@ -17,6 +17,15 @@ namespace AVDCoupon.Data
         }
 
         public DbSet<Coupon> Coupons { get; set; }
+        public DbSet<Geoposition> Geopositions { get; set; }
+        public DbSet<Network> Networks { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<NetworkBarcode> NetworkBarcodes { get; set; }
+        public DbSet<NetworkPoint> NetworkPoints { get; set; }
+        public DbSet<ProductCategory> ProductCategories { get; set; }
+        public DbSet<Provider> Providers { get; set; }
+
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
