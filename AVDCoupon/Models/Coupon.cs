@@ -21,6 +21,7 @@ namespace AVDCoupon.Models
         public List<NetworkCoupon> NetworkCoupons { get; set; }
 
         public List<UserCoupon> UserCoupons { get; set; }
+        public bool IsApproved { get; set; }
 
     }
 }
