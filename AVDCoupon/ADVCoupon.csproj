@@ -32,6 +32,10 @@
     <Folder Include="ViewModel\AccountViewModels\" />
     <Folder Include="ViewModel\ManageViewModels\" />
     <Folder Include="ViewModel\CouponViewModel\" />
+    <Folder Include="ViewModel\ProductCategoryViewModels\" />
+    <Folder Include="ViewModel\NetworkPointViewModels\" />
+    <Folder Include="ViewModel\ProviderViewModels\" />
+    <Folder Include="ViewModel\NetworkViewModels\" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="Views\Coupon\Index.cshtml" />

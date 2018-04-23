@@ -7,25 +7,30 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ADVCoupon.Models;
 using AVDCoupon.Data;
-using ADVCoupon.Services;
+using ADVCoupon.ViewModel.ProductCategoryViewModels;
 
 namespace ADVCoupon.Controllers
 {
     public class ProductCategoriesController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly IProductCategoryService _service;
 
-        public ProductCategoriesController(ApplicationDbContext context, IProductCategoryService service)
+        public ProductCategoriesController(ApplicationDbContext context)
         {
-            _service = service;
             _context = context;
         }
 
         // GET: ProductCategories
         public async Task<IActionResult> Index()
         {
-            return View(await _context.ProductCategories.ToListAsync());
+            var productCategories = await _context.ProductCategories.ToListAsync();
+            var productCategoryListViewModel = new List<ProductCategoryViewModel>(productCategories.Count);
+            productCategoryListViewModel = productCategories.Select(item => new ProductCategoryViewModel
+            {
+                Id = item.Id,
+                Caption = item.Caption
+            }).ToList();
+            return View(productCategoryListViewModel);
         }
 
         // GET: ProductCategories/Details/5
@@ -42,8 +47,12 @@ namespace ADVCoupon.Controllers
             {
                 return NotFound();
             }
-
-            return View(productCategory);
+            var productCategoryModel = new ProductCategoryViewModel()
+            {
+                Id = productCategory.Id,
+                Caption = productCategory.Caption
+            };
+            return View(productCategoryModel);
         }
 
         // GET: ProductCategories/Create
@@ -57,16 +66,21 @@ namespace ADVCoupon.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Caption")] ProductCategory productCategory)
+        public async Task<IActionResult> Create(ProductCategoryViewModel productCategoryModel)
         {
             if (ModelState.IsValid)
             {
-                productCategory.Id = Guid.NewGuid();
+                productCategoryModel.Id = Guid.NewGuid();
+                var productCategory = new ProductCategory()
+                {
+                    Id = productCategoryModel.Id,
+                    Caption = productCategoryModel.Caption
+                };
                 _context.Add(productCategory);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(productCategory);
+            return View(productCategoryModel);
         }
 
         // GET: ProductCategories/Edit/5
@@ -82,7 +96,12 @@ namespace ADVCoupon.Controllers
             {
                 return NotFound();
             }
-            return View(productCategory);
+            var productCategoryModel = new ProductCategoryViewModel()
+            {
+                Id = productCategory.Id,
+                Caption = productCategory.Caption
+            };
+            return View(productCategoryModel);
         }
 
         // POST: ProductCategories/Edit/5
@@ -90,9 +109,9 @@ namespace ADVCoupon.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Caption")] ProductCategory productCategory)
+        public async Task<IActionResult> Edit(Guid id,  ProductCategoryViewModel productCategoryModel)
         {
-            if (id != productCategory.Id)
+            if (id != productCategoryModel.Id)
             {
                 return NotFound();
             }
@@ -101,12 +120,17 @@ namespace ADVCoupon.Controllers
             {
                 try
                 {
+                    var productCategory = new ProductCategory()
+                    {
+                        Id = productCategoryModel.Id,
+                        Caption = productCategoryModel.Caption
+                    };
                     _context.Update(productCategory);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProductCategoryExists(productCategory.Id))
+                    if (!ProductCategoryExists(productCategoryModel.Id))
                     {
                         return NotFound();
                     }
@@ -117,7 +141,7 @@ namespace ADVCoupon.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(productCategory);
+            return View(productCategoryModel);
         }
 
         // GET: ProductCategories/Delete/5
@@ -134,8 +158,12 @@ namespace ADVCoupon.Controllers
             {
                 return NotFound();
             }
-
-            return View(productCategory);
+            var productCategoryModel = new ProductCategoryViewModel()
+            {
+                Id = productCategory.Id,
+                Caption = productCategory.Caption
+            };
+            return View(productCategoryModel);
         }
 
         // POST: ProductCategories/Delete/5
