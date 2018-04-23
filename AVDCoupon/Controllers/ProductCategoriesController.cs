@@ -7,15 +7,18 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ADVCoupon.Models;
 using AVDCoupon.Data;
+using ADVCoupon.Services;
 
 namespace ADVCoupon.Controllers
 {
     public class ProductCategoriesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IProductCategoryService _service;
 
-        public ProductCategoriesController(ApplicationDbContext context)
+        public ProductCategoriesController(ApplicationDbContext context, IProductCategoryService service)
         {
+            _service = service;
             _context = context;
         }
 

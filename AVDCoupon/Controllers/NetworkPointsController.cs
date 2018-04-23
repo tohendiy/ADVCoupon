@@ -7,16 +7,19 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ADVCoupon.Models;
 using AVDCoupon.Data;
+using ADVCoupon.Services;
 
 namespace ADVCoupon.Controllers
 {
     public class NetworkPointsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly INetworkPointService _service;
 
-        public NetworkPointsController(ApplicationDbContext context)
+        public NetworkPointsController(ApplicationDbContext context, INetworkPointService service)
         {
             _context = context;
+            _service = service;
         }
 
         // GET: NetworkPoints

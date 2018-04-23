@@ -7,15 +7,18 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ADVCoupon.Models;
 using AVDCoupon.Data;
+using ADVCoupon.Services;
 
 namespace ADVCoupon.Controllers
 {
     public class NetworksController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly INetworkService _service;
 
-        public NetworksController(ApplicationDbContext context)
+        public NetworksController(ApplicationDbContext context, INetworkService service)
         {
+            _service = service;
             _context = context;
         }
 

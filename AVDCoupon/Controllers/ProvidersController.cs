@@ -7,15 +7,18 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ADVCoupon.Models;
 using AVDCoupon.Data;
+using ADVCoupon.Services;
 
 namespace ADVCoupon.Controllers
 {
     public class ProvidersController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IProviderService _service;
 
-        public ProvidersController(ApplicationDbContext context)
+        public ProvidersController(ApplicationDbContext context, IProviderService service)
         {
+            _service = service;
             _context = context;
         }
 
