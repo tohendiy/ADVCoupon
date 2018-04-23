@@ -4,11 +4,13 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <UserSecretsId>aspnet-AVDCoupon-D3D090A7-B8B8-4F6D-B0C1-6918C70A7840</UserSecretsId>
     <LangVersion>latest</LangVersion>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <StartupObject></StartupObject>
     <!-- <Authentication:Facebook:AppId>361145121039996</Authentication:Facebook:AppId>
     <Authentication:Facebook:AppSecret>a91edb12c74efc6bbec613f3739423bd</Authentication:Facebook:AppSecret> -->
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="DinkToPdf" Version="1.0.8" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.5" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="2.7.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.2" PrivateAssets="All" />
@@ -27,7 +29,6 @@
 
   <ItemGroup>
     <Folder Include="Data\Migrations\" />
-    <Folder Include="ViewModel\" />
     <Folder Include="ViewModel\AccountViewModels\" />
     <Folder Include="ViewModel\ManageViewModels\" />
     <Folder Include="ViewModel\CouponViewModel\" />

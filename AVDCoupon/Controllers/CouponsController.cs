@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Identity;
 using System.IO;
 using System.Net.Http.Headers;
 using ADVCoupon.Services;
+using ADVCoupon.Services.Interfaces;
 
 namespace ADVCoupon.Controllers
 {
@@ -20,10 +21,12 @@ namespace ADVCoupon.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ICouponService _couponService;
+        private readonly ITemplateService _templateService;
 
 
-        public CouponsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, ICouponService couponService)
+        public CouponsController(ApplicationDbContext context, ITemplateService templateService, UserManager<ApplicationUser> userManager, ICouponService couponService)
         {
+            _templateService = templateService;
             _context = context;
             _userManager = userManager;
             _couponService = couponService;
@@ -270,6 +273,15 @@ namespace ADVCoupon.Controllers
 
             return View();
         }
+
+        [HttpGet]
+        [Route("/pdf/coupon")]
+        public async Task<IActionResult> GenerateCoupon()
+        {
+            var output = await Helpers.PdfGenerator.GeneratePDF(_templateService);
+            return File(output, "application/pdf");
+        }
+
 
     }
 }
