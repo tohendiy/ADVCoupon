@@ -13,7 +13,9 @@ namespace ADVCoupon.Models
         public Coupon Coupon { get; set; }
 
         public DateTime Created { get; set; }
-
         public Geoposition Geoposition { get; set; }
+        public Guid NetworkId { get; set; }
+
+
     }
 }

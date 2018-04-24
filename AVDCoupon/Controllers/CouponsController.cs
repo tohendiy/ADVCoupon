@@ -276,9 +276,9 @@ namespace ADVCoupon.Controllers
 
         [HttpGet]
         [Route("/pdf/coupon")]
-        public async Task<IActionResult> GenerateCoupon()
+        public async Task<IActionResult> GenerateCoupon(string couponId, string userId)
         {
-            var output = await Helpers.PdfGenerator.GeneratePDF(_templateService);
+            var output = await Helpers.PdfGenerator.GeneratePDF(_context, _templateService, _couponService,new Guid(couponId),userId);
             return File(output, "application/pdf");
         }
 
