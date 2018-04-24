@@ -143,15 +143,13 @@ namespace ADVCoupon.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var provider = await _context.Providers.SingleOrDefaultAsync(m => m.Id == id);
-            _context.Providers.Remove(provider);
-            await _context.SaveChangesAsync();
+            await _service.DeleteProviderAsync(id);
             return RedirectToAction(nameof(Index));
         }
 
         private bool ProviderExists(Guid id)
         {
-            return _context.Providers.Any(e => e.Id == id);
+            return _service.IsExist(id);
         }
     }
 }

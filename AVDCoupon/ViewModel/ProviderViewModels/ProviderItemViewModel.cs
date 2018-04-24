@@ -16,8 +16,6 @@ namespace ADVCoupon.ViewModel.ProviderViewModels
 
         public IFormFile LogoImage { get; set; }
 
-        public Guid RetailUserId { get; set; }
-
-        public SelectList RetailUsers { get; set; }
+       
     }
 }
