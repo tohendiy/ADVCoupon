@@ -16,8 +16,5 @@ namespace ADVCoupon.ViewModel.NetworkViewModels
 
         public IFormFile LogoImage { get; set; }
 
-        public Guid MerchantUserId { get; set; }
-
-        public SelectList MerchantUsers { get; set; }
     }
 }
