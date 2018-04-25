@@ -12,6 +12,7 @@ using AVDCoupon.Data;
 using AVDCoupon.Models;
 using AVDCoupon.Services;
 using ADVCoupon.Services;
+using ADVCoupon.Services.Interfaces;
 
 namespace AVDCoupon
 {
@@ -27,7 +28,7 @@ namespace AVDCoupon
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-                                                        options.UseSqlite(Configuration.GetConnectionString("DefaultDevConnection")));
+                                                        options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
@@ -46,6 +47,7 @@ namespace AVDCoupon
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<ICouponService, CouponService>();
+            services.AddTransient<ITemplateService, TemplateService>();
 
             services.AddMvc();
         }
