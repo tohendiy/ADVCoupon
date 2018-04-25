@@ -9,5 +9,6 @@ namespace ADVCoupon.Models
         public Guid Id { get; set; }
         public string Name { get; set; }
         public Geoposition Geoposition { get; set; }
+        public Network Network { get; set; }
     }
 }

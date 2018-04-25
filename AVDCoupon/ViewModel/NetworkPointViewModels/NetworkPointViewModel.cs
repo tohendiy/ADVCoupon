@@ -1,4 +1,6 @@
 ﻿using System;
+using Microsoft.AspNetCore.Mvc.Rendering;
+
 namespace ADVCoupon.ViewModel.NetworkPointViewModels
 {
     public class NetworkPointViewModel
@@ -14,6 +16,9 @@ namespace ADVCoupon.ViewModel.NetworkPointViewModels
         public string City { get; set; }
         public string Street { get; set; }
         public string Building { get; set; }
+
+        public Guid NetworkId { get; set; }
+        public SelectList Networks { get; set; }
 
     }
 }

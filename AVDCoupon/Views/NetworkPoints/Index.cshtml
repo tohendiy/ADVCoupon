@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ADVCoupon.Models.NetworkPoint>
+﻿@model IEnumerable<ADVCoupon.ViewModel.NetworkPointViewModels.NetworkPointViewModel>
 
 @{
     ViewData["Title"] = "Index";
@@ -15,6 +15,34 @@
                 <th>
                     @Html.DisplayNameFor(model => model.Name)
                 </th>
+            <th>
+            @Html.DisplayNameFor(model => model.Longitude)
+        </th>
+       
+        <th>
+            @Html.DisplayNameFor(model => model.Latitude)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.Accuracy)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.Country)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.City)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.Street)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.Building)
+        </th>
+
             <th></th>
         </tr>
     </thead>
@@ -23,6 +51,27 @@
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Longitude)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Latitude)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Accuracy)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Country)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.City)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Street)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Building)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

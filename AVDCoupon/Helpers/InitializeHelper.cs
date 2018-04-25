@@ -13,17 +13,21 @@ namespace ADVCoupon.Helpers
         {
             string adminEmail = "admin@gmail.com";
             string password = "_Aa123456";
-            if (await roleManager.FindByNameAsync("admin") == null)
+            if (await roleManager.FindByNameAsync(Constants.ADMIN_ROLE) == null)
             {
-                await roleManager.CreateAsync(new IdentityRole("admin"));
+                await roleManager.CreateAsync(new IdentityRole(Constants.ADMIN_ROLE));
             }
-            if (await roleManager.FindByNameAsync("user") == null)
+            if (await roleManager.FindByNameAsync(Constants.USER_ROLE) == null)
             {
-                await roleManager.CreateAsync(new IdentityRole("user"));
+                await roleManager.CreateAsync(new IdentityRole(Constants.USER_ROLE));
             }
-            if (await roleManager.FindByNameAsync("merchant") == null)
+            if (await roleManager.FindByNameAsync(Constants.MERCHANT_ROLE) == null)
             {
-                await roleManager.CreateAsync(new IdentityRole("merchant"));
+                await roleManager.CreateAsync(new IdentityRole(Constants.MERCHANT_ROLE));
+            }
+            if (await roleManager.FindByNameAsync(Constants.SUPPLIER_ROLE) == null)
+            {
+                await roleManager.CreateAsync(new IdentityRole(Constants.SUPPLIER_ROLE));
             }
             if (await userManager.FindByNameAsync(adminEmail) == null)
             {
@@ -31,7 +35,7 @@ namespace ADVCoupon.Helpers
                 IdentityResult result = await userManager.CreateAsync(admin, password);
                 if (result.Succeeded)
                 {
-                    await userManager.AddToRoleAsync(admin, "admin");
+                    await userManager.AddToRoleAsync(admin,Constants.ADMIN_ROLE);
                 }
             }
         }

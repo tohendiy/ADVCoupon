@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using ADVCoupon.Models;
 using AVDCoupon.Data;
 using ADVCoupon.Services;
+using ADVCoupon.ViewModel.NetworkPointViewModels;
 
 namespace ADVCoupon.Controllers
 {
@@ -25,7 +26,8 @@ namespace ADVCoupon.Controllers
         // GET: NetworkPoints
         public async Task<IActionResult> Index()
         {
-            return View(await _context.NetworkPoints.ToListAsync());
+            var networkPointModel = await _service.GetNetworkPointViewModelsAsync();
+            return View(networkPointModel);
         }
 
         // GET: NetworkPoints/Details/5
@@ -36,20 +38,19 @@ namespace ADVCoupon.Controllers
                 return NotFound();
             }
 
-            var networkPoint = await _context.NetworkPoints
-                .SingleOrDefaultAsync(m => m.Id == id);
-            if (networkPoint == null)
+            var networkPointModel = await _service.GetNetworkPointViewModelAsync(id.Value);
+            if (networkPointModel == null)
             {
                 return NotFound();
             }
-
-            return View(networkPoint);
+            return View(networkPointModel);
         }
 
         // GET: NetworkPoints/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            return View();
+            var networksModel = await _service.GetNetworkPointNetworkListItemViewModelAsync();
+            return View(networksModel);
         }
 
         // POST: NetworkPoints/Create
@@ -57,16 +58,15 @@ namespace ADVCoupon.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name")] NetworkPoint networkPoint)
+        public async Task<IActionResult> Create(NetworkPointViewModel networkPointModel)
         {
             if (ModelState.IsValid)
             {
-                networkPoint.Id = Guid.NewGuid();
-                _context.Add(networkPoint);
-                await _context.SaveChangesAsync();
+                await _service.CreateNetworkPointAsync(networkPointModel);
+
                 return RedirectToAction(nameof(Index));
             }
-            return View(networkPoint);
+            return View(networkPointModel);
         }
 
         // GET: NetworkPoints/Edit/5
@@ -77,12 +77,12 @@ namespace ADVCoupon.Controllers
                 return NotFound();
             }
 
-            var networkPoint = await _context.NetworkPoints.SingleOrDefaultAsync(m => m.Id == id);
-            if (networkPoint == null)
+            var networkPointModel = await _service.GetNetworkPointViewModelAsync(id.Value);
+            if (networkPointModel == null)
             {
                 return NotFound();
             }
-            return View(networkPoint);
+            return View(networkPointModel);
         }
 
         // POST: NetworkPoints/Edit/5
@@ -90,9 +90,9 @@ namespace ADVCoupon.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Name")] NetworkPoint networkPoint)
+        public async Task<IActionResult> Edit(Guid id, NetworkPointViewModel networkPointModel)
         {
-            if (id != networkPoint.Id)
+            if (id != networkPointModel.Id)
             {
                 return NotFound();
             }
@@ -101,12 +101,11 @@ namespace ADVCoupon.Controllers
             {
                 try
                 {
-                    _context.Update(networkPoint);
-                    await _context.SaveChangesAsync();
+                    await _service.UpdateNetworkPointAsync(networkPointModel);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!NetworkPointExists(networkPoint.Id))
+                    if (!NetworkPointExists(networkPointModel.Id))
                     {
                         return NotFound();
                     }
@@ -117,7 +116,7 @@ namespace ADVCoupon.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(networkPoint);
+            return View(networkPointModel);
         }
 
         // GET: NetworkPoints/Delete/5
@@ -128,14 +127,13 @@ namespace ADVCoupon.Controllers
                 return NotFound();
             }
 
-            var networkPoint = await _context.NetworkPoints
-                .SingleOrDefaultAsync(m => m.Id == id);
-            if (networkPoint == null)
+            var networkPointModel = await _service.GetNetworkPointViewModelAsync(id.Value);
+            if (networkPointModel == null)
             {
                 return NotFound();
             }
 
-            return View(networkPoint);
+            return View(networkPointModel);
         }
 
         // POST: NetworkPoints/Delete/5
@@ -143,15 +141,13 @@ namespace ADVCoupon.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var networkPoint = await _context.NetworkPoints.SingleOrDefaultAsync(m => m.Id == id);
-            _context.NetworkPoints.Remove(networkPoint);
-            await _context.SaveChangesAsync();
+            await _service.DeleteNetworkPointAsync(id);
             return RedirectToAction(nameof(Index));
         }
 
         private bool NetworkPointExists(Guid id)
         {
-            return _context.NetworkPoints.Any(e => e.Id == id);
+            return _service.IsExist(id);
         }
     }
 }

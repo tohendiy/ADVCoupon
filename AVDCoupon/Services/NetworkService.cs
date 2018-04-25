@@ -86,7 +86,7 @@ namespace ADVCoupon.Services
 
         public async Task<Network> GetNetwork(Guid Id)
         {
-            var network = await _context.Networks
+            var network = await _context.Networks.Include(item => item.ProductCategory)
                .SingleOrDefaultAsync(m => m.Id == Id);
             return network;
         }
