@@ -1,4 +1,4 @@
-﻿@model ADVCoupon.Models.Network
+﻿@model ADVCoupon.ViewModel.NetworkViewModels.NetworkItemViewModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -10,7 +10,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="Edit" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
@@ -20,8 +20,13 @@
             </div>
             <div class="form-group">
                 <label asp-for="LogoImage" class="control-label"></label>
-                <input asp-for="LogoImage" class="form-control" />
+                <input type="file" asp-for="LogoImage" class="form-control" />
                 <span asp-validation-for="LogoImage" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LogoImageView" class="control-label"></label>
+                <img style='width:80px; height:80px;' src="data:image/jpeg;base64,@(Convert.ToBase64String(Model.LogoImageView))" />
+                <span asp-validation-for="LogoImageView" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-default" />

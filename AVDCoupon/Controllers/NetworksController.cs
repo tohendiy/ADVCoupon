@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using ADVCoupon.Models;
 using AVDCoupon.Data;
 using ADVCoupon.Services;
+using ADVCoupon.ViewModel.NetworkViewModels;
 
 namespace ADVCoupon.Controllers
 {
@@ -25,8 +26,8 @@ namespace ADVCoupon.Controllers
         // GET: Networks
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Networks.ToListAsync());
-        }
+            var networksModel = await _service.GetNetworkViewModelsAsync();
+            return View(networksModel);        }
 
         // GET: Networks/Details/5
         public async Task<IActionResult> Details(Guid? id)
@@ -36,14 +37,12 @@ namespace ADVCoupon.Controllers
                 return NotFound();
             }
 
-            var network = await _context.Networks
-                .SingleOrDefaultAsync(m => m.Id == id);
-            if (network == null)
+            var networkModel = await _service.GetNetworkItemViewModelAsync(id.Value);
+            if (networkModel == null)
             {
                 return NotFound();
             }
-
-            return View(network);
+            return View(networkModel);
         }
 
         // GET: Networks/Create
@@ -57,16 +56,14 @@ namespace ADVCoupon.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Caption,LogoImage")] Network network)
+        public async Task<IActionResult> Create(NetworkItemViewModel networkModel)
         {
             if (ModelState.IsValid)
             {
-                network.Id = Guid.NewGuid();
-                _context.Add(network);
-                await _context.SaveChangesAsync();
+                await _service.CreateNetworkAsync(networkModel);
                 return RedirectToAction(nameof(Index));
             }
-            return View(network);
+            return View(networkModel);
         }
 
         // GET: Networks/Edit/5
@@ -77,12 +74,12 @@ namespace ADVCoupon.Controllers
                 return NotFound();
             }
 
-            var network = await _context.Networks.SingleOrDefaultAsync(m => m.Id == id);
-            if (network == null)
+            var networkModel = await _service.GetNetworkItemViewModelAsync(id.Value);
+            if (networkModel == null)
             {
                 return NotFound();
             }
-            return View(network);
+            return View(networkModel);
         }
 
         // POST: Networks/Edit/5
@@ -90,9 +87,9 @@ namespace ADVCoupon.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Caption,LogoImage")] Network network)
+        public async Task<IActionResult> Edit(Guid id, NetworkItemViewModel networkModel)
         {
-            if (id != network.Id)
+            if (id != networkModel.Id)
             {
                 return NotFound();
             }
@@ -101,12 +98,11 @@ namespace ADVCoupon.Controllers
             {
                 try
                 {
-                    _context.Update(network);
-                    await _context.SaveChangesAsync();
+                    await _service.UpdateNetworkAsync(networkModel);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!NetworkExists(network.Id))
+                    if (!NetworkExists(networkModel.Id))
                     {
                         return NotFound();
                     }
@@ -117,7 +113,7 @@ namespace ADVCoupon.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(network);
+            return View(networkModel);
         }
 
         // GET: Networks/Delete/5
@@ -128,14 +124,13 @@ namespace ADVCoupon.Controllers
                 return NotFound();
             }
 
-            var network = await _context.Networks
-                .SingleOrDefaultAsync(m => m.Id == id);
-            if (network == null)
+            var networkModel = await _service.GetNetworkItemViewModelAsync(id.Value);
+            if (networkModel == null)
             {
                 return NotFound();
             }
 
-            return View(network);
+            return View(networkModel);
         }
 
         // POST: Networks/Delete/5
@@ -143,15 +138,13 @@ namespace ADVCoupon.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var network = await _context.Networks.SingleOrDefaultAsync(m => m.Id == id);
-            _context.Networks.Remove(network);
-            await _context.SaveChangesAsync();
+            await _service.DeleteNetworkAsync(id);
             return RedirectToAction(nameof(Index));
         }
 
         private bool NetworkExists(Guid id)
         {
-            return _context.Networks.Any(e => e.Id == id);
+            return _service.IsExist(id);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿@model ADVCoupon.Models.Network
+﻿@model ADVCoupon.ViewModel.NetworkViewModels.NetworkItemViewModel
 
 @{
     ViewData["Title"] = "Details";
@@ -20,7 +20,7 @@
             @Html.DisplayNameFor(model => model.LogoImage)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.LogoImage)
+            <img style='width:80px; height:80px;' src="data:image/jpeg;base64,@(Convert.ToBase64String(Model.LogoImageView))" />
         </dd>
     </dl>
 </div>

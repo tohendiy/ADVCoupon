@@ -28,7 +28,7 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-            <img style='width:80px; height:80px;' src="data:image/jpeg;base64,@(Convert.ToBase64String(item.LogoImageView))" />
+                <img style='width:80px; height:80px;' src="data:image/jpeg;base64,@(Convert.ToBase64String(item.LogoImageView))" />
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

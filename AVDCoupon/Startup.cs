@@ -27,7 +27,8 @@ namespace AVDCoupon
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-                                                        options.UseSqlite(Configuration.GetConnectionString("DefaultDevConnection")));
+                                                        //options.UseSqlite(Configuration.GetConnectionString("DefaultDevConnection")));
+                                                        options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
@@ -47,6 +48,8 @@ namespace AVDCoupon
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<ICouponService, CouponService>();
             services.AddTransient<IProviderService, ProviderService>();
+            services.AddTransient<INetworkService, NetworkService>();
+
 
             services.AddMvc();
         }
