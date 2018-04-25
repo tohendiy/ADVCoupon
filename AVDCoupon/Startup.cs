@@ -53,6 +53,8 @@ namespace AVDCoupon
             services.AddTransient<INetworkService, NetworkService>();
             services.AddTransient<IProductCategoryService, ProductCategoryService>();
             services.AddTransient<INetworkPointService, NetworkPointService>();
+            services.AddTransient<IGeopositionService, GeopositionService>();
+            services.AddTransient<IProductService, ProductService>();
 
             services.AddMvc();
         }
