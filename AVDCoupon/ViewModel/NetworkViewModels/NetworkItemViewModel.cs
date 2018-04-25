@@ -16,5 +16,8 @@ namespace ADVCoupon.ViewModel.NetworkViewModels
 
         public IFormFile LogoImage { get; set; }
 
+        public Guid ProductCategoryId { get; set; }
+
+        public SelectList ProductCategories { get; set; }
     }
 }

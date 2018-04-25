@@ -28,6 +28,11 @@
                 <img style='width:80px; height:80px;' src="data:image/jpeg;base64,@(Convert.ToBase64String(Model.LogoImageView))" />
                 <span asp-validation-for="LogoImageView" class="text-danger"></span>
             </div>
+             <div class="form-group">
+                <label asp-for="ProductCategories" class="control-label"></label>
+                <select asp-for="ProductCategoryId" asp-items="@Model.ProductCategories"></select>
+                <span asp-validation-for="ProductCategories" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-default" />
             </div>

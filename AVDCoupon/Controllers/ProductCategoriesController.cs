@@ -8,29 +8,26 @@ using Microsoft.EntityFrameworkCore;
 using ADVCoupon.Models;
 using AVDCoupon.Data;
 using ADVCoupon.ViewModel.ProductCategoryViewModels;
+using ADVCoupon.Services;
 
 namespace ADVCoupon.Controllers
 {
     public class ProductCategoriesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IProductCategoryService _service;
 
-        public ProductCategoriesController(ApplicationDbContext context)
+        public ProductCategoriesController(ApplicationDbContext context, IProductCategoryService service)
         {
             _context = context;
+            _service = service;
         }
 
         // GET: ProductCategories
         public async Task<IActionResult> Index()
         {
-            var productCategories = await _context.ProductCategories.ToListAsync();
-            var productCategoryListViewModel = new List<ProductCategoryViewModel>(productCategories.Count);
-            productCategoryListViewModel = productCategories.Select(item => new ProductCategoryViewModel
-            {
-                Id = item.Id,
-                Caption = item.Caption
-            }).ToList();
-            return View(productCategoryListViewModel);
+            var productCategoriesModel = await _service.GetProductCategoryViewModelsAsync();
+            return View(productCategoriesModel);       
         }
 
         // GET: ProductCategories/Details/5
@@ -41,17 +38,11 @@ namespace ADVCoupon.Controllers
                 return NotFound();
             }
 
-            var productCategory = await _context.ProductCategories
-                .SingleOrDefaultAsync(m => m.Id == id);
-            if (productCategory == null)
+            var productCategoryModel = await _service.GetProductCategoryViewModelAsync(id.Value);
+            if (productCategoryModel == null)
             {
                 return NotFound();
             }
-            var productCategoryModel = new ProductCategoryViewModel()
-            {
-                Id = productCategory.Id,
-                Caption = productCategory.Caption
-            };
             return View(productCategoryModel);
         }
 
@@ -70,14 +61,8 @@ namespace ADVCoupon.Controllers
         {
             if (ModelState.IsValid)
             {
-                productCategoryModel.Id = Guid.NewGuid();
-                var productCategory = new ProductCategory()
-                {
-                    Id = productCategoryModel.Id,
-                    Caption = productCategoryModel.Caption
-                };
-                _context.Add(productCategory);
-                await _context.SaveChangesAsync();
+                await _service.CreateProductCategoryAsync(productCategoryModel);
+
                 return RedirectToAction(nameof(Index));
             }
             return View(productCategoryModel);
@@ -91,16 +76,11 @@ namespace ADVCoupon.Controllers
                 return NotFound();
             }
 
-            var productCategory = await _context.ProductCategories.SingleOrDefaultAsync(m => m.Id == id);
-            if (productCategory == null)
+            var productCategoryModel = await _service.GetProductCategoryViewModelAsync(id.Value);
+            if (productCategoryModel == null)
             {
                 return NotFound();
             }
-            var productCategoryModel = new ProductCategoryViewModel()
-            {
-                Id = productCategory.Id,
-                Caption = productCategory.Caption
-            };
             return View(productCategoryModel);
         }
 
@@ -120,13 +100,8 @@ namespace ADVCoupon.Controllers
             {
                 try
                 {
-                    var productCategory = new ProductCategory()
-                    {
-                        Id = productCategoryModel.Id,
-                        Caption = productCategoryModel.Caption
-                    };
-                    _context.Update(productCategory);
-                    await _context.SaveChangesAsync();
+                    await _service.UpdateProductCategoryAsync(productCategoryModel);
+
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -152,17 +127,11 @@ namespace ADVCoupon.Controllers
                 return NotFound();
             }
 
-            var productCategory = await _context.ProductCategories
-                .SingleOrDefaultAsync(m => m.Id == id);
-            if (productCategory == null)
+            var productCategoryModel = await _service.GetProductCategoryViewModelAsync(id.Value);
+            if (productCategoryModel == null)
             {
                 return NotFound();
             }
-            var productCategoryModel = new ProductCategoryViewModel()
-            {
-                Id = productCategory.Id,
-                Caption = productCategory.Caption
-            };
             return View(productCategoryModel);
         }
 
@@ -171,15 +140,13 @@ namespace ADVCoupon.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var productCategory = await _context.ProductCategories.SingleOrDefaultAsync(m => m.Id == id);
-            _context.ProductCategories.Remove(productCategory);
-            await _context.SaveChangesAsync();
+            await _service.DeleteProductCategoryAsync(id);
             return RedirectToAction(nameof(Index));
         }
 
         private bool ProductCategoryExists(Guid id)
         {
-            return _context.ProductCategories.Any(e => e.Id == id);
+            return _service.IsExist(id);
         }
     }
 }

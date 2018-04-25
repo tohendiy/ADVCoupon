@@ -13,6 +13,7 @@ namespace ADVCoupon.Services
 
         Task<Network> GetNetwork(Guid Id);
         Task<NetworkItemViewModel> GetNetworkItemViewModelAsync(Guid Id);
+        Task<NetworkItemViewModel> GetNetworkProductCategoryListItemViewModelAsync();
 
         Task<List<Network>> GetNetworksAsync();
         Task<List<NetworkItemViewModel>> GetNetworkViewModelsAsync();

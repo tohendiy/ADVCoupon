@@ -27,7 +27,8 @@ namespace ADVCoupon.Controllers
         public async Task<IActionResult> Index()
         {
             var networksModel = await _service.GetNetworkViewModelsAsync();
-            return View(networksModel);        }
+            return View(networksModel);        
+        }
 
         // GET: Networks/Details/5
         public async Task<IActionResult> Details(Guid? id)
@@ -46,9 +47,10 @@ namespace ADVCoupon.Controllers
         }
 
         // GET: Networks/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            return View();
+            var productCategoriesModel = await _service.GetNetworkProductCategoryListItemViewModelAsync();
+            return View(productCategoriesModel);
         }
 
         // POST: Networks/Create

@@ -49,6 +49,7 @@ namespace AVDCoupon
             services.AddTransient<ICouponService, CouponService>();
             services.AddTransient<IProviderService, ProviderService>();
             services.AddTransient<INetworkService, NetworkService>();
+            services.AddTransient<IProductCategoryService, ProductCategoryService>();
 
 
             services.AddMvc();

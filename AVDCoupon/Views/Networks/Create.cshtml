@@ -23,6 +23,11 @@
                 <span asp-validation-for="LogoImage" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="ProductCategories" class="control-label"></label>
+                <select asp-for="ProductCategoryId" asp-items="@Model.ProductCategories"></select>
+                <span asp-validation-for="ProductCategories" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-default" />
             </div>
         </form>
