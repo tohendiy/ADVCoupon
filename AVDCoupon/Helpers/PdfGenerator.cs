@@ -9,6 +9,8 @@ using ADVCoupon.Services;
 using AVDCoupon.Data;
 using ADVCoupon.Models;
 using AVDCoupon.Models;
+using System.Drawing;
+using System.IO;
 
 namespace ADVCoupon.Helpers
 {
@@ -35,9 +37,47 @@ namespace ADVCoupon.Helpers
                             }
             });
 
+            
+
             return output;
 
         }
+
+    //    public static async Task<byte[]> GenerateImage(ApplicationDbContext context, ITemplateService templateService, ICouponService couponService, Guid couponId, string userId)
+    //    {
+    //        var currentUserCoupon = couponService.GetUserCoupon(context, userId, couponId);
+    //        var currentCoupon = await couponService.GetCouponById(context, couponId);
+
+    //        var converter = new BasicConverter(new PdfTools());
+
+    //        string documentContent = await templateService.RenderTemplateAsync(
+    //"Coupons/CouponPdf", ConvertUserCouponToPdfViewModel(currentUserCoupon, currentCoupon));
+
+    //        var output = converter.Convert(new HtmlToPdfDocument()
+    //        {
+    //            Objects =
+    //                        {
+    //                            new ObjectSettings()
+    //                            {
+    //                                HtmlContent = documentContent
+    //                            }
+    //                        }
+    //        });
+
+    //        try
+    //        {
+    //            using (var document = PdfiumViewer.PdfDocument.Load(new MemoryStream(output)))
+    //            {
+    //                var image = document.Render(0, 300, 300, true);
+    //                //image.Save(@"output.png", ImageFormat.Png);
+    //            }
+    //        }
+    //        catch (Exception ex)
+    //        {
+    //            // handle exception here;
+    //        }
+    //        return output;
+    //    }
 
         private static CouponPdfViewModel ConvertUserCouponToPdfViewModel(UserCoupon userCoupon, Coupon coupon)
         {

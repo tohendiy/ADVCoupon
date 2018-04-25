@@ -12,6 +12,7 @@ using AVDCoupon.Data;
 using AVDCoupon.Models;
 using AVDCoupon.Services;
 using ADVCoupon.Services;
+using ADVCoupon.Services.Interfaces;
 
 namespace AVDCoupon
 {
@@ -47,10 +48,10 @@ namespace AVDCoupon
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<ICouponService, CouponService>();
+            services.AddTransient<ITemplateService, TemplateService>();
             services.AddTransient<IProviderService, ProviderService>();
             services.AddTransient<INetworkService, NetworkService>();
             services.AddTransient<IProductCategoryService, ProductCategoryService>();
-
 
             services.AddMvc();
         }
