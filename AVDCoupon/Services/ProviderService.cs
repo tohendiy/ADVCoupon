@@ -140,12 +140,8 @@ namespace ADVCoupon.Services
 
         public async Task UpdateProviderAsync(ProviderItemViewModel providerModel)
         {
-            var provider = new Provider
-            {
-                Name = providerModel.Name,
-                Id = providerModel.Id
-
-            };
+            var provider = await GetProvider(providerModel.Id);
+            provider.Name = providerModel.Name;
             if (providerModel.LogoImage != null)
             {
 

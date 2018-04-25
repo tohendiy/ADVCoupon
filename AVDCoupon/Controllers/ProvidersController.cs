@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using ADVCoupon.Models;
 using AVDCoupon.Data;
 using ADVCoupon.Services;
+using ADVCoupon.ViewModel.ProviderViewModels;
 
 namespace ADVCoupon.Controllers
 {
@@ -25,7 +26,8 @@ namespace ADVCoupon.Controllers
         // GET: Providers
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Providers.ToListAsync());
+            var providersModel = await _service.GetProviderViewModelsAsync();
+            return View(providersModel);
         }
 
         // GET: Providers/Details/5
@@ -36,14 +38,12 @@ namespace ADVCoupon.Controllers
                 return NotFound();
             }
 
-            var provider = await _context.Providers
-                .SingleOrDefaultAsync(m => m.Id == id);
-            if (provider == null)
+            var providerModel = await _service.GetProviderItemViewModelAsync(id.Value);
+            if(providerModel == null)
             {
                 return NotFound();
             }
-
-            return View(provider);
+            return View(providerModel);
         }
 
         // GET: Providers/Create
@@ -57,16 +57,14 @@ namespace ADVCoupon.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,LogoImage")] Provider provider)
+        public async Task<IActionResult> Create(ProviderItemViewModel providerModel)
         {
             if (ModelState.IsValid)
             {
-                provider.Id = Guid.NewGuid();
-                _context.Add(provider);
-                await _context.SaveChangesAsync();
+                await _service.CreateProviderAsync(providerModel);
                 return RedirectToAction(nameof(Index));
             }
-            return View(provider);
+            return View(providerModel);
         }
 
         // GET: Providers/Edit/5
@@ -77,12 +75,12 @@ namespace ADVCoupon.Controllers
                 return NotFound();
             }
 
-            var provider = await _context.Providers.SingleOrDefaultAsync(m => m.Id == id);
-            if (provider == null)
+            var providerModel = await _service.GetProviderItemViewModelAsync(id.Value);
+            if (providerModel == null)
             {
                 return NotFound();
             }
-            return View(provider);
+            return View(providerModel);
         }
 
         // POST: Providers/Edit/5
@@ -90,9 +88,9 @@ namespace ADVCoupon.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Name,LogoImage")] Provider provider)
+        public async Task<IActionResult> Edit(Guid id, ProviderItemViewModel providerModel)
         {
-            if (id != provider.Id)
+            if (id != providerModel.Id)
             {
                 return NotFound();
             }
@@ -101,12 +99,11 @@ namespace ADVCoupon.Controllers
             {
                 try
                 {
-                    _context.Update(provider);
-                    await _context.SaveChangesAsync();
+                    await _service.UpdateProviderAsync(providerModel);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProviderExists(provider.Id))
+                    if (!ProviderExists(providerModel.Id))
                     {
                         return NotFound();
                     }
@@ -117,7 +114,7 @@ namespace ADVCoupon.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(provider);
+            return View(providerModel);
         }
 
         // GET: Providers/Delete/5
@@ -128,14 +125,13 @@ namespace ADVCoupon.Controllers
                 return NotFound();
             }
 
-            var provider = await _context.Providers
-                .SingleOrDefaultAsync(m => m.Id == id);
-            if (provider == null)
+            var providerModel = await _service.GetProviderItemViewModelAsync(id.Value);
+            if (providerModel == null)
             {
                 return NotFound();
             }
 
-            return View(provider);
+            return View(providerModel);
         }
 
         // POST: Providers/Delete/5

@@ -46,6 +46,7 @@ namespace AVDCoupon
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<ICouponService, CouponService>();
+            services.AddTransient<IProviderService, ProviderService>();
 
             services.AddMvc();
         }
