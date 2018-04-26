@@ -14,7 +14,6 @@ namespace AVDCoupon.Models
         public Network Network { get; set; }
         public Provider Provider { get; set; }
         // statistics data
-        
         public DateTime Birthday { get; set; }
         public string City { get; set; }
         public int ChildNumber { get; set; }

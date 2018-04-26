@@ -9,6 +9,8 @@ using AVDCoupon.Data;
 using AVDCoupon.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
+using ADVCoupon.ViewModel.UsersViewModels;
+using ADVCoupon.Services;
 using ADVCoupon.Helpers;
 
 namespace ADVCoupon.Controllers
@@ -18,18 +20,34 @@ namespace ADVCoupon.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
+        RoleManager<IdentityRole> _roleManager;
+        private readonly IProviderService _providerService;
+        private readonly INetworkService _networkService; 
 
-
-        public UsersController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public UsersController(ApplicationDbContext context,INetworkService networkService, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IProviderService providerService)
         {
             _context = context;
             _userManager = userManager;
+            _roleManager = roleManager;
+            _providerService = providerService;
+            _networkService = networkService;
         }
 
         // GET: Users
         public async Task<IActionResult> Index()
         {
-            return View(await _userManager.Users.ToListAsync());
+            var users = await _userManager.Users.Include(x => x.Provider).Include(y => y.Network).ToListAsync();
+
+            var usersWithRoles = from u in users
+                                 select new UserTableItemViewModel { User = u, Role = _userManager.GetRolesAsync(u).Result[0] };
+            
+            foreach(var t in users)
+            {
+                var test = await _userManager.GetClaimsAsync(t);
+            }
+            
+
+            return View(usersWithRoles.ToList());
         }
 
         // GET: Users/Details/5
@@ -41,19 +59,37 @@ namespace ADVCoupon.Controllers
             }
 
             var applicationUser = await _userManager.Users
-                .SingleOrDefaultAsync(m => m.Id == id);
+                .Include(x => x.Provider).Include(y => y.Network).SingleOrDefaultAsync(m => m.Id == id);
             if (applicationUser == null)
             {
                 return NotFound();
             }
 
-            return View(applicationUser);
+            var role = await _userManager.GetRolesAsync(applicationUser);
+
+            var model = new UserViewModel()
+            {
+                Name = applicationUser.UserName,
+                Email = applicationUser.Email,
+                Id = applicationUser.Id,
+                Role = role[0],
+                Network = applicationUser.Network?.Caption,
+                Provider = applicationUser.Provider?.Name
+
+            };
+
+            return View(model);
         }
 
         // GET: Users/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            return View();
+            var model = new UserViewModel()
+            {
+                Providers = new SelectList(await _providerService.GetProvidersAsync(), "Id", "Name"),
+                Networks = new SelectList(await _networkService.GetNetworksAsync(), "Id", "Caption")
+            };
+            return View(model);
         }
 
         // POST: Users/Create
@@ -61,15 +97,35 @@ namespace ADVCoupon.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Birthday,City,ChildNumber,Id,UserName,NormalizedUserName,Email,NormalizedEmail,EmailConfirmed,PasswordHash,SecurityStamp,ConcurrencyStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnd,LockoutEnabled,AccessFailedCount")] ApplicationUser applicationUser)
+        public async Task<IActionResult> Create([Bind("Name,Email,Password,Provider,Network,Role")] UserViewModel applicationUserCreateModel)
         {
             if (ModelState.IsValid)
             {
-                await _userManager.CreateAsync(applicationUser);
-                //await _context.SaveChangesAsync();
+                var user = new ApplicationUser()
+                {
+                    Email = applicationUserCreateModel.Email,
+                    UserName = applicationUserCreateModel.Email
+                };
+
+                if (applicationUserCreateModel.Role == Helpers.Constants.MERCHANT_ROLE)
+                {
+                    user.Network = await _networkService.GetNetwork(new Guid(applicationUserCreateModel.Network));
+                }
+                else
+                {
+                    user.Provider = await _providerService.GetProvider(new Guid(applicationUserCreateModel.Provider));
+                }
+
+                var response = await _userManager.CreateAsync(user, 
+                    applicationUserCreateModel.Password);
+                
+                await _context.SaveChangesAsync();
+
+                await _userManager.AddToRoleAsync(user, applicationUserCreateModel.Role);
+                
                 return RedirectToAction(nameof(Index));
             }
-            return View(applicationUser);
+            return View(applicationUserCreateModel);
         }
 
         // GET: Users/Edit/5
@@ -85,7 +141,18 @@ namespace ADVCoupon.Controllers
             {
                 return NotFound();
             }
-            return View(applicationUser);
+
+            var model = new UserViewModel()
+            {
+                Providers = new SelectList(await _providerService.GetProvidersAsync(), "Id", "Name"),
+                Networks = new SelectList(await _networkService.GetNetworksAsync(), "Id", "Caption"),
+                Name = applicationUser.UserName,
+                Email = applicationUser.Email,
+                Id = applicationUser.Id
+
+            };
+
+            return View(model);
         }
 
         // POST: Users/Edit/5
@@ -93,22 +160,36 @@ namespace ADVCoupon.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Birthday,City,ChildNumber,Id,UserName,NormalizedUserName,Email,NormalizedEmail,EmailConfirmed,PasswordHash,SecurityStamp,ConcurrencyStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnd,LockoutEnabled,AccessFailedCount")] ApplicationUser applicationUser)
+        public async Task<IActionResult> Edit(string id, [Bind("Id,Email,Password")] UserViewModel applicationUserCreateModel)
         {
-            if (id != applicationUser.Id)
+            if (id != applicationUserCreateModel.Id)
             {
                 return NotFound();
             }
+
+            var user = await _userManager.Users.SingleOrDefaultAsync(m => m.Id == id);
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    await _userManager.UpdateAsync(applicationUser);
+                    user.UserName = applicationUserCreateModel.Email;
+                    user.Email = applicationUserCreateModel.Email;
+
+                    await _userManager.UpdateAsync(user);
+
+                    if (!string.IsNullOrEmpty(applicationUserCreateModel.Password))
+                    {
+                        var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                        var result = await _userManager.ResetPasswordAsync(user, token, applicationUserCreateModel.Password);
+                    }
+
+                    await _context.SaveChangesAsync();
+
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ApplicationUserExists(applicationUser.Id))
+                    if (!ApplicationUserExists(applicationUserCreateModel.Id))
                     {
                         return NotFound();
                     }
@@ -119,7 +200,7 @@ namespace ADVCoupon.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(applicationUser);
+            return View(user);
         }
 
         // GET: Users/Delete/5
@@ -131,13 +212,26 @@ namespace ADVCoupon.Controllers
             }
 
             var applicationUser = await _userManager.Users
-                .SingleOrDefaultAsync(m => m.Id == id);
+                .Include(x => x.Provider).Include(y => y.Network).SingleOrDefaultAsync(m => m.Id == id);
             if (applicationUser == null)
             {
                 return NotFound();
             }
 
-            return View(applicationUser);
+            var role = await _userManager.GetRolesAsync(applicationUser);
+
+            var model = new UserViewModel()
+            {
+                Name = applicationUser.UserName,
+                Email = applicationUser.Email,
+                Id = applicationUser.Id,
+                Role = role[0],
+                Network = applicationUser.Network?.Caption,
+                Provider = applicationUser.Provider?.Name
+
+            };
+
+            return View(model);
         }
 
         // POST: Users/Delete/5
