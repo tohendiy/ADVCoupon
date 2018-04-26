@@ -77,6 +77,7 @@ namespace ADVCoupon.Services
                     City = networkPointModel.City,
                     Street = networkPointModel.Street,
                     Building = networkPointModel.Building,
+                    Id = Guid.NewGuid()
                 },
                 Network = _context.Networks.FirstOrDefault(item=> item.Id == networkPointModel.NetworkId)
 

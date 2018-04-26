@@ -1,4 +1,5 @@
 ﻿using ADVCoupon.Models;
+using ADVCoupon.ViewModel.CouponViewModel;
 using AVDCoupon.Data;
 using AVDCoupon.Models;
 using System;
@@ -10,10 +11,24 @@ namespace ADVCoupon.Services
 {
     public interface ICouponService
     {
-        Task<List<Coupon>> GetCoupons(ApplicationDbContext context);
-        UserCoupon GetUserCoupon(ApplicationDbContext context, string userId, Guid couponId);
+        UserCoupon GetUserCoupon(string userId, Guid couponId);
+        Task<CouponCreateItemViewModel> GetCouponProductProvidersListItemViewModelAsync();
 
-        Task<Coupon> GetCouponById(ApplicationDbContext context, Guid id);
+        Task<Coupon> GetCouponById(Guid id);
+
+        Task<Coupon> GetCouponAsync(Guid Id);
+        Task<CouponCreateItemViewModel> GetCouponCreateItemViewModelAsync(Guid Id);
+
+        Task<List<Coupon>> GetCouponsAsync();
+
+        Task<Coupon> CreateCouponAsync(Coupon coupon);
+        Task<Coupon> CreateCouponAsync(CouponCreateItemViewModel couponModel);
+
+        Task UpdateCouponAsync(Coupon coupon);
+
+        Task DeleteCouponAsync(Guid Id);
+
+        bool IsExist(Guid Id);
         
     }
 }

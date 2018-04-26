@@ -23,7 +23,7 @@ namespace AVDCoupon.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var test = await _couponService.GetCoupons(_context);
+            //var test = await _couponService.GetCoupons(_context);
             return View();
         }
 
