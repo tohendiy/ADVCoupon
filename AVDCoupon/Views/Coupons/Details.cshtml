@@ -1,4 +1,4 @@
-﻿@model ADVCoupon.ViewModel.CouponViewModel.CouponDetailItemViewModel
+﻿@model ADVCoupon.ViewModel.CouponViewModel.CouponCreateItemViewModel
 
 @{
     ViewData["Title"] = "Details";
@@ -11,29 +11,60 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
+            @Html.DisplayNameFor(model => model.Caption)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Caption)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DiscountPercentage)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DiscountPercentage)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DiscountAbsolute)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DiscountAbsolute)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.StartDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.StartDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.EndDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.EndDate)
+        </dd>
+         <dt>
             @Html.DisplayNameFor(model => model.TotalCapacity)
         </dt>
         <dd>
             @Html.DisplayFor(model => model.TotalCapacity)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.CurrentCapacity)
+            @Html.DisplayNameFor(model => model.Name)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.CurrentCapacity)
+            @Html.DisplayFor(model => model.Name)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.CouponImage)
+            @Html.DisplayNameFor(model => model.ImageView)
         </dt>
         <dd>
-            <img style='width:80px; height:80px;' src="data:image/jpeg;base64,@(Convert.ToBase64String(Model.CouponImage))" />
+            <img style='width:80px; height:80px;' src="data:image/jpeg;base64,@(Convert.ToBase64String(Model.ImageView))" />
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.CouponName)
+            @Html.DisplayNameFor(model => model.IsApproved)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.CouponName)
+            @Html.DisplayFor(model => model.IsApproved)
         </dd>
+        
     </dl>
 </div>
 <div>

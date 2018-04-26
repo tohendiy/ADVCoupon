@@ -20,11 +20,13 @@ namespace ADVCoupon.Services
         Task<CouponCreateItemViewModel> GetCouponCreateItemViewModelAsync(Guid Id);
 
         Task<List<Coupon>> GetCouponsAsync();
+        Task<List<CouponCreateItemViewModel>> GetCouponCreateItemViewModelsAsync();
 
         Task<Coupon> CreateCouponAsync(Coupon coupon);
         Task<Coupon> CreateCouponAsync(CouponCreateItemViewModel couponModel);
 
         Task UpdateCouponAsync(Coupon coupon);
+        Task UpdateCouponAsync(CouponCreateItemViewModel couponModel);
 
         Task DeleteCouponAsync(Guid Id);
 
