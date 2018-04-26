@@ -83,6 +83,9 @@ namespace ADVCoupon.Controllers
             var model = new CouponItemViewModel();
             model.Users = new SelectList(users, "Id", "Value");
 
+            //var model = await _couponService.GetCouponProductProvidersListItemViewModelAsync();
+
+
             return View(model);
         }
 

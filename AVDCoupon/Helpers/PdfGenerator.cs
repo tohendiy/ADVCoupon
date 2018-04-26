@@ -18,8 +18,8 @@ namespace ADVCoupon.Helpers
     {
         public static async Task<byte[]> GeneratePDF(ApplicationDbContext context, ITemplateService templateService, ICouponService couponService, Guid couponId, string userId)
         {
-            var currentUserCoupon = couponService.GetUserCoupon(context, userId, couponId);
-            var currentCoupon = await couponService.GetCouponById(context, couponId);
+            var currentUserCoupon = couponService.GetUserCoupon(userId, couponId);
+            var currentCoupon = await couponService.GetCouponById(couponId);
 
             var converter = new BasicConverter(new PdfTools());
 

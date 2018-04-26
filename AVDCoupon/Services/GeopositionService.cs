@@ -41,8 +41,8 @@ namespace ADVCoupon.Services
 
         public async Task<List<Geoposition>> GetGeopositionsAsync()
         {
-            var products = await _context.Geopositions.ToListAsync();
-            return products;
+            var geopositions = await _context.Geopositions.ToListAsync();
+            return geopositions;
         }
 
         public bool IsExist(Guid Id)

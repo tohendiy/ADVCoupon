@@ -23,14 +23,7 @@ namespace AVDCoupon.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var test1 = await ADVCoupon.Helpers.GeocodingHelper.GetCoordinatesByAddressAsync(new ADVCoupon.Models.Geoposition()
-            {
-                Country="Україна",
-                City="Заболотів",
-                Street="Михайла Грушевського",
-                Building="32"
-            });
-            var test = await _couponService.GetCoupons(_context);
+            //var test = await _couponService.GetCoupons(_context);
             return View();
         }
 
