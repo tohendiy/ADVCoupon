@@ -22,7 +22,7 @@
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="MailKit" Version="2.0.3" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="2.0.2" />
-    <PackageReference Include="PdfiumViewer" Version="2.13.0" />
+    <PackageReference Include="Sendgrid" Version="9.9.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -49,5 +49,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Migrations\20180416152232_Init.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="NReco.ImageGenerator">
+      <HintPath>..\NReco.ImageGenerator.dll</HintPath>
+    </Reference>
   </ItemGroup>
 </Project>

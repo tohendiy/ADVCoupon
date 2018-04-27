@@ -56,6 +56,7 @@ namespace AVDCoupon
             services.AddTransient<IGeopositionService, GeopositionService>();
             services.AddTransient<IProductService, ProductService>();
 
+            services.AddSingleton<IConfiguration>(Configuration);
             services.AddMvc();
         }
 

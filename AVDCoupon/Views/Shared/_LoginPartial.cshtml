@@ -8,34 +8,37 @@
 {
     <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" id="logoutForm" class="navbar-right">
         <ul class="nav navbar-nav navbar-right">
-                
-                @if(User.IsInRole("user"))
-                {
-            <li>
-                <a asp-area="" asp-controller="Coupons" asp-action="Grid">Coupons Client</a>
-            </li>
-                }
-            @if(User.IsInRole("admin"))
-            {
-            <li>
-                <a asp-area="" asp-controller="Coupons" asp-action="Index">Coupons Admin</a>
-            </li>
-            <li>
-                <a asp-area="" asp-controller="Users" asp-action="Index">Users</a>
-            </li>
-            <li>
-                <a asp-area="" asp-controller="Providers" asp-action="Index">Providers</a>
-            </li>
-            <li>
-                <a asp-area="" asp-controller="ProductCategories" asp-action="Index">Product Categories</a>
-            </li>
-            <li>
-                <a asp-area="" asp-controller="Networks" asp-action="Index">Network</a>
-            </li>
-            <li>
-                <a asp-area="" asp-controller="NetworkPoints" asp-action="Index">Network Points</a>
-            </li>
-            }
+
+            @if (User.IsInRole("user"))
+    {
+        <li>
+            <a asp-area="" asp-controller="Coupons" asp-action="Grid">Coupons Client</a>
+        </li>
+}
+            @if (User.IsInRole("admin"))
+    {
+        <li>
+            <a asp-area="" asp-controller="Coupons" asp-action="Index">Coupons Admin</a>
+        </li>
+        <li>
+            <a asp-area="" asp-controller="Users" asp-action="Index">Users</a>
+        </li>
+        <li>
+            <a asp-area="" asp-controller="Providers" asp-action="Index">Providers</a>
+        </li>
+        <li>
+            <a asp-area="" asp-controller="ProductCategories" asp-action="Index">Product Categories</a>
+        </li>
+        <li>
+            <a asp-area="" asp-controller="Networks" asp-action="Index">Network</a>
+        </li>
+        <li>
+            <a asp-area="" asp-controller="NetworkPoints" asp-action="Index">Network Points</a>
+        </li>
+        <li>
+            <a asp-area="" asp-controller="Mail" asp-action="Index">Mail</a>
+        </li>
+}
             <li>
                 <a asp-area="" asp-controller="Manage" asp-action="Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
             </li>

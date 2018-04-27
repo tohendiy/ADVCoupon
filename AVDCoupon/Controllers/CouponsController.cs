@@ -308,8 +308,14 @@ namespace ADVCoupon.Controllers
         [Route("/pdf/coupon")]
         public async Task<IActionResult> GenerateCoupon(string couponId, string userId)
         {
-            var output = await Helpers.PdfGenerator.GeneratePDF(_context, _templateService, _couponService,new Guid(couponId),userId);
+            var output = await Helpers.CouponGenerator.GeneratePDF(_context, _templateService, _couponService, new Guid(couponId), userId);
             return File(output, "application/pdf");
+
+            // 367952bf-85d3-4867-a302-6a2517e51b7c - user
+            // 
+
+            //var output = await Helpers.CouponGenerator.GenerateImageTest(_context, _templateService, _couponService);
+            //return File(output, "image/jpeg");
         }
 
         public async Task<IActionResult> ActivateCoupon(Guid? id)
