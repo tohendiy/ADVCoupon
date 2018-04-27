@@ -2,6 +2,7 @@
 using ADVCoupon.ViewModel.CouponViewModel;
 using AVDCoupon.Data;
 using AVDCoupon.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,6 +35,8 @@ namespace ADVCoupon.Services
         Task DeactivateCouponAsync(Guid Id);
 
         bool IsExist(Guid Id);
+        SelectList GetSelectListProviders();
+
         
     }
 }

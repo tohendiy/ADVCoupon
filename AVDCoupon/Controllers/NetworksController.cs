@@ -126,6 +126,7 @@ namespace ADVCoupon.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            networkModel.ProductCategories = _service.GetSelectListProductCategories();
             return View(networkModel);
         }
 

@@ -22,6 +22,7 @@ namespace AVDCoupon.Models
 
         public List<UserCoupon> UserCoupons { get; set; }
         public bool IsApproved { get; set; }
+        public bool IsAbsoluteDiscount { get; set; }
 
     }
 }

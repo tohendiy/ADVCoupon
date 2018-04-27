@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using ADVCoupon.Models;
 using ADVCoupon.ViewModel.NetworkViewModels;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ADVCoupon.Services
 {
@@ -27,5 +28,7 @@ namespace ADVCoupon.Services
         Task DeleteNetworkAsync(Guid Id);
 
         bool IsExist(Guid Id);
+        SelectList GetSelectListProductCategories();
+
     }
 }

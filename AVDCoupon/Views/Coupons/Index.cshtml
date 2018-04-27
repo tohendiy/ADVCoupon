@@ -34,10 +34,16 @@
                     @Html.DisplayNameFor(model => model.Name)
                 </th>
                 <th>
+                    @Html.DisplayNameFor(model => model.ProviderName)
+                </th>
+                <th>
                     @Html.DisplayNameFor(model => model.ImageView)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.IsApproved)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IsAbsoluteDiscount)
                 </th>
             <th></th>
         </tr>
@@ -66,11 +72,17 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
+             <td>
+                @Html.DisplayFor(modelItem => item.ProviderName)
+            </td>
             <td>
             <img style='width:80px; height:80px;' src="data:image/jpeg;base64,@(Convert.ToBase64String(item.ImageView))" />
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.IsApproved)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsAbsoluteDiscount)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
