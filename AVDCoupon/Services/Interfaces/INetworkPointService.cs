@@ -27,6 +27,8 @@ namespace ADVCoupon.Services
 
         Task DeleteNetworkPointAsync(Guid Id);
 
+        Task AddNetworkPoints(List<NetworkPoint> list);
+
         bool IsExist(Guid Id);
     }
 }

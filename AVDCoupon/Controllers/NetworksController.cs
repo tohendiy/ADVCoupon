@@ -9,6 +9,13 @@ using ADVCoupon.Models;
 using AVDCoupon.Data;
 using ADVCoupon.Services;
 using ADVCoupon.ViewModel.NetworkViewModels;
+using NPOI.HSSF.UserModel;
+using System.IO;
+using NPOI.SS.UserModel;
+using NPOI.XSSF.UserModel;
+using System.Text;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Hosting;
 
 namespace ADVCoupon.Controllers
 {
@@ -16,11 +23,15 @@ namespace ADVCoupon.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly INetworkService _service;
+        private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly INetworkPointService _networkPointService;
 
-        public NetworksController(ApplicationDbContext context, INetworkService service)
+        public NetworksController(ApplicationDbContext context, INetworkPointService networkPointService, INetworkService service, IHostingEnvironment hostingEnvironment)
         {
             _service = service;
             _context = context;
+            _networkPointService = networkPointService;
+            _hostingEnvironment = hostingEnvironment;
         }
 
         // GET: Networks
@@ -142,6 +153,110 @@ namespace ADVCoupon.Controllers
         {
             await _service.DeleteNetworkAsync(id);
             return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Import(Guid id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            ViewBag.NetworkId = id;
+            
+            return View();
+        }
+        
+        public async Task<ActionResult> OnPostImport()
+        {
+            try
+            {
+                IFormFile file = Request.Form.Files[0];
+                var networkId = Request.Form["networkId"].ToString();
+                string folderName = "Upload";
+                string webRootPath = _hostingEnvironment.WebRootPath;
+                string newPath = Path.Combine(webRootPath, folderName);
+                StringBuilder sb = new StringBuilder();
+                if (!Directory.Exists(newPath))
+                {
+                    Directory.CreateDirectory(newPath);
+                }
+
+                var network = await _service.GetNetwork(new Guid(networkId));
+
+                if (file.Length > 0)
+                {
+                    string sFileExtension = Path.GetExtension(file.FileName).ToLower();
+                    ISheet sheet;
+                    string fullPath = Path.Combine(newPath, file.FileName);
+                    using (var stream = new FileStream(fullPath, FileMode.Create))
+                    {
+                        file.CopyTo(stream);
+                        stream.Position = 0;
+                        if (sFileExtension == ".xls")
+                        {
+                            HSSFWorkbook hssfwb = new HSSFWorkbook(stream); //This will read the Excel 97-2000 formats  
+                            sheet = hssfwb.GetSheetAt(0); //get first sheet from workbook  
+                        }
+                        else
+                        {
+                            XSSFWorkbook hssfwb = new XSSFWorkbook(stream); //This will read 2007 Excel format  
+                            sheet = hssfwb.GetSheetAt(0); //get first sheet from workbook   
+                        }
+                        IRow headerRow = sheet.GetRow(0); //Get Header Row
+                        int cellCount = headerRow.LastCellNum;
+
+                        // it's possible to provide dynamic headers / keep in mind. AO
+
+                        //for (int j = 0; j < cellCount; j++)
+                        //{
+                        //    ICell cell = headerRow.GetCell(j);
+                        //    if (cell == null || string.IsNullOrWhiteSpace(cell.ToString())) continue;
+
+                        //    sb.Append("<th>" + cell.ToString() + "</th>");
+
+                        var networkPointList = new List<NetworkPoint>();
+
+                        for (int i = (sheet.FirstRowNum + 1); i <= sheet.LastRowNum; i++) //Read Excel File
+                        {
+                            IRow row = sheet.GetRow(i);
+                            if (row == null) continue;
+                            if (row.Cells.All(d => d.CellType == CellType.Blank)) continue;
+
+                            var currentPoint = new NetworkPoint()
+                            {
+                                Network = network
+                            };
+
+                            currentPoint.Name = row.GetCell(row.FirstCellNum).ToString();
+                            currentPoint.Geoposition = new Geoposition()
+                            {
+                                Country = row.GetCell(row.FirstCellNum + 1).ToString(),
+                                City = row.GetCell(row.FirstCellNum + 2).ToString(),
+                                Street = row.GetCell(row.FirstCellNum + 3).ToString(),
+                                Building = row.GetCell(row.FirstCellNum + 4).ToString()
+                            };
+
+                            currentPoint.Geoposition = await Helpers.GeocodingHelper.GetCoordinatesByAddressAsync(currentPoint.Geoposition);
+                            networkPointList.Add(currentPoint);
+                        }
+
+                        await _networkPointService.AddNetworkPoints(networkPointList);
+
+                    }
+
+                    Directory.Delete(newPath, true);
+                }
+
+                return RedirectToAction("Index", "NetworkPoints", null);
+
+            }
+            catch(Exception ex)
+            {
+                return NotFound();
+            }
+            
         }
 
         private bool NetworkExists(Guid id)

@@ -115,6 +115,7 @@ namespace ADVCoupon.Services
             {
                 Id = networkPoint.Id,
                 Name = networkPoint.Name,
+                NetworkName = networkPoint.Network.Caption,
                 Latitude = networkPoint.Geoposition?.Latitude,
                 Longitude = networkPoint.Geoposition?.Longitude,
                 Accuracy = networkPoint.Geoposition?.Accuracy,
@@ -143,12 +144,13 @@ namespace ADVCoupon.Services
 
         public async Task<List<NetworkPointViewModel>> GetNetworkPointViewModelsAsync()
         {
-            var networkPoints = await _context.NetworkPoints.Include(item => item.Geoposition).ToListAsync();
+            var networkPoints = await _context.NetworkPoints.Include(item => item.Geoposition).Include(item => item.Network).ToListAsync();
             var networkPointsListViewModel = new List<NetworkPointViewModel>(networkPoints.Count);
             networkPointsListViewModel = networkPoints.Select(item => new NetworkPointViewModel
             {
                 Id = item.Id,
                 Name = item.Name,
+                NetworkName = item.Network.Caption,
                 Latitude = item.Geoposition?.Latitude,
                 Longitude = item.Geoposition?.Longitude,
                 Accuracy = item.Geoposition?.Accuracy,
@@ -185,6 +187,12 @@ namespace ADVCoupon.Services
             networkPoint.Geoposition.Building = networkPointModel.Building;
             networkPoint.Network = _context.Networks.FirstOrDefault(item => item.Id == networkPointModel.NetworkId);
             _context.Update(networkPoint);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task AddNetworkPoints(List<NetworkPoint> list)
+        {
+            await _context.NetworkPoints.AddRangeAsync(list);
             await _context.SaveChangesAsync();
         }
 

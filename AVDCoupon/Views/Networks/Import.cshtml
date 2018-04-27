@@ -1,0 +1,82 @@
+﻿@{
+    ViewData["Title"] = "Import";
+}
+
+<script>
+    $(document).ready(function () {
+        $('#btnUpload').on('click', function () {
+        var fileExtension = ['xls', 'xlsx'];
+        var filename = $('#fUpload').val();
+        console.log(filename);
+        if (filename.length == 0) {
+            alert("Please select a file.");
+            return false;
+        }
+        else {
+            var extension = filename.replace(/^.*\./, '');
+            if ($.inArray(extension, fileExtension) == -1) {
+                alert("Please select only excel files.");
+                return false;
+            }
+        }
+        var fdata = new FormData();
+        var fileUpload = $("#fUpload").get(0);
+        var files = fileUpload.files;
+        console.log(files);
+            fdata.append(files[0].name, files[0]);
+            fdata.append('networkId', '@ViewBag.NetworkId');
+        $.ajax({
+            type: "POST",
+            url: "/Networks/OnPostImport",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("XSRF-TOKEN",
+                    $('input:hidden[name="__RequestVerificationToken"]').val());
+            },
+            data: fdata,
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                if (response.length == 0)
+                    alert('Some error occured while uploading');
+                else {
+                    $('#dvData').html(response);
+                }
+            },
+            error: function (e) {
+                $('#dvData').html(e.responseText);
+            }
+        });
+    })
+});
+</script>
+
+<h2>Import</h2>
+
+<h4>Import Network Points</h4>
+<hr />
+
+<div>
+    @*<form asp-action="ImportExcel">
+        <input type="file" />
+        <input type="submit" />
+    </form>*@
+
+    <form method="post" enctype="multipart/form-data">
+        <div class="row">
+            <div class="col-md-4">
+                <input type="file" id="fUpload" name="files" class="form-control" />
+            </div>
+            <div class="col-md-8">
+                <input type="button" id="btnUpload" value="Upload" />
+            </div>
+        </div>
+        <br />
+        <div id="dvData"></div>
+    </form>
+
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

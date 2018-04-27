@@ -19,6 +19,7 @@ namespace ADVCoupon.ViewModel.NetworkPointViewModels
 
         public Guid NetworkId { get; set; }
         public SelectList Networks { get; set; }
+        public string NetworkName { get; set; }
 
     }
 }
