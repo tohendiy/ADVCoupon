@@ -3,13 +3,31 @@
 @{
     ViewData["Title"] = "Details";
 }
+<script>
+document.addEventListener('DOMContentLoaded', function(){ 
 
+        option = document.getElementById("isApprovedHidden").value;
+        if(option === "True")
+        {
+            document.getElementById("activateCouponButton").hidden = true;
+            document.getElementById("deactivateCouponButton").hidden = false;
+        } else {
+            document.getElementById("activateCouponButton").hidden = false;
+            document.getElementById("deactivateCouponButton").hidden = true;
+        }
+
+    });
+
+
+</script>
 <h2>Details</h2>
 
 <div>
     <h4>Coupon</h4>
     <hr />
     <dl class="dl-horizontal">
+            <input type="hidden" asp-for="IsApproved" id="isApprovedHidden" />
+
         <dt>
             @Html.DisplayNameFor(model => model.Caption)
         </dt>
@@ -58,16 +76,22 @@
         <dd>
             <img style='width:80px; height:80px;' src="data:image/jpeg;base64,@(Convert.ToBase64String(Model.ImageView))" />
         </dd>
+
         <dt>
             @Html.DisplayNameFor(model => model.IsApproved)
         </dt>
-        <dd>
+       <dd>
             @Html.DisplayFor(model => model.IsApproved)
+
+        </dd>
+        <dd>
         </dd>
         
     </dl>
 </div>
 <div>
+    <a id="activateCouponButton" asp-action="ActivateCoupon" asp-route-id="@Model.Id">Activate</a> 
+    <a id="deactivateCouponButton" asp-action="DeactivateCoupon" asp-route-id="@Model.Id">Deactivate</a> |
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>

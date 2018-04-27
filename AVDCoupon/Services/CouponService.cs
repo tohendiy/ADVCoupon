@@ -50,7 +50,7 @@ namespace ADVCoupon.Services
 
         public async Task DeleteCouponAsync(Guid Id)
         {
-            var coupon = await _context.Coupons.SingleOrDefaultAsync(m => m.Id == Id);
+            var coupon = await GetCouponAsync(Id);
             _context.Coupons.Remove(coupon);
             await _context.SaveChangesAsync();
         }
@@ -223,6 +223,22 @@ namespace ADVCoupon.Services
             _context.Update(coupon);
             await _context.SaveChangesAsync();
 
+        }
+
+        public async Task ActivateCouponAsync(Guid Id)
+        {
+            var coupon = await GetCouponAsync(Id);
+            coupon.IsApproved = true;
+            _context.Update(coupon);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeactivateCouponAsync(Guid Id)
+        {
+            var coupon = await GetCouponAsync(Id);
+            coupon.IsApproved = false;
+            _context.Update(coupon);
+            await _context.SaveChangesAsync();
         }
     }
 }

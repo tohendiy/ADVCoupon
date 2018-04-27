@@ -30,6 +30,9 @@ namespace ADVCoupon.Services
 
         Task DeleteCouponAsync(Guid Id);
 
+        Task ActivateCouponAsync(Guid Id);
+        Task DeactivateCouponAsync(Guid Id);
+
         bool IsExist(Guid Id);
         
     }

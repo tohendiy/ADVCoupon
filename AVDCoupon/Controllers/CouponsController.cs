@@ -312,6 +312,28 @@ namespace ADVCoupon.Controllers
             return File(output, "application/pdf");
         }
 
+        public async Task<IActionResult> ActivateCoupon(Guid? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            await _couponService.ActivateCouponAsync(id.Value);
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> DeactivateCoupon(Guid? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            await _couponService.DeactivateCouponAsync(id.Value);
+            return RedirectToAction(nameof(Index));
+        }
+
 
     }
 }
