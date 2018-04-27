@@ -1,24 +1,10 @@
-﻿@model ADVCoupon.ViewModel.CouponViewModel.CouponItemViewModel
+﻿@model ADVCoupon.ViewModel.CouponViewModel.CouponCreateItemViewModel
 
 @{
     ViewData["Title"] = "Create";
 }
 
-<script>
-    navigator.geolocation.getCurrentPosition(positionSuccess, positionError)
 
-    function positionSuccess(geo) {
-        document.cookie = 'latitude=' + geo.coords.latitude;
-        document.cookie = 'longitude=' + geo.coords.longitude;
-        document.cookie = 'accuracy=' + geo.coords.accuracy;
-    }
-
-    function positionError(geo) {
-        document.cookie = 'latitude=; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
-        document.cookie = 'longitude=; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
-        document.cookie = 'accuracy=; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
-    }
-</script>
 
 
 <h2>Create</h2>
@@ -30,29 +16,57 @@
         <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
+                <label asp-for="Caption" class="control-label"></label>
+                <input asp-for="Caption" class="form-control" />
+                <span asp-validation-for="Caption" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DiscountPercentage" class="control-label"></label>
+                <input asp-for="DiscountPercentage" class="form-control" />
+                <span asp-validation-for="DiscountPercentage" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DiscountAbsolute" class="control-label"></label>
+                <input asp-for="DiscountAbsolute" class="form-control" />
+                <span asp-validation-for="DiscountAbsolute" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StartDate" class="control-label"></label>
+                <input type="date" asp-for="StartDate" class="form-control" />
+                <span asp-validation-for="StartDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EndDate" class="control-label"></label>
+                <input type="date" asp-for="EndDate" class="form-control" />
+                <span asp-validation-for="EndDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="TotalCapacity" class="control-label"></label>
                 <input asp-for="TotalCapacity" class="form-control" />
                 <span asp-validation-for="TotalCapacity" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CurrentCapacity" class="control-label"></label>
-                <input asp-for="CurrentCapacity" class="form-control" />
-                <span asp-validation-for="CurrentCapacity" class="text-danger"></span>
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
             </div>
+           
             <div class="form-group">
-                <label asp-for="CouponImage" class="control-label"></label>
-                <input type="file" asp-for="CouponImage" class="form-control" />
-                <span asp-validation-for="CouponImage" class="text-danger"></span>
+                <label asp-for="Image" class="control-label"></label>
+                <input type="file" asp-for="Image" class="form-control" />
+                <span asp-validation-for="Image" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label asp-for="CouponName" class="control-label"></label>
-                <input asp-for="CouponName" class="form-control" />
-                <span asp-validation-for="CouponName" class="text-danger"></span>
+                <label asp-for="Providers" class="control-label"></label>
+                <select asp-for="ProviderId" asp-items="@Model.Providers"></select>
+                <span asp-validation-for="Providers" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label asp-for="Users" class="control-label"></label>
-                <select asp-for="MerchantUserId" asp-items="@Model.Users"></select>
-                <span asp-validation-for="Users" class="text-danger"></span>
+                <label asp-for="IsApproved" class="control-label"></label>
+                <input asp-for="IsApproved" class="form-control" />
+                <span asp-validation-for="IsApproved" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-default" />

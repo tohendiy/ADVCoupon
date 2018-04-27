@@ -50,14 +50,14 @@ namespace ADVCoupon.Services
 
         public async Task DeleteCouponAsync(Guid Id)
         {
-            var coupon = await _context.Coupons.SingleOrDefaultAsync(m => m.Id == Id);
+            var coupon = await GetCouponAsync(Id);
             _context.Coupons.Remove(coupon);
             await _context.SaveChangesAsync();
         }
 
         public async Task<Coupon> GetCouponAsync(Guid Id)
         {
-            var coupon = await _context.Coupons
+            var coupon = await _context.Coupons.Include(item => item.Product).Include(item => item.Product.Provider)
                .SingleOrDefaultAsync(m => m.Id == Id);
             return coupon;
         }
@@ -74,8 +74,8 @@ namespace ADVCoupon.Services
             {
                 Id = coupon.Id,
                 Caption = coupon.Caption,
-                //DiscountAbsolute = coupon.DiscountAbsolute.Value,
-                //DiscountPercentage = coupon.DiscountPercentage.Value,
+                DiscountAbsolute = coupon.DiscountAbsolute ?? default,
+                DiscountPercentage = coupon.DiscountPercentage ?? default,
                 TotalCapacity = coupon.TotalCapacity,
                 CurrentCapacity = coupon.CurrentCapacity,
                 StartDate = coupon.StartDate,
@@ -92,7 +92,7 @@ namespace ADVCoupon.Services
 
         public async Task<List<Coupon>> GetCouponsAsync()
         {
-            var coupons = await _context.Coupons.ToListAsync();
+            var coupons = await _context.Coupons.Include(item=>item.Product).Include(item=>item.Product.Provider).ToListAsync();
             return coupons;
         }
 
@@ -166,7 +166,79 @@ namespace ADVCoupon.Services
 
         }
 
+        public async Task<List<CouponCreateItemViewModel>> GetCouponCreateItemViewModelsAsync()
+        {
+            var coupons = await GetCouponsAsync();
+            var couponsListViewModel = new List<CouponCreateItemViewModel>(coupons.Count);
+            couponsListViewModel = coupons.Select(item => new CouponCreateItemViewModel
+            {
+                Id = item.Id,
+                Caption = item.Caption,
+                DiscountAbsolute = item.DiscountAbsolute ?? default,
+                DiscountPercentage = item.DiscountPercentage ?? default,
+                TotalCapacity = item.TotalCapacity,
+                CurrentCapacity = item.CurrentCapacity,
+                StartDate = item.StartDate,
+                EndDate = item.EndDate,
+                IsApproved = item.IsApproved,
+                ProductId = item.Product.Id,
+                Name = item.Product.Name,
+                ImageView = item.Product.Image,
+                ProviderId = item.Product.Provider.Id,
+                Providers = GetSelectListProviders()
+
+            }).ToList();
+            return couponsListViewModel;
+        }
+
+        public async Task UpdateCouponAsync(CouponCreateItemViewModel couponModel)
+        {
+            var coupon = await GetCouponAsync(couponModel.Id);
+            coupon.Caption = couponModel.Caption;
+            coupon.Id = couponModel.Id;
+            coupon.DiscountAbsolute = couponModel.DiscountAbsolute;
+            coupon.DiscountPercentage = couponModel.DiscountPercentage;
+            coupon.StartDate = couponModel.StartDate;
+            coupon.EndDate = couponModel.EndDate;
+            coupon.TotalCapacity = couponModel.TotalCapacity;
+            coupon.CurrentCapacity = couponModel.CurrentCapacity;
+            coupon.IsApproved = couponModel.IsApproved;
+            coupon.Product.Id = couponModel.ProductId;
+            coupon.Product.Name = couponModel.Name;
+            coupon.Product.Provider = _context.Providers.FirstOrDefault(item => item.Id == couponModel.ProviderId);
 
 
+            if (couponModel.Image != null)
+            {
+
+                using (var memoryStream = new MemoryStream())
+                {
+                    await couponModel.Image.CopyToAsync(memoryStream);
+                    if (memoryStream != null)
+                    {
+                        coupon.Product.Image = memoryStream.ToArray();
+                    }
+                }
+            }
+            _context.Update(coupon);
+            await _context.SaveChangesAsync();
+
+        }
+
+        public async Task ActivateCouponAsync(Guid Id)
+        {
+            var coupon = await GetCouponAsync(Id);
+            coupon.IsApproved = true;
+            _context.Update(coupon);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeactivateCouponAsync(Guid Id)
+        {
+            var coupon = await GetCouponAsync(Id);
+            coupon.IsApproved = false;
+            _context.Update(coupon);
+            await _context.SaveChangesAsync();
+        }
     }
 }
