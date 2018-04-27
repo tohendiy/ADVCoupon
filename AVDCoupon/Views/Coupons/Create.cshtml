@@ -4,7 +4,34 @@
     ViewData["Title"] = "Create";
 }
 
+<script>
+document.addEventListener('DOMContentLoaded', function(){ 
 
+        optionIsAbsoluteDiscount = document.getElementById("isAbsoluteDiscountInput").checked;
+        if(optionIsAbsoluteDiscount === true)
+        {
+            document.getElementById("discountAbsoluteForm").hidden = false;
+            document.getElementById("discountPercentageForm").hidden = true;
+        } else {
+            document.getElementById("discountAbsoluteForm").hidden = true;
+            document.getElementById("discountPercentageForm").hidden = false;
+        }
+
+    });
+    function showCorrectDiscount(element) {
+         optionIsAbsoluteDiscount = document.getElementById("isAbsoluteDiscountInput").checked;
+        if(optionIsAbsoluteDiscount === true)
+        {
+            document.getElementById("discountAbsoluteForm").hidden = false;
+            document.getElementById("discountPercentageForm").hidden = true;
+        } else {
+            document.getElementById("discountAbsoluteForm").hidden = true;
+            document.getElementById("discountPercentageForm").hidden = false;
+        }
+
+    };
+
+</script>
 
 
 <h2>Create</h2>
@@ -21,23 +48,28 @@
                 <span asp-validation-for="Caption" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="IsAbsoluteDiscount" class="control-label"></label>
+                <input asp-for="IsAbsoluteDiscount" class="form-control" id="isAbsoluteDiscountInput" onchange="showCorrectDiscount(this)" />
+                <span asp-validation-for="IsAbsoluteDiscount" class="text-danger"></span>
+            </div>
+            <div class="form-group" id="discountPercentageForm">
                 <label asp-for="DiscountPercentage" class="control-label"></label>
                 <input asp-for="DiscountPercentage" class="form-control" />
                 <span asp-validation-for="DiscountPercentage" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group" id="discountAbsoluteForm">
                 <label asp-for="DiscountAbsolute" class="control-label"></label>
                 <input asp-for="DiscountAbsolute" class="form-control" />
                 <span asp-validation-for="DiscountAbsolute" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="StartDate" class="control-label"></label>
-                <input type="date" asp-for="StartDate" class="form-control" />
+                <input type="date" asp-for="StartDate" class="form-control" data-val="true" />
                 <span asp-validation-for="StartDate" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="EndDate" class="control-label"></label>
-                <input type="date" asp-for="EndDate" class="form-control" />
+                <input type="date" asp-for="EndDate" class="form-control" data-val="true" />
                 <span asp-validation-for="EndDate" class="text-danger"></span>
             </div>
             <div class="form-group">

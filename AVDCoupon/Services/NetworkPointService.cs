@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -196,7 +196,8 @@ namespace ADVCoupon.Services
             await _context.SaveChangesAsync();
         }
 
-        private SelectList GetSelectListNetworks()
+
+        public SelectList GetSelectListNetworks()
         {
             var networks = _context.Networks.Select(x => new { Id = x.Id, Value = x.Caption });
             var networksSelectList = new SelectList(networks, "Id", "Value");

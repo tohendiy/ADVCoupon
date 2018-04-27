@@ -74,6 +74,7 @@ namespace ADVCoupon.Services
             {
                 Id = coupon.Id,
                 Caption = coupon.Caption,
+                IsAbsoluteDiscount = coupon.IsAbsoluteDiscount,
                 DiscountAbsolute = coupon.DiscountAbsolute ?? default,
                 DiscountPercentage = coupon.DiscountPercentage ?? default,
                 TotalCapacity = coupon.TotalCapacity,
@@ -114,6 +115,7 @@ namespace ADVCoupon.Services
             {
                 Caption = couponModel.Caption,
                 Id = Guid.NewGuid(),
+                IsAbsoluteDiscount = couponModel.IsAbsoluteDiscount,
                 DiscountAbsolute = couponModel.DiscountAbsolute,
                 DiscountPercentage = couponModel.DiscountPercentage,
                 StartDate = couponModel.StartDate,
@@ -157,7 +159,7 @@ namespace ADVCoupon.Services
             return networkModel;
         }
 
-        private SelectList GetSelectListProviders()
+        public SelectList GetSelectListProviders()
         {
             var providers = _context.Providers.Select(x => new { Id = x.Id, Value = x.Name });
 
@@ -174,6 +176,7 @@ namespace ADVCoupon.Services
             {
                 Id = item.Id,
                 Caption = item.Caption,
+                IsAbsoluteDiscount = item.IsAbsoluteDiscount,
                 DiscountAbsolute = item.DiscountAbsolute ?? default,
                 DiscountPercentage = item.DiscountPercentage ?? default,
                 TotalCapacity = item.TotalCapacity,
@@ -185,7 +188,8 @@ namespace ADVCoupon.Services
                 Name = item.Product.Name,
                 ImageView = item.Product.Image,
                 ProviderId = item.Product.Provider.Id,
-                Providers = GetSelectListProviders()
+                Providers = GetSelectListProviders(),
+                ProviderName = item.Product.Provider.Name
 
             }).ToList();
             return couponsListViewModel;
@@ -196,6 +200,7 @@ namespace ADVCoupon.Services
             var coupon = await GetCouponAsync(couponModel.Id);
             coupon.Caption = couponModel.Caption;
             coupon.Id = couponModel.Id;
+            coupon.IsAbsoluteDiscount = couponModel.IsAbsoluteDiscount;
             coupon.DiscountAbsolute = couponModel.DiscountAbsolute;
             coupon.DiscountPercentage = couponModel.DiscountPercentage;
             coupon.StartDate = couponModel.StartDate;

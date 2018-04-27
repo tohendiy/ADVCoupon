@@ -214,7 +214,8 @@ namespace ADVCoupon.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View();
+            couponModel.Providers = _couponService.GetSelectListProviders();
+            return View(couponModel);
         }
 
         // GET: Coupons/Delete/5

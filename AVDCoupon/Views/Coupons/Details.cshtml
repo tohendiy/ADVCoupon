@@ -16,6 +16,17 @@ document.addEventListener('DOMContentLoaded', function(){
             document.getElementById("deactivateCouponButton").hidden = true;
         }
 
+    optionIsAbsoluteDiscount = document.getElementById("IsAbsoluteDiscountHidden").value;
+        if(optionIsAbsoluteDiscount === "True")
+        {
+            document.getElementById("discountAbsoluteForm").hidden = false;
+            document.getElementById("discountPercentageForm").hidden = true;
+        } else {
+            document.getElementById("discountAbsoluteForm").hidden = true;
+            document.getElementById("discountPercentageForm").hidden = false;
+        }
+
+
     });
 
 
@@ -27,6 +38,7 @@ document.addEventListener('DOMContentLoaded', function(){
     <hr />
     <dl class="dl-horizontal">
             <input type="hidden" asp-for="IsApproved" id="isApprovedHidden" />
+            <input type="hidden" asp-for="IsAbsoluteDiscount" id="IsAbsoluteDiscountHidden" />
 
         <dt>
             @Html.DisplayNameFor(model => model.Caption)
@@ -34,18 +46,22 @@ document.addEventListener('DOMContentLoaded', function(){
         <dd>
             @Html.DisplayFor(model => model.Caption)
         </dd>
+        <div id="discountPercentageForm">
         <dt>
             @Html.DisplayNameFor(model => model.DiscountPercentage)
         </dt>
         <dd>
             @Html.DisplayFor(model => model.DiscountPercentage)
         </dd>
+            </div>
+        <div id="discountAbsoluteForm">
         <dt>
             @Html.DisplayNameFor(model => model.DiscountAbsolute)
         </dt>
         <dd>
             @Html.DisplayFor(model => model.DiscountAbsolute)
         </dd>
+            </div>
         <dt>
             @Html.DisplayNameFor(model => model.StartDate)
         </dt>
@@ -69,6 +85,12 @@ document.addEventListener('DOMContentLoaded', function(){
         </dt>
         <dd>
             @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ProviderName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ProviderName)
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.ImageView)

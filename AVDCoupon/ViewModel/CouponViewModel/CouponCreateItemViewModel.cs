@@ -1,4 +1,5 @@
 ﻿using System;
+using ADVCoupon.Attributes;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
 namespace ADVCoupon.ViewModel.CouponViewModel
@@ -13,6 +14,7 @@ namespace ADVCoupon.ViewModel.CouponViewModel
 
         public double DiscountAbsolute { get; set; }
 
+        [DateLessThan("EndDate", ErrorMessage = "Not valid")]
         public DateTime StartDate { get; set; }
 
         public DateTime EndDate { get; set; }
@@ -35,6 +37,10 @@ namespace ADVCoupon.ViewModel.CouponViewModel
         public Guid ProviderId { get; set; }
 
         public SelectList Providers { get; set; }
+
+        public string ProviderName { get; set; }
+
+        public bool IsAbsoluteDiscount { get; set; }
 
         #endregion
 

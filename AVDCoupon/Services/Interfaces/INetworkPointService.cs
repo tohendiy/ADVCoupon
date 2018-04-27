@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ADVCoupon.Models;
 using ADVCoupon.ViewModel.NetworkPointViewModels;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ADVCoupon.Services
 {
@@ -30,5 +31,7 @@ namespace ADVCoupon.Services
         Task AddNetworkPoints(List<NetworkPoint> list);
 
         bool IsExist(Guid Id);
+        SelectList GetSelectListNetworks();
+
     }
 }

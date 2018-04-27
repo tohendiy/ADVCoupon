@@ -170,7 +170,7 @@ namespace ADVCoupon.Services
             await _context.SaveChangesAsync();
         }
 
-        private SelectList GetSelectListProductCategories()
+        public SelectList GetSelectListProductCategories()
         {
             var productCategories = _context.ProductCategories.Select(x => new { Id = x.Id, Value = x.Caption });
 
