@@ -178,5 +178,18 @@ namespace ADVCoupon.Services
             return productCategoriesSelectList;
 
         }
+
+        public async Task<Network> GetNetworkWithAdressesAsync(Guid Id)
+        {
+            var network = await _context.Networks.Include(item => item.ProductCategory).Include(item=>item.NetworkPoints)
+               .SingleOrDefaultAsync(m => m.Id == Id);
+            return network;
+        }
+
+        public async Task<List<Network>> GetNetworksByProductCategoryAsync(Guid id)
+        {
+            var network = await _context.Networks.Where(item => item.ProductCategory.Id == id).ToListAsync();
+            return network;
+        }
     }
 }

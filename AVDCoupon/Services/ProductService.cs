@@ -54,5 +54,10 @@ namespace ADVCoupon.Services
             _context.Update(product);
             await _context.SaveChangesAsync();
         }
+        public async Task<Product> GetProductByCoupon(Guid Id)
+        {
+            var product = await _context.Coupons.Where(item => item.Product.Id == Id).Select(item => item.Product).FirstOrDefaultAsync();
+            return product;
+        }
     }
 }

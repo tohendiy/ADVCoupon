@@ -97,6 +97,18 @@ namespace ADVCoupon.Services
             return coupons;
         }
 
+        public async Task<List<Coupon>> GetCouponsByUserAsync(string id)
+        {
+            var coupons = await _context.Coupons.Where(item => item.UserCoupons.Any(item1 => item1.UserId == id)).ToListAsync();
+            return coupons;
+        }
+
+        public async Task<List<Coupon>> GetCouponsByNetworkAsync(Guid id)
+        {
+            var coupons = await _context.Coupons.Where(item => item.NetworkCoupons.Any(item1 => item1.NetworkId == id)).ToListAsync();
+            return coupons;
+        }
+
         public bool IsExist(Guid Id)
         {
             return _context.Coupons.Any(e => e.Id == Id);
