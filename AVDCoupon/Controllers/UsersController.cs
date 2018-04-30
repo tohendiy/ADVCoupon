@@ -15,7 +15,7 @@ using ADVCoupon.Helpers;
 
 namespace ADVCoupon.Controllers
 {
-   // [Authorize(Roles = Constants.ADMIN_ROLE)]
+    [Authorize(Roles = Constants.ADMIN_ROLE)]
     public class UsersController : Controller
     {
         private readonly ApplicationDbContext _context;

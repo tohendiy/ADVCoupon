@@ -16,9 +16,12 @@ using System.Text;
 using NPOI.SS.UserModel;
 using NPOI.HSSF.UserModel;
 using NPOI.XSSF.UserModel;
+using Microsoft.AspNetCore.Authorization;
+using ADVCoupon.Helpers;
 
 namespace ADVCoupon.Controllers
 {
+    [Authorize(Roles = Constants.ADMIN_ROLE)]
     public class NetworkPointsController : Controller
     {
         private readonly ApplicationDbContext _context;

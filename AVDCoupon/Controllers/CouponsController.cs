@@ -13,9 +13,12 @@ using System.IO;
 using System.Net.Http.Headers;
 using ADVCoupon.Services;
 using ADVCoupon.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
+using ADVCoupon.Helpers;
 
 namespace ADVCoupon.Controllers
 {
+    [Authorize(Roles = Constants.ADMIN_ROLE)]
     public class CouponsController : Controller
     {
         private readonly ApplicationDbContext _context;

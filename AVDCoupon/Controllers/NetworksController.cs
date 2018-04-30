@@ -16,9 +16,12 @@ using NPOI.XSSF.UserModel;
 using System.Text;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Authorization;
+using ADVCoupon.Helpers;
 
 namespace ADVCoupon.Controllers
 {
+    [Authorize(Roles = Constants.ADMIN_ROLE)]
     public class NetworksController : Controller
     {
         private readonly ApplicationDbContext _context;

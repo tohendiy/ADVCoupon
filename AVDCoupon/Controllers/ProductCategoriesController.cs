@@ -9,9 +9,12 @@ using ADVCoupon.Models;
 using AVDCoupon.Data;
 using ADVCoupon.ViewModel.ProductCategoryViewModels;
 using ADVCoupon.Services;
+using Microsoft.AspNetCore.Authorization;
+using ADVCoupon.Helpers;
 
 namespace ADVCoupon.Controllers
 {
+    [Authorize(Roles = Constants.ADMIN_ROLE)]
     public class ProductCategoriesController : Controller
     {
         private readonly ApplicationDbContext _context;
