@@ -13,6 +13,10 @@ using Microsoft.Extensions.Options;
 using AVDCoupon.Models;
 using AVDCoupon.Models.AccountViewModels;
 using AVDCoupon.Services;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.Extensions.Configuration;
 
 namespace AVDCoupon.Controllers
 {
@@ -24,17 +28,20 @@ namespace AVDCoupon.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
+        private readonly IConfiguration _config;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender,
-            ILogger<AccountController> logger)
+            ILogger<AccountController> logger,
+            IConfiguration config)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
+            _config = config;
         }
 
         [TempData]
@@ -437,6 +444,70 @@ namespace AVDCoupon.Controllers
         public IActionResult AccessDenied()
         {
             return View();
+        }
+
+
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<object> Login([FromBody] LoginViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByEmailAsync(model.Email);
+
+                if (user != null)
+                {
+                    var result = await _signInManager.CheckPasswordSignInAsync(user, model.Password, false);
+                    if (result.Succeeded)
+                    {
+
+                        return await GenerateJwtToken(user);
+
+                    }
+                }
+            }
+
+            throw new ApplicationException("UNKNOWN_ERROR");
+        }
+
+        [HttpPost]
+        public async Task<object> Register([FromBody] RegisterViewModel model)
+        {
+            var user = new ApplicationUser
+            {
+                UserName = model.Email,
+                Email = model.Email
+            };
+            var result = await _userManager.CreateAsync(user, model.Password);
+
+            if (result.Succeeded)
+            {
+                await _signInManager.SignInAsync(user, false);
+                return await GenerateJwtToken(user);
+            }
+
+            throw new ApplicationException("UNKNOWN_ERROR");
+        }
+
+        private async Task<object> GenerateJwtToken(ApplicationUser user)
+        {
+            var claims = new List<Claim>
+            {
+                new Claim(JwtRegisteredClaimNames.Sub, user.Email),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(ClaimTypes.NameIdentifier, user.Id)
+            };
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Tokens:Key"]));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            var token = new JwtSecurityToken(_config["Tokens:Issuer"],
+                          _config["Tokens:Issuer"],
+                          claims,
+                          expires: DateTime.Now.AddDays(30),
+                          signingCredentials: creds);
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
         #region Helpers

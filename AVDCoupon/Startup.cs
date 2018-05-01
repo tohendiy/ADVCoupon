@@ -13,6 +13,8 @@ using AVDCoupon.Models;
 using AVDCoupon.Services;
 using ADVCoupon.Services;
 using ADVCoupon.Services.Interfaces;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace AVDCoupon
 {
@@ -30,9 +32,18 @@ namespace AVDCoupon
             services.AddDbContext<ApplicationDbContext>(options =>
                                                         //options.UseSqlite(Configuration.GetConnectionString("DefaultDevConnection")));
                                                         options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
-            services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders();
+            services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+                    options.Password = new PasswordOptions
+                    {
+                        RequireDigit = true,
+                        RequiredLength = 6,
+                        RequireLowercase = false,
+                        RequireUppercase = false,
+                        RequireNonAlphanumeric = false,
+                        RequiredUniqueChars = 0
+                    })
+            .AddEntityFrameworkStores<ApplicationDbContext>()
+            .AddDefaultTokenProviders();
             
             services.AddAuthentication().AddFacebook(facebookOptions =>
             {
@@ -44,6 +55,20 @@ namespace AVDCoupon
             {
                 googleOptions.ClientId = Configuration["Authentication:Google:ClientId"];
                 googleOptions.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
+            });
+
+            services.AddAuthentication()
+                    .AddCookie(cfg => cfg.SlidingExpiration = true)
+                    .AddJwtBearer(cfg =>
+            {
+                cfg.RequireHttpsMetadata = false;
+                cfg.SaveToken = true;
+                cfg.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                {
+                    ValidIssuer = Configuration["Tokens:Issuer"],
+                    ValidAudience = Configuration["Tokens:Issuer"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Tokens:Key"]))
+                };
             });
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();

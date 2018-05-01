@@ -9,6 +9,7 @@ namespace ADVCoupon.Services.Interfaces
     public interface IProductService
     {
         Task<Product> GetProduct(Guid Id);
+        Task<Product> GetProductByCoupon(Guid Id);
 
         Task<List<Product>> GetProductsAsync();
 
