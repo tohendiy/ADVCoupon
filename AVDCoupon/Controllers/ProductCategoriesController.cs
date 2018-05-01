@@ -94,7 +94,7 @@ namespace ADVCoupon.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id,  ProductCategoryViewModel productCategoryModel)
         {
-            if (id != productCategoryModel.Id)
+            if (id != new Guid(productCategoryModel.Id))
             {
                 return NotFound();
             }
@@ -108,7 +108,7 @@ namespace ADVCoupon.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProductCategoryExists(productCategoryModel.Id))
+                    if (!ProductCategoryExists(new Guid(productCategoryModel.Id)))
                     {
                         return NotFound();
                     }
@@ -145,6 +145,15 @@ namespace ADVCoupon.Controllers
         {
             await _service.DeleteProductCategoryAsync(id);
             return RedirectToAction(nameof(Index));
+        }
+
+
+        [HttpGet]
+        public async Task<PartialViewResult> IndexGrid()
+        {
+            var productCategoriesModel = await _service.GetProductCategoryViewModelsAsync();
+
+            return PartialView("_IndexGrid", productCategoriesModel);
         }
 
         private bool ProductCategoryExists(Guid id)

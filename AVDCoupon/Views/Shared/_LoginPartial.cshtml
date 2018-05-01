@@ -18,7 +18,10 @@
             @if (User.IsInRole("admin"))
     {
         <li>
-            <a asp-area="" asp-controller="Coupons" asp-action="Index">Coupons Admin</a>
+            <a asp-area="" asp-controller="Products" asp-action="Index">Products</a>
+        </li>
+        <li>
+            <a asp-area="" asp-controller="Coupons" asp-action="Index">Coupons</a>
         </li>
         <li>
             <a asp-area="" asp-controller="Users" asp-action="Index">Users</a>
@@ -33,7 +36,7 @@
             <a asp-area="" asp-controller="Networks" asp-action="Index">Network</a>
         </li>
         <li>
-            <a asp-area="" asp-controller="NetworkPoints" asp-action="Index">Network Points</a>
+            <a asp-area="" asp-controller="NetworkPoints" asp-action="Index">Points</a>
         </li>
         <li>
             <a asp-area="" asp-controller="Mail" asp-action="Index">Mail</a>

@@ -21,7 +21,7 @@ namespace ADVCoupon.Services
         {
             var networkPointModel = new NetworkPointViewModel()
             {
-                Id = networkPoint.Id,
+                Id = networkPoint.Id.ToString(),
                 Name = networkPoint.Name,
                 Latitude = networkPoint.Geoposition?.Latitude,
                 Longitude = networkPoint.Geoposition?.Longitude,
@@ -38,7 +38,7 @@ namespace ADVCoupon.Services
         {
             var networkPoint = new NetworkPoint()
             {
-                Id = networkPointModel.Id,
+                Id = new Guid(networkPointModel.Id),
                 Name = networkPointModel.Name,
                 Geoposition = new Geoposition()
                 {
@@ -113,7 +113,7 @@ namespace ADVCoupon.Services
             }
             var networkPointModel = new NetworkPointViewModel
             {
-                Id = networkPoint.Id,
+                Id = networkPoint.Id.ToString(),
                 Name = networkPoint.Name,
                 NetworkName = networkPoint.Network.Caption,
                 Latitude = networkPoint.Geoposition?.Latitude,
@@ -148,7 +148,7 @@ namespace ADVCoupon.Services
             var networkPointsListViewModel = new List<NetworkPointViewModel>(networkPoints.Count);
             networkPointsListViewModel = networkPoints.Select(item => new NetworkPointViewModel
             {
-                Id = item.Id,
+                Id = item.Id.ToString(),
                 Name = item.Name,
                 NetworkName = item.Network.Caption,
                 Latitude = item.Geoposition?.Latitude,
@@ -176,7 +176,7 @@ namespace ADVCoupon.Services
 
         public async Task UpdateNetworkPointAsync(NetworkPointViewModel networkPointModel)
         {
-            var networkPoint = await GetNetworkPoint(networkPointModel.Id);
+            var networkPoint = await GetNetworkPoint(new Guid(networkPointModel.Id));
             networkPoint.Name = networkPointModel.Name;
             networkPoint.Geoposition.Accuracy = networkPointModel.Accuracy;
             networkPoint.Geoposition.Longitude = networkPointModel.Longitude;

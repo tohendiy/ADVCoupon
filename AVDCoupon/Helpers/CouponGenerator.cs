@@ -108,8 +108,10 @@ namespace ADVCoupon.Helpers
 
         private static CouponPdfViewModel ConvertUserCouponToPdfViewModel(UserCoupon userCoupon, Coupon coupon)
         {
-            var networkBarcode = coupon.Product.NetworkBarcodes.
-                FirstOrDefault(x => x.Networks.FirstOrDefault(y => y.Id == userCoupon.NetworkId) != null).BarcodeValue;
+            //var networkBarcode = coupon.Product.NetworkBarcodes.
+                //FirstOrDefault(x => x.Networks.FirstOrDefault(y => y.Id == userCoupon.NetworkId) != null).BarcodeValue;
+
+            var networkBarcode = coupon.Product.BarCode;
 
             var vm = new CouponPdfViewModel
             {

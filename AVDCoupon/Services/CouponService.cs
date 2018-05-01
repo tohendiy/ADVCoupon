@@ -130,7 +130,7 @@ namespace ADVCoupon.Services
                     Id = Guid.NewGuid(),
                     Name = couponModel.Name,
                     Provider = _context.Providers.FirstOrDefault(item => item.Id == couponModel.ProviderId),
-                    NetworkBarcodes = new List<NetworkBarcode>()
+                    BarCode = ""
 
                 }
 

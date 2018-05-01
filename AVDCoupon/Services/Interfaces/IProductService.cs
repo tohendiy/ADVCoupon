@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ADVCoupon.Models;
+using ADVCoupon.ViewModel.ProductModel;
 
 namespace ADVCoupon.Services.Interfaces
 {
@@ -16,6 +17,12 @@ namespace ADVCoupon.Services.Interfaces
         Task UpdateProductAsync(Product product);
 
         Task DeleteProductAsync(Guid Id);
+
+        Task<ProductViewModel> GetProductViewModel(Guid id);
+
+        Task<List<ProductViewModel>> GetProductViewModels();
+
+       
 
         bool IsExist(Guid Id);
     }

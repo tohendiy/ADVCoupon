@@ -7,7 +7,7 @@ namespace ADVCoupon.ViewModel.ProviderViewModels
 {
     public class ProviderItemViewModel
     {
-        public Guid Id { get; set; }
+        public string Id { get; set; }
 
         [Required]
         public string Name { get; set; }

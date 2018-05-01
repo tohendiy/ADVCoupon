@@ -104,7 +104,7 @@ namespace ADVCoupon.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, NetworkPointViewModel networkPointModel)
         {
-            if (id != networkPointModel.Id)
+            if (id != new Guid(networkPointModel.Id))
             {
                 return NotFound();
             }
@@ -117,7 +117,7 @@ namespace ADVCoupon.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!NetworkPointExists(networkPointModel.Id))
+                    if (!NetworkPointExists(new Guid(networkPointModel.Id)))
                     {
                         return NotFound();
                     }
@@ -157,7 +157,15 @@ namespace ADVCoupon.Controllers
             await _service.DeleteNetworkPointAsync(id);
             return RedirectToAction(nameof(Index));
         }
-        
+
+        [HttpGet]
+        public async Task<PartialViewResult> IndexGrid()
+        {
+            var networkPointModel = await _service.GetNetworkPointViewModelsAsync();
+
+            return PartialView("_IndexGrid", networkPointModel);
+        }
+
         private bool NetworkPointExists(Guid id)
         {
             return _service.IsExist(id);

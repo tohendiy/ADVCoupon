@@ -344,6 +344,13 @@ namespace ADVCoupon.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        //[HttpGet]
+        //public async Task<PartialViewResult> CreateProductGrid()
+        //{
+        //    // Only grid query values will be available here.
+        //    //return PartialView("_IndexGrid", usersWithRoles.ToList());
+        //}
+
 
     }
 }

@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', function(){
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
-           
+
             <div class="form-group">
                 <label asp-for="Image" class="control-label"></label>
                 <input type="file" asp-for="Image" class="form-control" />
@@ -95,6 +95,8 @@ document.addEventListener('DOMContentLoaded', function(){
                 <span asp-validation-for="Providers" class="text-danger"></span>
             </div>
 
+            @Html.AjaxGrid(Url.Action("CreateProductGrid"))
+
             <div class="form-group">
                 <label asp-for="IsApproved" class="control-label"></label>
                 <input asp-for="IsApproved" class="form-control" />
@@ -103,6 +105,9 @@ document.addEventListener('DOMContentLoaded', function(){
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-default" />
             </div>
+
+
+
         </form>
     </div>
 </div>

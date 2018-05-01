@@ -1,0 +1,26 @@
+﻿@model IEnumerable<ADVCoupon.ViewModel.ProductCategoryViewModels.ProductCategoryViewModel>
+
+
+<script>
+    $('.mvc-grid tr').on('rowclick', function (e, data, grid, originalEvent) {
+
+        window.location.href = "/ProductCategories/Details/" + data['id'];
+    });
+</script>
+
+@(Html
+                    .Grid(Model)
+                    .Build(columns =>
+                    {
+                        columns.Add(model => model.Id).Titled("Id");
+                        columns.Add(model => model.Caption).Titled("Name");
+                    })
+                    .Empty("No data found")
+                    .Id("my-ajax-grid")
+                    .Pageable(pager =>
+                    {
+                        pager.RowsPerPage = 10;
+                    })
+                    .Filterable()
+                    .Sortable()
+)

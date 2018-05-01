@@ -34,20 +34,20 @@ namespace ADVCoupon.Controllers
         }
 
         // GET: Users
-        public async Task<IActionResult> Index()
+        [HttpGet]
+        public IActionResult Index()
         {
-            var users = await _userManager.Users.Include(x => x.Provider).Include(y => y.Network).ToListAsync();
+            //var users = await _userManager.Users.Include(x => x.Provider).Include(y => y.Network).ToListAsync();
 
-            var usersWithRoles = from u in users
-                                 select new UserTableItemViewModel { User = u, Role = _userManager.GetRolesAsync(u).Result[0] };
+            //var usersWithRoles = from u in users
+            //                     select new UserTableItemViewModel { User = u, Role = _userManager.GetRolesAsync(u).Result[0] };
             
-            foreach(var t in users)
-            {
-                var test = await _userManager.GetClaimsAsync(t);
-            }
+            //foreach(var t in users)
+            //{
+            //    var test = await _userManager.GetClaimsAsync(t);
+            //}
             
-
-            return View(usersWithRoles.ToList());
+            return View();
         }
 
         // GET: Users/Details/5
@@ -243,6 +243,19 @@ namespace ADVCoupon.Controllers
             await _userManager.DeleteAsync(applicationUser);
             return RedirectToAction(nameof(Index));
         }
+
+        [HttpGet]
+        public async Task<PartialViewResult> IndexGrid()
+        {
+            var users = await _userManager.Users.Include(x => x.Provider).Include(y => y.Network).ToListAsync();
+
+            var usersWithRoles = from u in users
+                                 select new UserTableItemViewModel { User = u, Role = _userManager.GetRolesAsync(u).Result[0], NetworkName = u.Network?.Caption, ProviderName = u.Provider?.Name };
+            
+            // Only grid query values will be available here.
+            return PartialView("_IndexGrid", usersWithRoles.ToList());
+        }
+
 
         private bool ApplicationUserExists(string id)
         {

@@ -23,7 +23,7 @@ namespace ADVCoupon.Services
         {
             var providerModel = new ProviderItemViewModel()
             {
-                Id = provider.Id,
+                Id = provider.Id.ToString(),
                 Name = provider.Name,
                 LogoImageView = provider.LogoImage
             };
@@ -34,7 +34,7 @@ namespace ADVCoupon.Services
         {
             var provider = new Provider()
             {
-                Id = providerModel.Id,
+                Id = new Guid(providerModel.Id),
                 Name = providerModel.Name,
                 LogoImage = providerModel.LogoImageView
             };
@@ -100,7 +100,7 @@ namespace ADVCoupon.Services
             }
             var providerModel = new ProviderItemViewModel
             {
-                Id = provider.Id,
+                Id = provider.Id.ToString(),
                 Name = provider.Name,
                 LogoImageView = provider.LogoImage
             };
@@ -119,7 +119,7 @@ namespace ADVCoupon.Services
             var providersListViewModel = new List<ProviderItemViewModel>(providers.Count);
             providersListViewModel = providers.Select(item => new ProviderItemViewModel
             {
-                Id = item.Id,
+                Id = item.Id.ToString(),
                 Name = item.Name,
                 LogoImageView = item.LogoImage
 
@@ -140,7 +140,7 @@ namespace ADVCoupon.Services
 
         public async Task UpdateProviderAsync(ProviderItemViewModel providerModel)
         {
-            var provider = await GetProvider(providerModel.Id);
+            var provider = await GetProvider(new Guid(providerModel.Id));
             provider.Name = providerModel.Name;
             if (providerModel.LogoImage != null)
             {

@@ -73,11 +73,7 @@ namespace ADVCoupon.Migrations
 
                     b.Property<string>("BarcodeValue");
 
-                    b.Property<Guid?>("ProductId");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
 
                     b.ToTable("NetworkBarcodes");
                 });
@@ -120,13 +116,21 @@ namespace ADVCoupon.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("BarCode");
+
                     b.Property<byte[]>("Image");
 
                     b.Property<string>("Name");
 
+                    b.Property<Guid?>("ProductCategoryId");
+
                     b.Property<Guid?>("ProviderId");
 
+                    b.Property<string>("SKU");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("ProductCategoryId");
 
                     b.HasIndex("ProviderId");
 
@@ -258,6 +262,8 @@ namespace ADVCoupon.Migrations
                     b.Property<double?>("DiscountPercentage");
 
                     b.Property<DateTime>("EndDate");
+
+                    b.Property<bool>("IsAbsoluteDiscount");
 
                     b.Property<bool>("IsApproved");
 
@@ -396,13 +402,6 @@ namespace ADVCoupon.Migrations
                         .HasForeignKey("ProductCategoryId");
                 });
 
-            modelBuilder.Entity("ADVCoupon.Models.NetworkBarcode", b =>
-                {
-                    b.HasOne("ADVCoupon.Models.Product")
-                        .WithMany("NetworkBarcodes")
-                        .HasForeignKey("ProductId");
-                });
-
             modelBuilder.Entity("ADVCoupon.Models.NetworkCoupon", b =>
                 {
                     b.HasOne("AVDCoupon.Models.Coupon", "Coupon")
@@ -422,13 +421,17 @@ namespace ADVCoupon.Migrations
                         .WithMany()
                         .HasForeignKey("GeopositionId");
 
-                    b.HasOne("ADVCoupon.Models.Network")
+                    b.HasOne("ADVCoupon.Models.Network", "Network")
                         .WithMany("NetworkPoints")
                         .HasForeignKey("NetworkId");
                 });
 
             modelBuilder.Entity("ADVCoupon.Models.Product", b =>
                 {
+                    b.HasOne("ADVCoupon.Models.ProductCategory", "ProductCategory")
+                        .WithMany()
+                        .HasForeignKey("ProductCategoryId");
+
                     b.HasOne("ADVCoupon.Models.Provider", "Provider")
                         .WithMany()
                         .HasForeignKey("ProviderId");

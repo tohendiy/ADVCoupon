@@ -1,0 +1,28 @@
+﻿@using ADVCoupon.ViewModel.UsersViewModels
+@model List<UserTableItemViewModel>
+
+<script>
+    $('.mvc-grid tr').on('rowclick', function (e, data, grid, originalEvent) {
+        window.location.href = "/Users/Details/"+data['user.-id'];
+});
+</script>
+
+@(Html
+            .Grid(Model)
+            .Build(columns =>
+            {
+                columns.Add(model => model.User.Id).Titled("Id");
+                columns.Add(model => model.User.Email).Titled("Email");
+                columns.Add(model => model.Role).Titled("Role");
+                columns.Add(model => model.NetworkName).Titled("Network Name");
+                columns.Add(model => model.ProviderName).Titled("Supplier");
+            })
+            .Empty("No data found")
+            .Id("my-ajax-grid")
+            .Pageable(pager =>
+            {
+                pager.RowsPerPage = 10;
+            })
+            .Filterable()
+            .Sortable()
+)

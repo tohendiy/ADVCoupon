@@ -93,7 +93,7 @@ namespace ADVCoupon.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, ProviderItemViewModel providerModel)
         {
-            if (id != providerModel.Id)
+            if (id != new Guid(providerModel.Id))
             {
                 return NotFound();
             }
@@ -106,7 +106,7 @@ namespace ADVCoupon.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProviderExists(providerModel.Id))
+                    if (!ProviderExists(new Guid(providerModel.Id)))
                     {
                         return NotFound();
                     }
@@ -146,6 +146,13 @@ namespace ADVCoupon.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [HttpGet]
+        public async Task<PartialViewResult> IndexGrid()
+        {
+            var providersModel = await _service.GetProviderViewModelsAsync();
+
+            return PartialView("_IndexGrid", providersModel);
+        }
         private bool ProviderExists(Guid id)
         {
             return _service.IsExist(id);

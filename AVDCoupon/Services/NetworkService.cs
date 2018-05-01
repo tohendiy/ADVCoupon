@@ -23,7 +23,7 @@ namespace ADVCoupon.Services
         {
             var networkModel = new NetworkItemViewModel()
             {
-                Id = network.Id,
+                Id = network.Id.ToString(),
                 Caption = network.Caption,
                 LogoImageView = network.LogoImage
             };
@@ -34,7 +34,7 @@ namespace ADVCoupon.Services
         {
             var network = new Network()
             {
-                Id = networkModel.Id,
+                Id = new Guid(networkModel.Id),
                 Caption = networkModel.Caption,
                 LogoImage = networkModel.LogoImageView
             };
@@ -101,7 +101,7 @@ namespace ADVCoupon.Services
             }
             var networkModel = new NetworkItemViewModel
             {
-                Id = network.Id,
+                Id = network.Id.ToString(),
                 Caption = network.Caption,
                 LogoImageView = network.LogoImage,
                 ProductCategories = GetSelectListProductCategories(),
@@ -129,7 +129,7 @@ namespace ADVCoupon.Services
             var networksListViewModel = new List<NetworkItemViewModel>(networks.Count);
             networksListViewModel = networks.Select(item => new NetworkItemViewModel
             {
-                Id = item.Id,
+                Id = item.Id.ToString(),
                 Caption = item.Caption,
                 LogoImageView = item.LogoImage
 
@@ -150,7 +150,7 @@ namespace ADVCoupon.Services
 
         public async Task UpdateNetworkAsync(NetworkItemViewModel networkModel)
         {
-            var network = await GetNetwork(networkModel.Id);
+            var network = await GetNetwork(new Guid(networkModel.Id));
             network.Caption = networkModel.Caption;
             network.ProductCategory = _context.ProductCategories.FirstOrDefault(item => item.Id == networkModel.ProductCategoryId);
 

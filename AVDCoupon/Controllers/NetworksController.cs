@@ -105,7 +105,7 @@ namespace ADVCoupon.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, NetworkItemViewModel networkModel)
         {
-            if (id != networkModel.Id)
+            if (id != new Guid(networkModel.Id))
             {
                 return NotFound();
             }
@@ -118,7 +118,7 @@ namespace ADVCoupon.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!NetworkExists(networkModel.Id))
+                    if (!NetworkExists(new Guid(networkModel.Id)))
                     {
                         return NotFound();
                     }
@@ -261,6 +261,14 @@ namespace ADVCoupon.Controllers
                 return NotFound();
             }
             
+        }
+
+        [HttpGet]
+        public async Task<PartialViewResult> IndexGrid()
+        {
+            var networksModel = await _service.GetNetworkViewModelsAsync();
+
+            return PartialView("_IndexGrid", networksModel);
         }
 
         private bool NetworkExists(Guid id)

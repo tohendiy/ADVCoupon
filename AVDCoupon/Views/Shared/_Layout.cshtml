@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - AVDCoupon</title>
 
+    <link href="~/css/mvc-grid.css" rel="stylesheet">
+
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/site.css" />
@@ -68,7 +70,10 @@
         </footer>
     </div>
 
-    
+    <script src="~/js/mvc-grid.js"></script>
+    <script>
+        $('.mvc-grid').mvcgrid();
+    </script>
 
     @RenderSection("Scripts", required: false)
 </body>

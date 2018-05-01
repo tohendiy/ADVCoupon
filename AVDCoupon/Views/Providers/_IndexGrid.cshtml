@@ -1,0 +1,27 @@
+﻿@model IEnumerable<ADVCoupon.ViewModel.ProviderViewModels.ProviderItemViewModel>
+
+
+<script>
+    $('.mvc-grid tr').on('rowclick', function (e, data, grid, originalEvent) {
+      
+        window.location.href = "/Providers/Details/" + data['id'];
+    });
+</script>
+
+@(Html
+                .Grid(Model)
+                .Build(columns =>
+                {
+                    columns.Add(model => model.Id).Titled("Id");
+                    columns.Add(model => model.Name).Titled("Name");
+                    columns.Add(model => $"<img style='width:80px; height:80px;' src='data: image / jpeg; base64,{(Convert.ToBase64String(model.LogoImageView))}'").Encoded(false).Titled("Image");
+                })
+                .Empty("No data found")
+                .Id("my-ajax-grid")
+                .Pageable(pager =>
+                {
+                    pager.RowsPerPage = 10;
+                })
+                .Filterable()
+                .Sortable()
+)

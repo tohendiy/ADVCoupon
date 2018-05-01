@@ -10,5 +10,7 @@ namespace ADVCoupon.ViewModel.UsersViewModels
     {
         public string Role { get; set; }
         public ApplicationUser User { get; set; }
+        public string NetworkName { get; set; }
+        public string ProviderName { get; set; }
     }
 }
