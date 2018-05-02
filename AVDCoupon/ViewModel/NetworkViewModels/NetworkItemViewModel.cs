@@ -7,7 +7,7 @@ namespace ADVCoupon.ViewModel.NetworkViewModels
 {
     public class NetworkItemViewModel
     {
-        public string Id { get; set; }
+        public Guid Id { get; set; }
 
         [Required]
         public string Caption { get; set; }

@@ -449,7 +449,7 @@ namespace AVDCoupon.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public async Task<object> Login([FromBody] LoginViewModel model)
+        public async Task<object> LoginApi([FromBody] LoginViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -471,7 +471,7 @@ namespace AVDCoupon.Controllers
         }
 
         [HttpPost]
-        public async Task<object> Register([FromBody] RegisterViewModel model)
+        public async Task<object> RegisterApi([FromBody] RegisterViewModel model)
         {
             var user = new ApplicationUser
             {

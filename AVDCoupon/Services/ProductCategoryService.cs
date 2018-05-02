@@ -20,7 +20,7 @@ namespace ADVCoupon.Services
         {
             var productCategoryModel = new ProductCategoryViewModel()
             {
-                Id = productCategory.Id.ToString(),
+                Id = productCategory.Id,
                 Caption = productCategory.Caption
             };
             return productCategoryModel;
@@ -30,7 +30,7 @@ namespace ADVCoupon.Services
         {
             var productCategory = new ProductCategory()
             {
-                Id = new Guid(productCategoryModel.Id),
+                Id = productCategoryModel.Id,
                 Caption = productCategoryModel.Caption
             };
             return productCategory;
@@ -82,7 +82,7 @@ namespace ADVCoupon.Services
             }
             var productCategoryModel = new ProductCategoryViewModel
             {
-                Id = productCategory.Id.ToString(),
+                Id = productCategory.Id,
                 Caption = productCategory.Caption
             };
             return productCategoryModel;
@@ -100,7 +100,7 @@ namespace ADVCoupon.Services
             var productCategoriesListViewModel = new List<ProductCategoryViewModel>(productCategories.Count);
             productCategoriesListViewModel = productCategories.Select(item => new ProductCategoryViewModel
             {
-                Id = item.Id.ToString(),
+                Id = item.Id,
                 Caption = item.Caption
 
             }).ToList();
@@ -120,7 +120,7 @@ namespace ADVCoupon.Services
 
         public async Task UpdateProductCategoryAsync(ProductCategoryViewModel productCategoryModel)
         {
-            var productCategory = await GetProductCategory(new Guid(productCategoryModel.Id));
+            var productCategory = await GetProductCategory(productCategoryModel.Id);
             productCategory.Caption = productCategoryModel.Caption;
             _context.Update(productCategory);
             await _context.SaveChangesAsync();

@@ -1,4 +1,4 @@
-﻿@model ADVCoupon.Models.Product
+﻿@model ADVCoupon.ViewModel.ProductViewModels.ProductViewModel
 
 @{
     Layout = null;
@@ -28,7 +28,7 @@
             @Html.DisplayNameFor(model => model.Image)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Image)
+            <img style='width:80px; height:80px;' src="data:image/jpeg;base64,@(Convert.ToBase64String(Model.Image))" />
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.BarCode)
@@ -41,6 +41,12 @@
         </dt>
         <dd>
             @Html.DisplayFor(model => model.SKU)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.SupplierName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.SupplierName)
         </dd>
     </dl>
     

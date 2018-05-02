@@ -1,4 +1,4 @@
-﻿@model ADVCoupon.ViewModel.ProductModel.ProductViewModel;
+﻿@model ADVCoupon.ViewModel.ProductViewModels.ProductViewModel;
 
 @{
     ViewData["Title"] = "Create";
@@ -10,7 +10,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
@@ -34,19 +34,9 @@
             </div>
 
             <div class="form-group" id="providerSelect">
-                <label asp-for="Provider" class="control-label"></label>
-                <select asp-for="Provider"
-                        asp-items="@Model.Providers">
-
-                </select>
-            </div>
-
-            <div class="form-group" id="productCategoriesSelect">
-                <label asp-for="ProductCategories" class="control-label"></label>
-                <select asp-for="ProductCategories"
-                        asp-items="@Model.ProductCategories">
-
-                </select>
+                <label asp-for="Providers" class="control-label"></label>
+                <select asp-for="ProviderId" asp-items="@Model.Providers"></select>
+                <span asp-validation-for="Providers" class="text-danger"></span>
             </div>
 
             <div class="form-group">

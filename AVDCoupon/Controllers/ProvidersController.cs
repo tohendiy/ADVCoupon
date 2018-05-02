@@ -93,7 +93,7 @@ namespace ADVCoupon.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, ProviderItemViewModel providerModel)
         {
-            if (id != new Guid(providerModel.Id))
+            if (id != providerModel.Id)
             {
                 return NotFound();
             }
@@ -106,7 +106,7 @@ namespace ADVCoupon.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProviderExists(new Guid(providerModel.Id)))
+                    if (!ProviderExists(providerModel.Id))
                     {
                         return NotFound();
                     }

@@ -9,7 +9,7 @@ using ADVCoupon.Models;
 using AVDCoupon.Data;
 using ADVCoupon.Services.Interfaces;
 using ADVCoupon.Services;
-using ADVCoupon.ViewModel.ProductModel;
+using ADVCoupon.ViewModel.ProductViewModels;
 
 namespace ADVCoupon.Controllers
 {
@@ -17,15 +17,12 @@ namespace ADVCoupon.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IProductService _productService;
-        private readonly IProviderService _providerService;
-        private readonly IProductCategoryService _productCategoryService;
 
-        public ProductsController(ApplicationDbContext context, IProductService productService, IProviderService providerService, IProductCategoryService productCategoryService)
+        public ProductsController(ApplicationDbContext context, IProductService productService)
         {
             _context = context;
             _productService = productService;
-            _providerService = providerService;
-            _productCategoryService = productCategoryService;
+
         }
 
         // GET: Products
@@ -42,27 +39,23 @@ namespace ADVCoupon.Controllers
                 return NotFound();
             }
 
-            var product = await _productService.GetProductViewModel(id.Value);
+            var productModel = await _productService.GetProductViewModel(id.Value);
                 
-            if (product == null)
+            if (productModel == null)
             {
                 return NotFound();
             }
 
-            return View(product);
+            return View(productModel);
         }
 
         // GET: Products/Create
         public async Task<IActionResult> Create()
         {
 
-            var model = new ProductViewModel()
-            {
-                Providers = new SelectList(await _providerService.GetProvidersAsync(), "Id", "Name"),
-                ProductCategories = new SelectList(await _productCategoryService.GetProductCategoriesAsync(), "Id", "Caption")
-            };
+            var productModel = await _productService.GetProductWithProviders();
 
-            return View(model);
+            return View(productModel);
         }
 
         // POST: Products/Create
@@ -70,36 +63,33 @@ namespace ADVCoupon.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(ProductViewModel product)
+        public async Task<IActionResult> Create(ProductViewModel productModel)
         {
 
-            var test = product;
-            return View(product);
+            if (ModelState.IsValid)
+            {
+                await _productService.CreateProductAsync(productModel);
+                return RedirectToAction(nameof(Index));
+            }
+            return View(productModel);
 
-            //if (ModelState.IsValid)
-            //{
-            //    product.Id = Guid.NewGuid();
-            //    _context.Add(product);
-            //    await _context.SaveChangesAsync();
-            //    return RedirectToAction(nameof(Index));
-            //}
-            //return View(product);
+
         }
 
         // GET: Products/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
-            if (id == null)
+            if (id == null || !id.HasValue)
             {
                 return NotFound();
             }
 
-            var product = await _context.Products.SingleOrDefaultAsync(m => m.Id == id);
-            if (product == null)
+            var productModel = await _productService.GetProductViewModel(id.Value);
+            if (productModel == null)
             {
                 return NotFound();
             }
-            return View(product);
+            return View(productModel);
         }
 
         // POST: Products/Edit/5
@@ -107,9 +97,9 @@ namespace ADVCoupon.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Name,Image,BarCode,SKU")] Product product)
+        public async Task<IActionResult> Edit(Guid id, ProductViewModel productModel)
         {
-            if (id != product.Id)
+            if (id != productModel.Id)
             {
                 return NotFound();
             }
@@ -118,12 +108,12 @@ namespace ADVCoupon.Controllers
             {
                 try
                 {
-                    _context.Update(product);
+                    _context.Update(productModel);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProductExists(product.Id))
+                    if (!ProductExists(productModel.Id))
                     {
                         return NotFound();
                     }
@@ -134,7 +124,7 @@ namespace ADVCoupon.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(product);
+            return View(productModel);
         }
 
         // GET: Products/Delete/5
@@ -145,14 +135,14 @@ namespace ADVCoupon.Controllers
                 return NotFound();
             }
 
-            var product = await _productService.GetProductViewModel(id.Value);
+            var productModel = await _productService.GetProductViewModel(id.Value);
 
-            if (product == null)
+            if (productModel == null)
             {
                 return NotFound();
             }
 
-            return View(product);
+            return View(productModel);
         }
 
         // POST: Products/Delete/5
@@ -160,9 +150,7 @@ namespace ADVCoupon.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var product = await _context.Products.SingleOrDefaultAsync(m => m.Id == id);
-            _context.Products.Remove(product);
-            await _context.SaveChangesAsync();
+            await _productService.DeleteProductAsync(id);
             return RedirectToAction(nameof(Index));
         }
 
@@ -175,7 +163,7 @@ namespace ADVCoupon.Controllers
 
         private bool ProductExists(Guid id)
         {
-            return _context.Products.Any(e => e.Id == id);
+            return _productService.IsExist(id);
         }
     }
 }

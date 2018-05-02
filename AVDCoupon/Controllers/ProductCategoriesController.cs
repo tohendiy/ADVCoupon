@@ -94,7 +94,7 @@ namespace ADVCoupon.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id,  ProductCategoryViewModel productCategoryModel)
         {
-            if (id != new Guid(productCategoryModel.Id))
+            if (id != productCategoryModel.Id)
             {
                 return NotFound();
             }
@@ -108,7 +108,7 @@ namespace ADVCoupon.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProductCategoryExists(new Guid(productCategoryModel.Id)))
+                    if (!ProductCategoryExists(productCategoryModel.Id))
                     {
                         return NotFound();
                     }

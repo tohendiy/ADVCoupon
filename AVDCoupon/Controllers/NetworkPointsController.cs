@@ -104,7 +104,7 @@ namespace ADVCoupon.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, NetworkPointViewModel networkPointModel)
         {
-            if (id != new Guid(networkPointModel.Id))
+            if (id != networkPointModel.Id)
             {
                 return NotFound();
             }
@@ -117,7 +117,7 @@ namespace ADVCoupon.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!NetworkPointExists(new Guid(networkPointModel.Id)))
+                    if (!NetworkPointExists(networkPointModel.Id))
                     {
                         return NotFound();
                     }

@@ -5,7 +5,7 @@ namespace ADVCoupon.ViewModel.ProductCategoryViewModels
 {
     public class ProductCategoryViewModel
     {
-        public string Id { get; set; }
+        public Guid Id { get; set; }
 
         [Required]
         public string Caption { get; set; }
