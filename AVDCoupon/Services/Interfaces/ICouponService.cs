@@ -13,7 +13,7 @@ namespace ADVCoupon.Services
     public interface ICouponService
     {
         UserCoupon GetUserCoupon(string userId, Guid couponId);
-        Task<CouponCreateItemViewModel> GetCouponProductProvidersListItemViewModelAsync();
+        Task<CouponCreateItemViewModel> GetCouponProductsListItemViewModelAsync();
 
         Task<Coupon> GetCouponById(Guid id);
 
@@ -37,7 +37,7 @@ namespace ADVCoupon.Services
         Task DeactivateCouponAsync(Guid Id);
 
         bool IsExist(Guid Id);
-        SelectList GetSelectListProviders();
+        MultiSelectList GetSelectListProducts();
 
         
     }

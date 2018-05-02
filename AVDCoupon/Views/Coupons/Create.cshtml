@@ -77,11 +77,7 @@ document.addEventListener('DOMContentLoaded', function(){
                 <input asp-for="TotalCapacity" class="form-control" />
                 <span asp-validation-for="TotalCapacity" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
+
 
             <div class="form-group">
                 <label asp-for="Image" class="control-label"></label>
@@ -90,9 +86,9 @@ document.addEventListener('DOMContentLoaded', function(){
             </div>
 
             <div class="form-group">
-                <label asp-for="Providers" class="control-label"></label>
-                <select asp-for="ProviderId" asp-items="@Model.Providers"></select>
-                <span asp-validation-for="Providers" class="text-danger"></span>
+                <label asp-for="Products" class="control-label"></label>
+                <select asp-for="ProductsId" asp-items="@Model.Products"></select>
+                <span asp-validation-for="Products" class="text-danger"></span>
             </div>
 
             @Html.AjaxGrid(Url.Action("CreateProductGrid"))

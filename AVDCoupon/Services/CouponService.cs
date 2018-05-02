@@ -57,14 +57,14 @@ namespace ADVCoupon.Services
 
         public async Task<Coupon> GetCouponAsync(Guid Id)
         {
-            var coupon = await _context.Coupons.Include(item => item.Product).Include(item => item.Product.Provider)
+            var coupon = await _context.Coupons.Include(item => item.Products)
                .SingleOrDefaultAsync(m => m.Id == Id);
             return coupon;
         }
 
         public async Task<CouponCreateItemViewModel> GetCouponCreateItemViewModelAsync(Guid Id)
         {
-            var coupon = await _context.Coupons.Include(item => item.Product).Include(item => item.Product.Provider)
+            var coupon = await _context.Coupons.Include(item => item.Products)
                 .SingleOrDefaultAsync(m => m.Id == Id);
             if (coupon == null)
             {
@@ -82,18 +82,16 @@ namespace ADVCoupon.Services
                 StartDate = coupon.StartDate,
                 EndDate = coupon.EndDate,
                 IsApproved = coupon.IsApproved,
-                ProductId = coupon.Product.Id,
-                Name = coupon.Product.Name,
-                ImageView = coupon.Product.Image,
-                ProviderId = coupon.Product.Provider.Id,
-                Providers = GetSelectListProviders()
+                ProductsId = coupon.Products.Select(item => item.Id),
+                ImageView = coupon.Image,
+                Products = GetSelectListProducts()
             };
             return couponModel;
         }
 
         public async Task<List<Coupon>> GetCouponsAsync()
         {
-            var coupons = await _context.Coupons.Include(item=>item.Product).Include(item=>item.Product.Provider).ToListAsync();
+            var coupons = await _context.Coupons.Include(item=>item.Products).ToListAsync();
             return coupons;
         }
 
@@ -137,15 +135,7 @@ namespace ADVCoupon.Services
                 IsApproved = couponModel.IsApproved,
                 NetworkCoupons = new List<NetworkCoupon>(),
                 UserCoupons = new List<UserCoupon>(),
-                Product = new Product()
-                {
-                    Id = Guid.NewGuid(),
-                    Name = couponModel.Name,
-                    Provider = _context.Providers.FirstOrDefault(item => item.Id == couponModel.ProviderId),
-                    BarCode = ""
-
-                }
-
+                Products = await _context.Products.Where(item => couponModel.ProductsId.Contains(item.Id)).ToListAsync()
             };
             if (couponModel.Image != null)
             {
@@ -155,7 +145,7 @@ namespace ADVCoupon.Services
                     await couponModel.Image.CopyToAsync(memoryStream);
                     if (memoryStream != null)
                     {
-                        coupon.Product.Image = memoryStream.ToArray();
+                        coupon.Image = memoryStream.ToArray();
                     }
                 }
             }
@@ -164,19 +154,19 @@ namespace ADVCoupon.Services
             return coupon;
         }
 
-        public async Task<CouponCreateItemViewModel> GetCouponProductProvidersListItemViewModelAsync()
+        public async Task<CouponCreateItemViewModel> GetCouponProductsListItemViewModelAsync()
         {
-            var networkModel = new CouponCreateItemViewModel();
-            networkModel.Providers = GetSelectListProviders();
-            return networkModel;
+            var couponModel = new CouponCreateItemViewModel();
+            couponModel.Products = GetSelectListProducts();
+            return couponModel;
         }
 
-        public SelectList GetSelectListProviders()
+        public MultiSelectList GetSelectListProducts()
         {
-            var providers = _context.Providers.Select(x => new { Id = x.Id, Value = x.Name });
+            var products = _context.Products.Select(x => new { Id = x.Id, Value = x.Name });
 
-            var providersSelectList = new SelectList(providers, "Id", "Value");
-            return providersSelectList;
+            var productsSelectList = new MultiSelectList(products, "Id", "Value");
+            return productsSelectList;
 
         }
 
@@ -196,12 +186,9 @@ namespace ADVCoupon.Services
                 StartDate = item.StartDate,
                 EndDate = item.EndDate,
                 IsApproved = item.IsApproved,
-                ProductId = item.Product.Id,
-                Name = item.Product.Name,
-                ImageView = item.Product.Image,
-                ProviderId = item.Product.Provider.Id,
-                Providers = GetSelectListProviders(),
-                ProviderName = item.Product.Provider.Name
+                ProductsId = item.Products.Select(element => element.Id),
+                ImageView = item.Image,
+                Products = GetSelectListProducts(),
 
             }).ToList();
             return couponsListViewModel;
@@ -220,9 +207,7 @@ namespace ADVCoupon.Services
             coupon.TotalCapacity = couponModel.TotalCapacity;
             coupon.CurrentCapacity = couponModel.CurrentCapacity;
             coupon.IsApproved = couponModel.IsApproved;
-            coupon.Product.Id = couponModel.ProductId;
-            coupon.Product.Name = couponModel.Name;
-            coupon.Product.Provider = _context.Providers.FirstOrDefault(item => item.Id == couponModel.ProviderId);
+            coupon.Products = await _context.Products.Where(item => couponModel.ProductsId.Contains(item.Id)).ToListAsync();
 
 
             if (couponModel.Image != null)
@@ -233,7 +218,7 @@ namespace ADVCoupon.Services
                     await couponModel.Image.CopyToAsync(memoryStream);
                     if (memoryStream != null)
                     {
-                        coupon.Product.Image = memoryStream.ToArray();
+                        coupon.Image = memoryStream.ToArray();
                     }
                 }
             }

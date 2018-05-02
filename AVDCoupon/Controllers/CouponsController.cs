@@ -49,8 +49,13 @@ namespace ADVCoupon.Controllers
             //    CouponImage = item.CouponImage
             //}).ToList();
             //return View(couponsListViewModel);
-            var couponModelList = await _couponService.GetCouponCreateItemViewModelsAsync();
-            return View(couponModelList);
+
+            //////////////////////////////////////////////
+            //var couponModelList = await _couponService.GetCouponCreateItemViewModelsAsync();
+            //return View(couponModelList);
+
+            return View();
+
         }
 
         // GET: Coupons/Details/5
@@ -94,7 +99,7 @@ namespace ADVCoupon.Controllers
         {
            
 
-            var model = await _couponService.GetCouponProductProvidersListItemViewModelAsync();
+            var model = await _couponService.GetCouponProductsListItemViewModelAsync();
 
             return View(model);
         }
@@ -217,7 +222,7 @@ namespace ADVCoupon.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            couponModel.Providers = _couponService.GetSelectListProviders();
+            couponModel.Products = _couponService.GetSelectListProducts();
             return View(couponModel);
         }
 
@@ -344,6 +349,12 @@ namespace ADVCoupon.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [HttpGet]
+        public async Task<PartialViewResult> IndexGrid()
+        {
+            var couponsList = await _couponService.GetCouponCreateItemViewModelsAsync();
+            return PartialView("_IndexGrid", couponsList);
+        }
         //[HttpGet]
         //public async Task<PartialViewResult> CreateProductGrid()
         //{

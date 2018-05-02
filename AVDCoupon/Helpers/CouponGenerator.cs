@@ -109,23 +109,25 @@ namespace ADVCoupon.Helpers
         private static CouponPdfViewModel ConvertUserCouponToPdfViewModel(UserCoupon userCoupon, Coupon coupon)
         {
             //var networkBarcode = coupon.Product.NetworkBarcodes.
-                //FirstOrDefault(x => x.Networks.FirstOrDefault(y => y.Id == userCoupon.NetworkId) != null).BarcodeValue;
+            //FirstOrDefault(x => x.Networks.FirstOrDefault(y => y.Id == userCoupon.NetworkId) != null).BarcodeValue;
 
-            var networkBarcode = coupon.Product.BarCode;
+            //var networkBarcode = coupon.Product.BarCode;
 
-            var vm = new CouponPdfViewModel
-            {
-                Caption = coupon.Caption,
-                DiscountAbsolute = coupon.DiscountAbsolute,
-                DiscountPercentage = coupon.DiscountPercentage,
-                EndDate = coupon.EndDate,
-                NetworkCoupons = coupon.NetworkCoupons,
-                Product = coupon.Product,
-                StartDate = coupon.StartDate,
-                BarcodeLink = Helpers.BarcodeGenerator.GenerateBarcode("c128c", networkBarcode),
-                Barcode = networkBarcode
-            };
+            //var vm = new CouponPdfViewModel
+            //{
+            //    Caption = coupon.Caption,
+            //    DiscountAbsolute = coupon.DiscountAbsolute,
+            //    DiscountPercentage = coupon.DiscountPercentage,
+            //    EndDate = coupon.EndDate,
+            //    NetworkCoupons = coupon.NetworkCoupons,
+            //    Product = coupon.Product,
+            //    StartDate = coupon.StartDate,
+            //    BarcodeLink = Helpers.BarcodeGenerator.GenerateBarcode("c128c", networkBarcode),
+            //    Barcode = networkBarcode
+            //};
 
+            //return vm;
+            var vm = new CouponPdfViewModel();
             return vm;
         }
     }

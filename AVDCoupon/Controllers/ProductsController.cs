@@ -108,8 +108,7 @@ namespace ADVCoupon.Controllers
             {
                 try
                 {
-                    _context.Update(productModel);
-                    await _context.SaveChangesAsync();
+                    await _productService.UpdateProductAsync(productModel);
                 }
                 catch (DbUpdateConcurrencyException)
                 {

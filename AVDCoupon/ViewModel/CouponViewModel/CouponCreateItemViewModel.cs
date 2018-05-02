@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using ADVCoupon.Attributes;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -9,6 +10,10 @@ namespace ADVCoupon.ViewModel.CouponViewModel
         public Guid Id { get; set; }
 
         public string Caption { get; set; }
+
+        public byte[] ImageView { get; set; }
+
+        public IFormFile Image { get; set; }
 
         public double DiscountPercentage { get; set; }
 
@@ -26,19 +31,11 @@ namespace ADVCoupon.ViewModel.CouponViewModel
         public bool IsApproved { get; set; }
 
         #region Product
-        public Guid ProductId { get; set; }
+        public IEnumerable<Guid> ProductsId { get; set; }
 
-        public string Name { get; set; }
 
-        public byte[] ImageView { get; set; }
+        public MultiSelectList Products { get; set; }
 
-        public IFormFile Image { get; set; }
-
-        public Guid ProviderId { get; set; }
-
-        public SelectList Providers { get; set; }
-
-        public string ProviderName { get; set; }
 
         public bool IsAbsoluteDiscount { get; set; }
 

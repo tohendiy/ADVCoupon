@@ -90,7 +90,7 @@ namespace ADVCoupon.Services
         }
         public async Task<Product> GetProductByCoupon(Guid Id)
         {
-            var product = await _context.Coupons.Where(item => item.Product.Id == Id).Select(item => item.Product).FirstOrDefaultAsync();
+            var product = await _context.Products.Where(item => item.Coupon.Id == Id).FirstOrDefaultAsync();
             return product;
         }
 
