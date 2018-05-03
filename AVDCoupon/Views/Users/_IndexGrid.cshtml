@@ -11,7 +11,6 @@
             .Grid(Model)
             .Build(columns =>
             {
-                columns.Add(model => model.User.Id).Titled("Id");
                 columns.Add(model => model.User.Email).Titled("Email");
                 columns.Add(model => model.Role).Titled("Role");
                 columns.Add(model => model.NetworkName).Titled("Network Name");
