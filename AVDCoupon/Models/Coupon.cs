@@ -10,8 +10,8 @@ namespace AVDCoupon.Models
         [Key]
         public Guid Id { get; set; }
         public string Caption { get; set; }
-        public double? DiscountAbsolute { get; set; }
-        public double? DiscountPercentage { get; set; }
+        public string DiscountType { get; set; }
+        public double Discount { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public int TotalCapacity { get; set; }
@@ -22,7 +22,6 @@ namespace AVDCoupon.Models
         public List<NetworkCoupon> NetworkCoupons { get; set; }
         public List<UserCoupon> UserCoupons { get; set; }
         public bool IsApproved { get; set; }
-        public bool IsAbsoluteDiscount { get; set; }
 
     }
 }

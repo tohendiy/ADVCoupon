@@ -21,6 +21,10 @@ namespace ADVCoupon.Helpers
         public const bool SMTP_SSL = true;
 
 
+        public const string DISCOUNT_TYPE_PERCENT = "%";
+        public const string DISCOUNT_TYPE_ABSOLUTE = "грн.";
+
+
         #region Barcode generation
 
         public const string BARCODE_GENERATION_URL = "https://barcode.tec-it.com/barcode.ashx?dpi=96&";

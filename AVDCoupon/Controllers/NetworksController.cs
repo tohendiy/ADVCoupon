@@ -79,6 +79,7 @@ namespace ADVCoupon.Controllers
                 await _service.CreateNetworkAsync(networkModel);
                 return RedirectToAction(nameof(Index));
             }
+            networkModel.ProductCategories = _service.GetSelectListProductCategories();
             return View(networkModel);
         }
 
