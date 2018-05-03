@@ -32,8 +32,8 @@ namespace ADVCoupon.Services
         {
 
             var userCoupon = from coupon in _context.Coupons
-                       where coupon.UserCoupons.FirstOrDefault(y => y.CouponId == couponId && y.UserId == userId) != null
-                       select coupon.UserCoupons.FirstOrDefault(y => y.CouponId == couponId && y.UserId == userId);
+                             where coupon.UserCoupons.FirstOrDefault(y => y.CouponId == couponId && y.UserId == userId) != null
+                             select coupon.UserCoupons.FirstOrDefault(y => y.CouponId == couponId && y.UserId == userId);
 
             return userCoupon.FirstOrDefault();
         }
@@ -91,7 +91,7 @@ namespace ADVCoupon.Services
 
         public async Task<List<Coupon>> GetCouponsAsync()
         {
-            var coupons = await _context.Coupons.Include(item=>item.Products).ToListAsync();
+            var coupons = await _context.Coupons.Include(item => item.Products).ToListAsync();
             return coupons;
         }
 
@@ -205,6 +205,21 @@ namespace ADVCoupon.Services
             return couponsListViewModel;
         }
 
+
+        public async Task<List<Coupon>> GetOnlyApprovedDateCouponsAsync()
+        {
+            var coupons = await GetOnlyApprovedDateCouponsQueryAsync().ToListAsync();
+            return coupons;
+        }
+
+        public async Task<Coupon> GetCouponByNetworkAsync(Guid idCoupon, Guid idNetwork)
+        {
+            var couponsQuery = GetOnlyApprovedDateCouponsQueryAsync();
+            var coupons = await couponsQuery.Where(item => item.Id == idCoupon && item.NetworkCoupons.Any(item1 => item1.NetworkId == idNetwork)).FirstOrDefaultAsync();
+            return coupons;
+        }
+
+
         public async Task UpdateCouponAsync(CouponCreateItemViewModel couponModel)
         {
             var coupon = await GetCouponAsync(couponModel.Id);
@@ -252,6 +267,12 @@ namespace ADVCoupon.Services
             coupon.IsApproved = false;
             _context.Update(coupon);
             await _context.SaveChangesAsync();
+        }
+
+        private async IQueryable<Coupon> GetOnlyApprovedDateCouponsQueryAsync()
+        {
+            var coupons = _context.Coupons.Where(item => item.IsApproved && item.StartDate > DateTime.Now && item.EndDate < DateTime.Now);
+            return coupons;
         }
     }
 }
