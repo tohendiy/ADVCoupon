@@ -19,8 +19,11 @@ namespace ADVCoupon.Services
 
         Task<Coupon> GetCouponAsync(Guid Id);
         Task<CouponCreateItemViewModel> GetCouponCreateItemViewModelAsync(Guid Id);
+        Task<List<Coupon>> GetRelatedCouponsByNetworkAsync(Guid idCoupon, Guid idNetwork);
+
 
         Task<List<Coupon>> GetCouponsAsync();
+        Task<List<Coupon>> GetOnlyApprovedDateCouponsAsync();
         Task<List<Coupon>> GetCouponsByUserAsync(string id);
         Task<List<Coupon>> GetCouponsByNetworkAsync(Guid id);
         Task<List<CouponCreateItemViewModel>> GetCouponCreateItemViewModelsAsync();
@@ -38,6 +41,7 @@ namespace ADVCoupon.Services
 
         bool IsExist(Guid Id);
         MultiSelectList GetSelectListProducts();
+        SelectList GetSelectListDiscountTypes();
 
         
     }

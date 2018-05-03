@@ -71,6 +71,7 @@ namespace ADVCoupon.Controllers
                 await _productService.CreateProductAsync(productModel);
                 return RedirectToAction(nameof(Index));
             }
+            productModel.Providers = _productService.GetSelectListProviders();
             return View(productModel);
 
 
@@ -123,6 +124,7 @@ namespace ADVCoupon.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            productModel.Providers = _productService.GetSelectListProviders();
             return View(productModel);
         }
 

@@ -13,7 +13,7 @@
                     .Build(columns =>
                     {
                         columns.Add(model => model.Caption).Titled("Name");
-                        columns.Add(model => $"<img style='width:80px; height:80px;' src='data: image / jpeg; base64,{(Convert.ToBase64String(model.LogoImageView))}'").Encoded(false).Titled("Image");
+                        columns.Add(model => $"<img style='width:80px; height:80px;' src='data:image/jpeg;base64,{(Convert.ToBase64String(model.LogoImageView))}'").Encoded(false).Titled("Image");
                     })
                     .Empty("No data found")
                     .Id("my-ajax-grid")

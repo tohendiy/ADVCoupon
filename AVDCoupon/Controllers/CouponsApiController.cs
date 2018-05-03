@@ -22,10 +22,17 @@ namespace ADVCoupon.Controllers
             _service = service;
         }
         // GET: api/values
+        //[HttpGet]
+        //public async Task<List<Coupon>> Get()
+        //{
+        //    var values = await _service.GetCouponsAsync();
+        //    return values;
+        //}
+
         [HttpGet]
-        public async Task<List<Coupon>> Get()
+        public async Task<List<Coupon>> GetApprovedCoupons()
         {
-            var values = await _service.GetCouponsAsync();
+            var values = await _service.GetOnlyApprovedDateCouponsAsync();
             return values;
         }
         // GET api/values/5
@@ -56,9 +63,18 @@ namespace ADVCoupon.Controllers
                                         
         }
 
+        [HttpGet]
         public async Task<IEnumerable<Coupon>> GetCouponsByNetwork(Guid idNetwork)
         {
             var networkCoupons = await _service.GetCouponsByNetworkAsync(idNetwork);
+            return networkCoupons;
+
+        }
+
+        [HttpGet]
+        public async Task<List<Coupon>> GetCouponByNetwork(Guid idCoupon, Guid idNetwork)
+        {
+            var networkCoupons = await _service.GetRelatedCouponsByNetworkAsync(idCoupon, idNetwork);
             return networkCoupons;
 
         }

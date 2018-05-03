@@ -9,6 +9,7 @@ using AVDCoupon.Data;
 using AVDCoupon.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using ADVCoupon.Helpers;
 
 namespace ADVCoupon.Services
 {
@@ -32,8 +33,8 @@ namespace ADVCoupon.Services
         {
 
             var userCoupon = from coupon in _context.Coupons
-                       where coupon.UserCoupons.FirstOrDefault(y => y.CouponId == couponId && y.UserId == userId) != null
-                       select coupon.UserCoupons.FirstOrDefault(y => y.CouponId == couponId && y.UserId == userId);
+                             where coupon.UserCoupons.FirstOrDefault(y => y.CouponId == couponId && y.UserId == userId) != null
+                             select coupon.UserCoupons.FirstOrDefault(y => y.CouponId == couponId && y.UserId == userId);
 
             return userCoupon.FirstOrDefault();
         }
@@ -74,9 +75,8 @@ namespace ADVCoupon.Services
             {
                 Id = coupon.Id,
                 Caption = coupon.Caption,
-                IsAbsoluteDiscount = coupon.IsAbsoluteDiscount,
-                DiscountAbsolute = coupon.DiscountAbsolute ?? default,
-                DiscountPercentage = coupon.DiscountPercentage ?? default,
+                DiscountTypeText = coupon.DiscountType,
+                Discount = coupon.Discount,
                 TotalCapacity = coupon.TotalCapacity,
                 CurrentCapacity = coupon.CurrentCapacity,
                 StartDate = coupon.StartDate,
@@ -84,14 +84,15 @@ namespace ADVCoupon.Services
                 IsApproved = coupon.IsApproved,
                 ProductsId = coupon.Products.Select(item => item.Id),
                 ImageView = coupon.Image,
-                Products = GetSelectListProducts()
+                Products = GetSelectListProducts(),
+                DiscountType = GetSelectListDiscountTypes()
             };
             return couponModel;
         }
 
         public async Task<List<Coupon>> GetCouponsAsync()
         {
-            var coupons = await _context.Coupons.Include(item=>item.Products).ToListAsync();
+            var coupons = await _context.Coupons.Include(item => item.Products).ToListAsync();
             return coupons;
         }
 
@@ -125,9 +126,8 @@ namespace ADVCoupon.Services
             {
                 Caption = couponModel.Caption,
                 Id = Guid.NewGuid(),
-                IsAbsoluteDiscount = couponModel.IsAbsoluteDiscount,
-                DiscountAbsolute = couponModel.DiscountAbsolute,
-                DiscountPercentage = couponModel.DiscountPercentage,
+                Discount = couponModel.Discount,
+                DiscountType = couponModel.DiscountTypeText,
                 StartDate = couponModel.StartDate,
                 EndDate = couponModel.EndDate,
                 TotalCapacity = couponModel.TotalCapacity,
@@ -168,7 +168,7 @@ namespace ADVCoupon.Services
             };
 
             couponModel.Networks = new MultiSelectList(_context.Networks.ToList(),"Id","Caption");
-
+            couponModel.DiscountType = GetSelectListDiscountTypes();
             return couponModel;
         }
 
@@ -181,6 +181,13 @@ namespace ADVCoupon.Services
 
         }
 
+        public SelectList GetSelectListDiscountTypes()
+        {
+            string[] discountTypes = { Constants.DISCOUNT_TYPE_PERCENT, Constants.DISCOUNT_TYPE_ABSOLUTE };
+            var discountSelectList = new SelectList(discountTypes);
+            return discountSelectList;
+        }
+
         public async Task<List<CouponCreateItemViewModel>> GetCouponCreateItemViewModelsAsync()
         {
             var coupons = await GetCouponsAsync();
@@ -189,9 +196,8 @@ namespace ADVCoupon.Services
             {
                 Id = item.Id,
                 Caption = item.Caption,
-                IsAbsoluteDiscount = item.IsAbsoluteDiscount,
-                DiscountAbsolute = item.DiscountAbsolute ?? default,
-                DiscountPercentage = item.DiscountPercentage ?? default,
+                Discount = item.Discount,
+                DiscountTypeText = item.DiscountType,
                 TotalCapacity = item.TotalCapacity,
                 CurrentCapacity = item.CurrentCapacity,
                 StartDate = item.StartDate,
@@ -205,14 +211,28 @@ namespace ADVCoupon.Services
             return couponsListViewModel;
         }
 
+
+        public async Task<List<Coupon>> GetOnlyApprovedDateCouponsAsync()
+        {
+            var coupons = await GetOnlyApprovedDateCouponsQuery().ToListAsync();
+            return coupons;
+        }
+
+        public async Task<List<Coupon>> GetRelatedCouponsByNetworkAsync(Guid idCoupon, Guid idNetwork)
+        {
+            var couponsQuery = GetOnlyApprovedDateCouponsQuery();
+            var coupons = await couponsQuery.Where(item => item.Id != idCoupon && item.NetworkCoupons.Any(item1 => item1.NetworkId == idNetwork)).ToListAsync();
+            return coupons;
+        }
+
+
         public async Task UpdateCouponAsync(CouponCreateItemViewModel couponModel)
         {
             var coupon = await GetCouponAsync(couponModel.Id);
             coupon.Caption = couponModel.Caption;
             coupon.Id = couponModel.Id;
-            coupon.IsAbsoluteDiscount = couponModel.IsAbsoluteDiscount;
-            coupon.DiscountAbsolute = couponModel.DiscountAbsolute;
-            coupon.DiscountPercentage = couponModel.DiscountPercentage;
+            coupon.Discount = couponModel.Discount;
+            coupon.DiscountType = couponModel.DiscountTypeText;
             coupon.StartDate = couponModel.StartDate;
             coupon.EndDate = couponModel.EndDate;
             coupon.TotalCapacity = couponModel.TotalCapacity;
@@ -253,5 +273,13 @@ namespace ADVCoupon.Services
             _context.Update(coupon);
             await _context.SaveChangesAsync();
         }
+
+        private IQueryable<Coupon> GetOnlyApprovedDateCouponsQuery()
+        {
+            var coupons = _context.Coupons.Where(item => item.IsApproved && item.StartDate > DateTime.Now && item.EndDate < DateTime.Now);
+            return coupons;
+        }
+
+
     }
 }

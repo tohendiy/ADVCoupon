@@ -16,7 +16,7 @@
                         columns.Add(model => model.Name).Titled("Name");
                         columns.Add(model => model.SKU).Titled("SKU");
                         columns.Add(model => model.SupplierName).Titled("Supplier");
-                        columns.Add(model => $"<img style='width:80px; height:80px;' src='data: image / jpeg; base64,{(Convert.ToBase64String(model.Image))}'").Encoded(false).Titled("Image");
+                        columns.Add(model => $"<img style='width:80px; height:80px;' src='data:image/jpeg;base64,{(Convert.ToBase64String(model.Image))}'").Encoded(false).Titled("Image");
                     })
                     .Empty("No data found")
                     .Id("my-ajax-grid")

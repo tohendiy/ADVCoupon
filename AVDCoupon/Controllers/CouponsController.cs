@@ -135,6 +135,8 @@ namespace ADVCoupon.Controllers
             //    await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            couponModel.Products = _couponService.GetSelectListProducts();
+            couponModel.DiscountType = _couponService.GetSelectListDiscountTypes();
             return View(couponModel);
         }
 
@@ -223,6 +225,7 @@ namespace ADVCoupon.Controllers
                 return RedirectToAction(nameof(Index));
             }
             couponModel.Products = _couponService.GetSelectListProducts();
+            couponModel.DiscountType = _couponService.GetSelectListDiscountTypes();
             return View(couponModel);
         }
 
