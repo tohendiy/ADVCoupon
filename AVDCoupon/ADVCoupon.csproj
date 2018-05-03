@@ -36,7 +36,6 @@
     <Folder Include="Data\Migrations\" />
     <Folder Include="ViewModel\AccountViewModels\" />
     <Folder Include="ViewModel\ManageViewModels\" />
-    <Folder Include="ViewModel\CouponViewModel\" />
     <Folder Include="ViewModel\ProductCategoryViewModels\" />
     <Folder Include="ViewModel\NetworkPointViewModels\" />
     <Folder Include="ViewModel\ProviderViewModels\" />

@@ -5,11 +5,10 @@
 }
 
 <script>
-document.addEventListener('DOMContentLoaded', function(){ 
+    document.addEventListener('DOMContentLoaded', function () {
 
         optionIsAbsoluteDiscount = document.getElementById("isAbsoluteDiscountInput").checked;
-        if(optionIsAbsoluteDiscount === true)
-        {
+        if (optionIsAbsoluteDiscount === true) {
             document.getElementById("discountAbsoluteForm").hidden = false;
             document.getElementById("discountPercentageForm").hidden = true;
         } else {
@@ -19,9 +18,8 @@ document.addEventListener('DOMContentLoaded', function(){
 
     });
     function showCorrectDiscount(element) {
-         optionIsAbsoluteDiscount = document.getElementById("isAbsoluteDiscountInput").checked;
-        if(optionIsAbsoluteDiscount === true)
-        {
+        optionIsAbsoluteDiscount = document.getElementById("isAbsoluteDiscountInput").checked;
+        if (optionIsAbsoluteDiscount === true) {
             document.getElementById("discountAbsoluteForm").hidden = false;
             document.getElementById("discountPercentageForm").hidden = true;
         } else {
@@ -93,6 +91,31 @@ document.addEventListener('DOMContentLoaded', function(){
 
             @Html.AjaxGrid(Url.Action("CreateProductGrid"))
 
+            
+                <div class="form-group">
+                    <div class="add-sets">
+                        <div class="form-inline add-set">
+                            <div class="form-group">
+                                <label class="control-label">Network</label>
+                                <select multiple name="NetworkBarcodes[0].Networks" class="form-control network-select" asp-items="@Model.Networks"></select>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="NetworkBarcodes.First().BarcodeValue" class="control-label"></label>
+                                <input asp-for="NetworkBarcodes.First().BarcodeValue" name="NetworkBarcodes[0].BarcodeValue" placeholder="Barcode value" class="form-control barcode-select" />
+                                <span asp-validation-for="NetworkBarcodes.First().BarcodeValue" class="text-danger" />
+                            </div>
+
+                            <div class="form-group">
+                                <button class="btn btn-remove-set" data-toggle="tooltip" title="Remove Set"><span class="glyphicon glyphicon-minus"></span></button>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn btn-add-set">Add Set</button>
+                </div>
+          
+
+
+
             <div class="form-group">
                 <label asp-for="IsApproved" class="control-label"></label>
                 <input asp-for="IsApproved" class="form-control" />
@@ -114,4 +137,51 @@ document.addEventListener('DOMContentLoaded', function(){
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            removeButton();
+
+            var wrapper = $('.add-sets');
+
+            $(".btn-add-set").click(function (e) {
+                e.preventDefault();
+
+                $('.add-set:last-child .network-select')[0].children.
+
+                var cloned = $('.add-set:last-child').clone(true).appendTo(wrapper);;
+
+                reasignNames();
+
+                $('.add-set .btn-remove-set').show();
+            });
+
+            $('.btn-remove-set').click(function (e) {
+                e.preventDefault();
+                $(this).parents('.add-set').remove();
+
+                reasignNames();
+
+                removeButton();
+            });
+
+            function reasignNames() {
+                debugger;
+
+                $('.add-sets .network-select').each(function (element) {
+                    $(this)[0].name = 'NetworkBarcodes[' + element + '].Networks';
+                });
+
+                $('.add-sets .barcode-select').each(function (element) {
+                    $(this)[0].name = 'NetworkBarcodes[' + element + '].BarcodeValue';
+                }); 
+            }
+
+            function removeButton() {
+                if ($('.add-set').length == 1) {
+                    $('.add-set .btn-remove-set').hide();
+                }
+            }
+        });
+    </script>
 }

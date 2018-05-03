@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using ADVCoupon.Attributes;
+using ADVCoupon.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
 namespace ADVCoupon.ViewModel.CouponViewModel
@@ -38,6 +39,14 @@ namespace ADVCoupon.ViewModel.CouponViewModel
 
 
         public bool IsAbsoluteDiscount { get; set; }
+
+        #endregion
+
+        #region NetworkBarcodes
+
+        public MultiSelectList Networks { get; set; }
+
+        public List<NetworkBarcodeViewModel> NetworkBarcodes { get; set; }
 
         #endregion
 

@@ -12,10 +12,11 @@ using Microsoft.AspNetCore.Authorization;
 using ADVCoupon.ViewModel.UsersViewModels;
 using ADVCoupon.Services;
 using ADVCoupon.Helpers;
+using NonFactors.Mvc.Grid;
 
 namespace ADVCoupon.Controllers
 {
-    [Authorize(Roles = Constants.ADMIN_ROLE)]
+   // [Authorize(Roles = Constants.ADMIN_ROLE)]
     public class UsersController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -245,9 +246,16 @@ namespace ADVCoupon.Controllers
         }
 
         [HttpGet]
-        public async Task<PartialViewResult> IndexGrid()
+        public async Task<PartialViewResult> IndexGrid(Int32? page, Int32? rows)
         {
-            var users = await _userManager.Users.Include(x => x.Provider).Include(y => y.Network).ToListAsync();
+            ViewBag.TotalRows = _userManager.Users.Count();
+
+            var users = await _userManager.Users
+                //.Skip((page - 1 ?? 0) * (rows ?? 2))
+                //.Take(rows ?? 2)
+                .Include(x => x.Provider)
+                .Include(y => y.Network)
+                .ToListAsync();
 
             var usersWithRoles = from u in users
                                  select new UserTableItemViewModel { User = u, Role = _userManager.GetRolesAsync(u).Result[0], NetworkName = u.Network?.Caption, ProviderName = u.Provider?.Name };
@@ -260,6 +268,22 @@ namespace ADVCoupon.Controllers
         private bool ApplicationUserExists(string id)
         {
             return _userManager.Users.Any(e => e.Id == id);
+        }
+    }
+
+    public class TestProc : IGridProcessor<UserTableItemViewModel>
+    {
+        public GridProcessorType ProcessorType { get; set; }
+
+        public TestProc()
+        {
+            ProcessorType = GridProcessorType.Manual;
+            // Executed on all the data, mainly for filtering/sorting in a custom way
+        }
+
+        public IQueryable<UserTableItemViewModel> Process(IQueryable<UserTableItemViewModel> items)
+        {
+            return items;
         }
     }
 }

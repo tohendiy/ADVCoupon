@@ -17,10 +17,9 @@ namespace AVDCoupon.Models
         public int TotalCapacity { get; set; }
         public int CurrentCapacity { get; set; }
         public byte[] Image { get; set; }
-
         public List<Product> Products { get; set; }
+        public List<NetworkBarcode> NetworkBarcodes { get; set; }
         public List<NetworkCoupon> NetworkCoupons { get; set; }
-
         public List<UserCoupon> UserCoupons { get; set; }
         public bool IsApproved { get; set; }
         public bool IsAbsoluteDiscount { get; set; }

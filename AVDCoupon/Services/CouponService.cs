@@ -158,6 +158,17 @@ namespace ADVCoupon.Services
         {
             var couponModel = new CouponCreateItemViewModel();
             couponModel.Products = GetSelectListProducts();
+            couponModel.NetworkBarcodes = new List<NetworkBarcodeViewModel>()
+            {
+                new NetworkBarcodeViewModel()
+                {
+                    BarcodeValue = "",
+                    Networks = new List<Guid>()
+                }
+            };
+
+            couponModel.Networks = new MultiSelectList(_context.Networks.ToList(),"Id","Caption");
+
             return couponModel;
         }
 

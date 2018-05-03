@@ -21,8 +21,11 @@
             .Id("my-ajax-grid")
             .Pageable(pager =>
             {
+                pager.ProcessorType = GridProcessorType.Manual;
+                pager.TotalRows = ViewBag.TotalRows;
                 pager.RowsPerPage = 10;
             })
+            .ProcessWith(new ADVCoupon.Controllers.TestProc())
             .Filterable()
             .Sortable()
 )

@@ -7,13 +7,15 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Storage.Internal;
 using System;
+using System.Collections.Generic;
 
 namespace ADVCoupon.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180503105258_Changes")]
+    partial class Changes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -53,13 +55,9 @@ namespace ADVCoupon.Migrations
 
                     b.Property<byte[]>("LogoImage");
 
-                    b.Property<Guid?>("NetworkBarcodeId");
-
                     b.Property<Guid?>("ProductCategoryId");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("NetworkBarcodeId");
 
                     b.HasIndex("ProductCategoryId");
 
@@ -74,6 +72,8 @@ namespace ADVCoupon.Migrations
                     b.Property<string>("BarcodeValue");
 
                     b.Property<Guid?>("CouponId");
+
+                    b.Property<List<Guid>>("Networks");
 
                     b.HasKey("Id");
 
@@ -391,10 +391,6 @@ namespace ADVCoupon.Migrations
 
             modelBuilder.Entity("ADVCoupon.Models.Network", b =>
                 {
-                    b.HasOne("ADVCoupon.Models.NetworkBarcode")
-                        .WithMany("Networks")
-                        .HasForeignKey("NetworkBarcodeId");
-
                     b.HasOne("ADVCoupon.Models.ProductCategory", "ProductCategory")
                         .WithMany()
                         .HasForeignKey("ProductCategoryId");
