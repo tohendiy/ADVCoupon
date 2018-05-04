@@ -15,6 +15,7 @@
                 columns.Add(model => model.Role).Titled(Html.DisplayNameFor(model => model.Role));
                 columns.Add(model => model.NetworkName).Titled(Html.DisplayNameFor(model => model.NetworkName));
                 columns.Add(model => model.ProviderName).Titled(Html.DisplayNameFor(model => model.ProviderName));
+
             })
             .Empty("No data found")
             .Id("my-ajax-grid")
