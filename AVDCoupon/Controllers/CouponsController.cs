@@ -137,6 +137,7 @@ namespace ADVCoupon.Controllers
             }
             couponModel.Products = _couponService.GetSelectListProducts();
             couponModel.DiscountType = _couponService.GetSelectListDiscountTypes();
+            couponModel.Networks = _couponService.GetMultiSelectListNetworks();
             return View(couponModel);
         }
 
@@ -226,6 +227,7 @@ namespace ADVCoupon.Controllers
             }
             couponModel.Products = _couponService.GetSelectListProducts();
             couponModel.DiscountType = _couponService.GetSelectListDiscountTypes();
+            couponModel.Networks = _couponService.GetMultiSelectListNetworks();
             return View(couponModel);
         }
 

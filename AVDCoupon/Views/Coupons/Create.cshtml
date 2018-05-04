@@ -20,7 +20,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="DiscountType" class="control-label"></label>
-                <select asp-for="DiscountTypeText" asp-items="@Model.DiscountType"></select>
+                <select asp-for="DiscountTypeText" asp-items="@Model.DiscountType" class="selection"></select>
                 <span asp-validation-for="DiscountType" class="text-danger"></span>
             </div>
             <div class="form-group" id="discountPercentageForm">
@@ -54,18 +54,17 @@
 
             <div class="form-group">
                 <label asp-for="Products" class="control-label"></label>
-                <select asp-for="ProductsId" asp-items="@Model.Products"></select>
+                <select asp-for="ProductsId" asp-items="@Model.Products" class="selection"></select>
                 <span asp-validation-for="Products" class="text-danger"></span>
             </div>
 
-            @Html.AjaxGrid(Url.Action("CreateProductGrid"))
 
             
                 <div class="form-group">
                     <div class="add-sets">
                         <div class="form-inline add-set">
                             <div class="form-group">
-                                <label class="control-label">Network</label>
+                                <label class="control-label" asp-for="Networks"></label>
                                 <select multiple name="NetworkBarcodes[0].Networks" class="form-control network-select" asp-items="@Model.Networks"></select>
                             </div>
                             <div class="form-group">
@@ -149,6 +148,14 @@
                     $('.add-set .btn-remove-set').hide();
                 }
             }
+
+    
+            $('.selection').multiselect({
+                enableFiltering: true,
+                includeSelectAllOption: true
+            });
+
+
         });
     </script>
 }

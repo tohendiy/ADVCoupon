@@ -4,8 +4,18 @@
     ViewData["Title"] = "Details";
 }
 <script>
+ document.addEventListener('DOMContentLoaded', function(){ 
 
-
+        option = document.getElementById("isApprovedHidden").value;
+        if(option === "True")
+        {
+            document.getElementById("activateCouponButton").hidden = true;
+            document.getElementById("deactivateCouponButton").hidden = false;
+        } else {
+            document.getElementById("activateCouponButton").hidden = false;
+            document.getElementById("deactivateCouponButton").hidden = true;
+        }
+        });
 </script>
 <h2>Details</h2>
 

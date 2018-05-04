@@ -1,5 +1,4 @@
-﻿@using ADVCoupon.ViewModel.UsersViewModels
-@model List<UserTableItemViewModel>
+﻿@model IEnumerable<ADVCoupon.ViewModel.UsersViewModels.UserTableItemViewModel>
 
 <script>
     $('.mvc-grid tr').on('rowclick', function (e, data, grid, originalEvent) {
@@ -11,11 +10,11 @@
             .Grid(Model)
             .Build(columns =>
             {
-                columns.Add(model => model.User.Id).Titled("Id");
-                columns.Add(model => model.User.Email).Titled("Email");
-                columns.Add(model => model.Role).Titled("Role");
-                columns.Add(model => model.NetworkName).Titled("Network Name");
-                columns.Add(model => model.ProviderName).Titled("Supplier");
+                columns.Add(model => model.User.Id).Titled(Html.DisplayNameFor(model => model.User.Id)).Css("Hide");
+                columns.Add(model => model.User.Email).Titled(Html.DisplayNameFor(model => model.User.Email));
+                columns.Add(model => model.Role).Titled(Html.DisplayNameFor(model => model.Role));
+                columns.Add(model => model.NetworkName).Titled(Html.DisplayNameFor(model => model.NetworkName));
+                columns.Add(model => model.ProviderName).Titled(Html.DisplayNameFor(model => model.ProviderName));
             })
             .Empty("No data found")
             .Id("my-ajax-grid")

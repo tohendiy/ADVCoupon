@@ -2,15 +2,27 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using Microsoft.AspNetCore.Identity;
+using AVDCoupon.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace ADVCoupon.Controllers
 {
-    [Route("api/[controller]")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Route("api/users")]
     public class UsersApiController : Controller
     {
+        private UserManager<ApplicationUser> _userManager;
+
+        public UsersApiController(UserManager<ApplicationUser> userManager)
+        {
+            _userManager = userManager;
+        }
         // GET: api/values
         [HttpGet]
         public IEnumerable<string> Get()
@@ -20,15 +32,19 @@ namespace ADVCoupon.Controllers
 
         // GET api/values/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public async Task<ApplicationUser> GetUserData(string id)
         {
-            return "value";
+            var user = await _userManager.Users.Where(item => item.Id == id).FirstOrDefaultAsync();
+            return user;
         }
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody]string value)
+        public async Task<bool> Post([FromBody]ApplicationUser user)
         {
+            var result = await _userManager.UpdateAsync(user);
+            return result.Succeeded;
+
         }
 
         // PUT api/values/5
@@ -39,8 +55,13 @@ namespace ADVCoupon.Controllers
 
         // DELETE api/values/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<bool> Delete(string id)
         {
+            var user = await _userManager.Users.Where(item => item.Id == id).FirstOrDefaultAsync();
+            var result = await _userManager.DeleteAsync(user);
+            return result.Succeeded;
         }
+
+
     }
 }

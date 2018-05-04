@@ -30,7 +30,7 @@
             </div>
              <div class="form-group">
                 <label asp-for="ProductCategories" class="control-label"></label>
-                <select asp-for="ProductCategoryId" asp-items="@Model.ProductCategories"></select>
+                <select asp-for="ProductCategoryId" asp-items="@Model.ProductCategories" class="selection"></select>
                 <span asp-validation-for="ProductCategories" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -46,4 +46,12 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+    $(document).ready(function() {
+        $('.selection').multiselect({
+                enableFiltering: true,
+                includeSelectAllOption: true
+            });
+    });
+    </script>
 }

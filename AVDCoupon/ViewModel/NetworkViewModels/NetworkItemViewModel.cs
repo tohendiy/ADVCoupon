@@ -20,8 +20,13 @@ namespace ADVCoupon.ViewModel.NetworkViewModels
         [DataType(DataType.Upload)]
         public IFormFile LogoImage { get; set; }
 
+        [Display(Name = "Категория")]
         public Guid ProductCategoryId { get; set; }
 
+        [Display(Name = "Категория")]
         public SelectList ProductCategories { get; set; }
+
+        [Display(Name ="Категория")]
+        public string ProductCategoryName { get; set; }
     }
 }

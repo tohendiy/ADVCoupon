@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ADVCoupon.Models;
 using ADVCoupon.ViewModel.ProviderViewModels;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ADVCoupon.Services
 {
@@ -27,6 +28,8 @@ namespace ADVCoupon.Services
         Task DeleteProviderAsync(Guid Id);
 
         bool IsExist(Guid Id);
+
+        SelectList GetSelectListProviders();
 
 
 

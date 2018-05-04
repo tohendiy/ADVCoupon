@@ -32,8 +32,10 @@ namespace ADVCoupon.ViewModel.ProductViewModels
         [Display(Name = "Логотип")]
         public IFormFile ImageFile { get; set; }
 
-        [Display(Name = "Поставщики")]
+        [Display(Name = "Поставщик")]
         public SelectList Providers { get; set; }
+
+        [Display(Name = "Поставщик")]
         public Guid ProviderId { get; set; }
     }
 }

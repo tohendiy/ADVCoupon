@@ -12,9 +12,10 @@
                     .Grid(Model)
                     .Build(columns =>
                     {
-                        columns.Add(model => model.Id).Titled("Id");
-                        columns.Add(model => model.Caption).Titled("Name");
-                        columns.Add(model => $"<img style='width:80px; height:80px;' src='data:image/jpeg;base64,{(Convert.ToBase64String(model.LogoImageView))}'").Encoded(false).Titled("Image");
+                        columns.Add(model => model.Id).Titled(Html.DisplayNameFor(model => model.Id)).Css("Hide");
+                        columns.Add(model => model.Caption).Titled(Html.DisplayNameFor(model => model.Caption));
+                        columns.Add(model => model.ProductCategoryName).Titled(Html.DisplayNameFor(model => model.ProductCategoryName));
+                        columns.Add(model => $"<img style='width:80px; height:80px;' src='data:image/jpeg;base64,{(Convert.ToBase64String(model.LogoImageView))}'").Encoded(false).Titled(Html.DisplayNameFor(model => model.LogoImageView));
                     })
                     .Empty("No data found")
                     .Id("my-ajax-grid")

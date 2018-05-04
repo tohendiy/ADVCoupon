@@ -87,8 +87,8 @@ namespace ADVCoupon.Controllers
         {
             var model = new UserViewModel()
             {
-                Providers = new SelectList(await _providerService.GetProvidersAsync(), "Id", "Name"),
-                Networks = new SelectList(await _networkService.GetNetworksAsync(), "Id", "Caption")
+                Providers = _providerService.GetSelectListProviders(),
+                Networks = _networkService.GetSelectListNetworks()
             };
             return View(model);
         }
@@ -126,6 +126,8 @@ namespace ADVCoupon.Controllers
                 
                 return RedirectToAction(nameof(Index));
             }
+            applicationUserCreateModel.Providers = _providerService.GetSelectListProviders();
+            applicationUserCreateModel.Networks = _networkService.GetSelectListNetworks();
             return View(applicationUserCreateModel);
         }
 
@@ -145,8 +147,8 @@ namespace ADVCoupon.Controllers
 
             var model = new UserViewModel()
             {
-                Providers = new SelectList(await _providerService.GetProvidersAsync(), "Id", "Name"),
-                Networks = new SelectList(await _networkService.GetNetworksAsync(), "Id", "Caption"),
+                Providers = _providerService.GetSelectListProviders(),
+                Networks = _networkService.GetSelectListNetworks(),
                 Name = applicationUser.UserName,
                 Email = applicationUser.Email,
                 Id = applicationUser.Id
@@ -201,7 +203,9 @@ namespace ADVCoupon.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(user);
+            applicationUserCreateModel.Providers = _providerService.GetSelectListProviders();
+            applicationUserCreateModel.Networks = _networkService.GetSelectListNetworks();
+            return View(applicationUserCreateModel);
         }
 
         // GET: Users/Delete/5

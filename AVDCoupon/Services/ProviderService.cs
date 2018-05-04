@@ -8,6 +8,7 @@ using ADVCoupon.ViewModel.ProviderViewModels;
 using AVDCoupon.Data;
 using AVDCoupon.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ADVCoupon.Services
 {
@@ -156,6 +157,13 @@ namespace ADVCoupon.Services
             }
             _context.Update(provider);
             await _context.SaveChangesAsync();
+        }
+
+        public SelectList GetSelectListProviders()
+        {
+            var providers = _context.Providers.ToList();
+            var providersSelectList = new SelectList(providers, "Id", "Name");
+            return providersSelectList;
         }
     }
 }

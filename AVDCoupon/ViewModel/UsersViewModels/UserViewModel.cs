@@ -11,7 +11,9 @@ namespace ADVCoupon.ViewModel.UsersViewModels
     public class UserViewModel
     {
         public string Id { get; set; }
+        [Display(Name = "Поставщик")]
         public SelectList Providers { get; set; }
+        [Display(Name = "Сеть")]
         public SelectList Networks { get; set; }
 
         [Display(Name="Имя")]
@@ -31,10 +33,10 @@ namespace ADVCoupon.ViewModel.UsersViewModels
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
-        [Display(Name = "Подтвердить пароль")]
-        [Required]
-        [Compare("Password", ErrorMessage = "Пароли не совпадают")]
-        public string ConfrimPassword { get; set; }
+        //[Display(Name = "Подтвердить пароль")]
+        //[Required]
+        //[Compare("Password", ErrorMessage = "Пароли не совпадают")]
+        //public string ConfrimPassword { get; set; }
 
         [Display(Name = "Поставщик")]
         public string Provider { get; set; }

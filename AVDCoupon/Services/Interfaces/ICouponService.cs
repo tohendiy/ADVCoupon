@@ -42,6 +42,7 @@ namespace ADVCoupon.Services
         bool IsExist(Guid Id);
         MultiSelectList GetSelectListProducts();
         SelectList GetSelectListDiscountTypes();
+        MultiSelectList GetMultiSelectListNetworks();
 
         
     }

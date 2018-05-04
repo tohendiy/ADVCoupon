@@ -22,7 +22,7 @@
             </div>
            <div class="form-group">
                 <label asp-for="DiscountType" class="control-label"></label>
-                <select asp-for="DiscountTypeText" asp-items="@Model.DiscountType"></select>
+                <select asp-for="DiscountTypeText" asp-items="@Model.DiscountType" class="selection"></select>
                 <span asp-validation-for="DiscountType" class="text-danger"></span>
             </div>
             <div class="form-group" id="discountPercentageForm">
@@ -55,7 +55,7 @@
            
             <div class="form-group">
                 <label asp-for="Products" class="control-label"></label>
-                <select asp-for="ProductsId" asp-items="@Model.Products"></select>
+                <select asp-for="ProductsId" asp-items="@Model.Products" class="selection"></select>
                 <span asp-validation-for="Products" class="text-danger"></span>
             </div>
 
@@ -77,4 +77,11 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        $('.selection').multiselect({
+                enableFiltering: true,
+                includeSelectAllOption: true
+            });
+    </script>
 }

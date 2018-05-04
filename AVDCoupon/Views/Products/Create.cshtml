@@ -35,7 +35,7 @@
 
             <div class="form-group" id="providerSelect">
                 <label asp-for="Providers" class="control-label"></label>
-                <select asp-for="ProviderId" asp-items="@Model.Providers"></select>
+                <select asp-for="ProviderId" asp-items="@Model.Providers" class="selection"></select>
                 <span asp-validation-for="Providers" class="text-danger"></span>
             </div>
 
@@ -50,3 +50,14 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+    $(document).ready(function() {
+        $('.selection').multiselect({
+                enableFiltering: true,
+                includeSelectAllOption: true
+            });
+    });
+    </script>
+}

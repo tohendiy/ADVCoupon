@@ -7,6 +7,7 @@ namespace ADVCoupon.ViewModel.NetworkPointViewModels
     public class NetworkPointViewModel
     {
         public Guid Id { get; set; }
+
         [Display(Name = "Название")]
         [Required]
         public string Name { get; set; }
@@ -31,9 +32,13 @@ namespace ADVCoupon.ViewModel.NetworkPointViewModels
         [Required]
         public string Building { get; set; }
 
+        [Display(Name = "Сеть")]
         [Required]
         public Guid NetworkId { get; set; }
+
+        [Display(Name = "Сеть")]
         public SelectList Networks { get; set; }
+
         [Display(Name = "Сеть")]
         public string NetworkName { get; set; }
 

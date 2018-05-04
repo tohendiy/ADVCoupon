@@ -12,15 +12,15 @@
                     .Grid(Model)
                     .Build(columns =>
                     {
-                        columns.Add(model => model.Id).Titled("Id");
-                        columns.Add(model => model.Name).Titled("Name");
-                        columns.Add(model => model.NetworkName).Titled("Network");
-                        columns.Add(model => model.Longitude).Titled("Longitude");
-                        columns.Add(model => model.Latitude).Titled("Latitude");
-                        columns.Add(model => model.Country).Titled("Country");
-                        columns.Add(model => model.City).Titled("City");
-                        columns.Add(model => model.Street).Titled("Street");
-                        columns.Add(model => model.Building).Titled("Building");
+                        columns.Add(model => model.Id).Titled(Html.DisplayNameFor(model => model.Id)).Css("Hide");
+                        columns.Add(model => model.Name).Titled(Html.DisplayNameFor(model => model.Name));
+                        columns.Add(model => model.NetworkName).Titled(Html.DisplayNameFor(model => model.NetworkName));
+                        columns.Add(model => model.Longitude).Titled(Html.DisplayNameFor(model => model.Longitude));
+                        columns.Add(model => model.Latitude).Titled(Html.DisplayNameFor(model => model.Latitude));
+                        columns.Add(model => model.Country).Titled(Html.DisplayNameFor(model => model.Country));
+                        columns.Add(model => model.City).Titled(Html.DisplayNameFor(model => model.City));
+                        columns.Add(model => model.Street).Titled(Html.DisplayNameFor(model => model.Street));
+                        columns.Add(model => model.Building).Titled(Html.DisplayNameFor(model => model.Building));
                     })
                     .Empty("No data found")
                     .Id("my-ajax-grid")

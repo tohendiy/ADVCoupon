@@ -167,7 +167,7 @@ namespace ADVCoupon.Services
                 }
             };
 
-            couponModel.Networks = new MultiSelectList(_context.Networks.ToList(),"Id","Caption");
+            couponModel.Networks = GetMultiSelectListNetworks();
             couponModel.DiscountType = GetSelectListDiscountTypes();
             return couponModel;
         }
@@ -186,6 +186,13 @@ namespace ADVCoupon.Services
             string[] discountTypes = { Constants.DISCOUNT_TYPE_PERCENT, Constants.DISCOUNT_TYPE_ABSOLUTE };
             var discountSelectList = new SelectList(discountTypes);
             return discountSelectList;
+        }
+
+        public MultiSelectList GetMultiSelectListNetworks()
+        {
+            var networks = _context.Networks.ToList();
+            var networksSelectList = new MultiSelectList(networks, "Id", "Caption");
+            return networksSelectList;
         }
 
         public async Task<List<CouponCreateItemViewModel>> GetCouponCreateItemViewModelsAsync()
@@ -279,6 +286,7 @@ namespace ADVCoupon.Services
             var coupons = _context.Coupons.Where(item => item.IsApproved && item.StartDate > DateTime.Now && item.EndDate < DateTime.Now);
             return coupons;
         }
+
 
 
     }

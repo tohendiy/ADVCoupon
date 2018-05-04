@@ -25,6 +25,7 @@ namespace ADVCoupon.ViewModel.CouponViewModel
         public SelectList DiscountType { get; set; }
 
         [Display(Name = "Тип скидки")]
+        [Required]
         public string DiscountTypeText { get; set; }
 
         [Display(Name = "Размер скидки")]
@@ -34,33 +35,38 @@ namespace ADVCoupon.ViewModel.CouponViewModel
         [Display(Name = "Дата старта")]
         [Required]
         [DateLessThan("EndDate", ErrorMessage = "Not valid")]
+        [DataType(DataType.Date)]
         public DateTime StartDate { get; set; }
 
         [Display(Name = "Дата конца")]
         [Required]
+        [DataType(DataType.Date)]
         public DateTime EndDate { get; set; }
 
         [Display(Name = "Кол-во купонов")]
         [Required]
         public int TotalCapacity { get; set; }
 
+        [Display(Name = "Использованное кол-во купонов")]
         public int CurrentCapacity { get; set; }
 
         [Display(Name = "Подтверждение")]
         public bool IsApproved { get; set; }
 
         #region Product
-
+        [Display(Name = "Продукты")]
         public IEnumerable<Guid> ProductsId { get; set; }
 
+        [Display(Name = "Продукты")]
         public MultiSelectList Products { get; set; }
 
         #endregion
 
         #region NetworkBarcodes
-
+        [Display(Name = "Сети")]
         public MultiSelectList Networks { get; set; }
 
+        [Display(Name = "Штрихкоды сетей")]
         public List<NetworkBarcodeViewModel> NetworkBarcodes { get; set; }
 
         #endregion

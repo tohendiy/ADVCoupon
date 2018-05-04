@@ -24,7 +24,9 @@
         max-width: 100%;
         width: 100%;
     }
-
+    .mvc-grid tr:hover {
+        background-color:#D7E0EE;
+    }
     .mvc-grid th {
         background-clip: padding-box;
         background-color: #F7F7F7;
@@ -35,6 +37,7 @@
     .mvc-grid td {
         border: 1px solid #DEE2E6;
         padding: 8px;
+        cursor:pointer;
     }
 
     .mvc-grid .filterable {
@@ -377,4 +380,8 @@
     40% {
         transform: scale(1.0);
     }
+}
+
+.Hide {
+    display: none;
 }

@@ -9,6 +9,7 @@ using AVDCoupon.Data;
 using AVDCoupon.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ADVCoupon.Services
 {
@@ -25,7 +26,8 @@ namespace ADVCoupon.Services
             {
                 Id = network.Id,
                 Caption = network.Caption,
-                LogoImageView = network.LogoImage
+                LogoImageView = network.LogoImage,
+                ProductCategoryName = network.ProductCategory?.Caption
             };
             return networkModel;
         }
@@ -93,7 +95,7 @@ namespace ADVCoupon.Services
 
         public async Task<NetworkItemViewModel> GetNetworkItemViewModelAsync(Guid Id)
         {
-            var network = await _context.Networks.Include(item=>item.ProductCategory)
+            var network = await _context.Networks.Include(item => item.ProductCategory)
                 .SingleOrDefaultAsync(m => m.Id == Id);
             if (network == null)
             {
@@ -105,7 +107,8 @@ namespace ADVCoupon.Services
                 Caption = network.Caption,
                 LogoImageView = network.LogoImage,
                 ProductCategories = GetSelectListProductCategories(),
-                ProductCategoryId = network.ProductCategory.Id
+                ProductCategoryId = network.ProductCategory.Id,
+                ProductCategoryName = network.ProductCategory.Caption
             };
             return networkModel;
         }
@@ -125,13 +128,16 @@ namespace ADVCoupon.Services
 
         public async Task<List<NetworkItemViewModel>> GetNetworkViewModelsAsync()
         {
-            var networks = await _context.Networks.ToListAsync();
+            var networks = await _context.Networks.Include(item => item.ProductCategory).ToListAsync();
             var networksListViewModel = new List<NetworkItemViewModel>(networks.Count);
             networksListViewModel = networks.Select(item => new NetworkItemViewModel
             {
                 Id = item.Id,
                 Caption = item.Caption,
-                LogoImageView = item.LogoImage
+                LogoImageView = item.LogoImage,
+                ProductCategoryName = item.ProductCategory.Caption,
+                ProductCategoryId = item.ProductCategory.Id,
+                ProductCategories = GetSelectListProductCategories()
 
             }).ToList();
             return networksListViewModel;
@@ -191,5 +197,13 @@ namespace ADVCoupon.Services
             var network = await _context.Networks.Where(item => item.ProductCategory.Id == id).ToListAsync();
             return network;
         }
+
+        public SelectList GetSelectListNetworks()
+        {
+            var networks = _context.Networks.ToList();
+            var networksSelectList = new SelectList(networks, "Id", "Caption");
+            return networksSelectList;
+        }
+
     }
 }

@@ -29,8 +29,9 @@ namespace ADVCoupon.Controllers
         // GET: Providers
         public async Task<IActionResult> Index()
         {
-            var providersModel = await _service.GetProviderViewModelsAsync();
-            return View(providersModel);
+            //var providersModel = await _service.GetProviderViewModelsAsync();
+            //return View(providersModel);
+            return View();
         }
 
         // GET: Providers/Details/5

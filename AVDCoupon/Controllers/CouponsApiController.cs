@@ -72,7 +72,7 @@ namespace ADVCoupon.Controllers
         }
 
         [HttpGet]
-        public async Task<List<Coupon>> GetCouponByNetwork(Guid idCoupon, Guid idNetwork)
+        public async Task<List<Coupon>> GetRelatedCouponsByNetwork(Guid idCoupon, Guid idNetwork)
         {
             var networkCoupons = await _service.GetRelatedCouponsByNetworkAsync(idCoupon, idNetwork);
             return networkCoupons;
