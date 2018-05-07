@@ -19,6 +19,7 @@ namespace ADVCoupon.ViewModel.CouponViewModel
         public byte[] ImageView { get; set; }
 
         [Display(Name = "Лого")]
+        [DataType(DataType.Upload)]
         public IFormFile Image { get; set; }
 
         [Display(Name = "Тип скидки")]
@@ -30,6 +31,7 @@ namespace ADVCoupon.ViewModel.CouponViewModel
 
         [Display(Name = "Размер скидки")]
         [Required]
+        [Range(0, double.PositiveInfinity)]
         public double Discount { get; set; }
 
         [Display(Name = "Дата старта")]
@@ -45,9 +47,11 @@ namespace ADVCoupon.ViewModel.CouponViewModel
 
         [Display(Name = "Кол-во купонов")]
         [Required]
+        [Range(0, int.MaxValue)]
         public int TotalCapacity { get; set; }
 
         [Display(Name = "Использованное кол-во купонов")]
+        [Range(0, int.MaxValue)]
         public int CurrentCapacity { get; set; }
 
         [Display(Name = "Подтверждение")]

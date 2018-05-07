@@ -111,6 +111,13 @@ namespace ADVCoupon.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CouponCreateItemViewModel couponModel)
         {
+            if(couponModel.DiscountTypeText.Equals(Constants.DISCOUNT_TYPE_PERCENT))
+            {
+                if(couponModel.Discount < 0 || couponModel.Discount > 100)
+                {
+                    ModelState.AddModelError("Discount", "Out of range of possible values");
+                }
+            }
             if (ModelState.IsValid)
             {
                 var coupon = await _couponService.CreateCouponAsync(couponModel);

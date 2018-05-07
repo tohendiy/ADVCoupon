@@ -30,12 +30,14 @@ namespace ADVCoupon.ViewModel.ProductViewModels
         public byte[] Image { get; set; }
 
         [Display(Name = "Логотип")]
+        [DataType(DataType.Upload)]
         public IFormFile ImageFile { get; set; }
 
         [Display(Name = "Поставщик")]
         public SelectList Providers { get; set; }
 
         [Display(Name = "Поставщик")]
+        [Required]
         public Guid ProviderId { get; set; }
     }
 }
