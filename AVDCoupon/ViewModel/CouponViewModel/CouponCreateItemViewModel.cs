@@ -59,6 +59,7 @@ namespace ADVCoupon.ViewModel.CouponViewModel
 
         #region Product
         [Display(Name = "Продукты")]
+        [Required]
         public IEnumerable<Guid> ProductsId { get; set; }
 
         [Display(Name = "Продукты")]
@@ -71,6 +72,7 @@ namespace ADVCoupon.ViewModel.CouponViewModel
         public MultiSelectList Networks { get; set; }
 
         [Display(Name = "Штрихкоды сетей")]
+        [Required]
         public List<NetworkBarcodeViewModel> NetworkBarcodes { get; set; }
 
         #endregion

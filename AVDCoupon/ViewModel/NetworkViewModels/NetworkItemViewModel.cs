@@ -25,7 +25,6 @@ namespace ADVCoupon.ViewModel.NetworkViewModels
         public Guid ProductCategoryId { get; set; }
 
         [Display(Name = "Категория")]
-        [Required]
         public SelectList ProductCategories { get; set; }
 
         [Display(Name ="Категория")]
