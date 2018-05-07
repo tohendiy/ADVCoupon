@@ -1,19 +1,51 @@
-﻿@{
-    ViewData["Title"] = "Index";
-}
+﻿@model ADVCoupon.ViewModel.MailViewModels.MailViewModel
 
-<script>
-    function proceed() {
-        var form = document.createElement('form');
-        form.setAttribute('method', 'post');
-        form.setAttribute('action', 'SendNotification');
-        form.style.display = 'hidden';
-        document.body.appendChild(form)
-        form.submit();
-    }
-</script>
+@{
+    ViewData["Title"] = "Mail";
+}
 
 <h2>Mail</h2>
 
-<button type="button" onclick="proceed();">Send</button>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="PostMessage" >
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+           <div class="form-group">
+                <label asp-for="Subject" class="control-label"></label>
+                <input asp-for="Subject" class="form-control" />
+                <span asp-validation-for="Subject" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Message" class="control-label"></label>
+                <textarea asp-for="Message" class="form-control" ></textarea>
+                <span asp-validation-for="Message" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RecipientsRoles" class="control-label"></label>
+                <select asp-for="Roles" asp-items="@Model.RecipientsRoles" class="selection"></select>
+                <span asp-validation-for="RecipientsRoles" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Send" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+    $(document).ready(function() {
+        $('.selection').multiselect({
+                enableFiltering: true,
+                includeSelectAllOption: true
+            });
+    });
+    </script>
+}
 

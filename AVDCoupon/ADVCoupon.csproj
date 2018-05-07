@@ -43,6 +43,7 @@
     <Folder Include="ViewModel\NetworkViewModels\" />
     <Folder Include="Migrations\" />
     <Folder Include="wwwroot\less\" />
+    <Folder Include="ViewModel\MailViewModels\" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="Views\Coupon\Index.cshtml" />
