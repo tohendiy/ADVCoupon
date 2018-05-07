@@ -126,6 +126,13 @@ namespace ADVCoupon.Services
             return networks;
         }
 
+        public async Task<List<Network>> GetNetworksByIdListAsync(List<Guid> guids)
+        {
+            var networks = _context.Networks.Where(x => guids.Contains(x.Id));
+            return networks.ToList();
+        }
+
+
         public async Task<List<NetworkItemViewModel>> GetNetworkViewModelsAsync()
         {
             var networks = await _context.Networks.Include(item => item.ProductCategory).ToListAsync();

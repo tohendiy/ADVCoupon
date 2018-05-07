@@ -122,6 +122,14 @@ namespace ADVCoupon.Services
 
         public async Task<Coupon> CreateCouponAsync(CouponCreateItemViewModel couponModel)
         {
+            var networkBarcodes = from c in couponModel.NetworkBarcodes
+                                  select new NetworkBarcode()
+                                  {
+                                      BarcodeValue = c.BarcodeValue,
+                                      Id = Guid.NewGuid(),
+                                      Networks = _context.Networks.Where(x => c.Networks.Contains(x.Id)).ToList()
+                                  };
+
             var coupon = new Coupon
             {
                 Caption = couponModel.Caption,
@@ -134,6 +142,7 @@ namespace ADVCoupon.Services
                 CurrentCapacity = couponModel.CurrentCapacity,
                 IsApproved = couponModel.IsApproved,
                 NetworkCoupons = new List<NetworkCoupon>(),
+                NetworkBarcodes = networkBarcodes.ToList(),
                 UserCoupons = new List<UserCoupon>(),
                 Products = await _context.Products.Where(item => couponModel.ProductsId.Contains(item.Id)).ToListAsync()
             };
@@ -153,7 +162,7 @@ namespace ADVCoupon.Services
             await _context.SaveChangesAsync();
             return coupon;
         }
-
+        
         public async Task<CouponCreateItemViewModel> GetCouponProductsListItemViewModelAsync()
         {
             var couponModel = new CouponCreateItemViewModel();
@@ -286,7 +295,6 @@ namespace ADVCoupon.Services
             var coupons = _context.Coupons.Where(item => item.IsApproved && item.StartDate > DateTime.Now && item.EndDate < DateTime.Now);
             return coupons;
         }
-
 
 
     }
