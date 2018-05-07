@@ -129,6 +129,7 @@ namespace ADVCoupon.Services
                                       Id = Guid.NewGuid(),
                                       Networks = _context.Networks.Where(x => c.Networks.Contains(x.Id)).ToList()
                                   };
+            var networkCoupons = networkBarcodes.SelectMany(item => item.Networks).ToList();
 
             var coupon = new Coupon
             {
@@ -146,6 +147,20 @@ namespace ADVCoupon.Services
                 UserCoupons = new List<UserCoupon>(),
                 Products = await _context.Products.Where(item => couponModel.ProductsId.Contains(item.Id)).ToListAsync()
             };
+
+            var networkCouponsList = new List<NetworkCoupon>(networkCoupons.Count);
+
+            networkCouponsList = networkCoupons.Select(item => new NetworkCoupon
+            {
+                CouponId = coupon.Id,
+                Coupon = coupon,
+                NetworkId = item.Id,
+                Network = item
+
+            }).ToList();
+
+            coupon.NetworkCoupons = networkCouponsList;
+
             if (couponModel.Image != null)
             {
 

@@ -118,6 +118,10 @@ namespace ADVCoupon.Controllers
                     ModelState.AddModelError("Discount", "Out of range of possible values");
                 }
             }
+            if(couponModel.Image == null)
+            {
+                ModelState.AddModelError("Image", "Please, provide image for coupon");
+            }
             if (ModelState.IsValid)
             {
                 var coupon = await _couponService.CreateCouponAsync(couponModel);
