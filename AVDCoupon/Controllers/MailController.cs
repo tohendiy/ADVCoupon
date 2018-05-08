@@ -8,51 +8,40 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using SendGrid;
 using SendGrid.Helpers.Mail;
+using AVDCoupon.Services;
+using ADVCoupon.ViewModel.MailViewModels;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace ADVCoupon.Controllers
 {
     public class MailController : Controller
     {
         private readonly IConfiguration _configuration;
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IEmailSender _emailSender;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public MailController(IConfiguration configuration, UserManager<ApplicationUser> userManager)
+        public MailController(IConfiguration configuration, RoleManager<IdentityRole> roleManager, IEmailSender emailSender)
         {
             _configuration = configuration;
-            _userManager = userManager;
+            _roleManager = roleManager;
+            _emailSender = emailSender;
         }
 
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-
-            return View();
+            var mailModel = new MailViewModel();
+            var roles = _roleManager.Roles.Select(item=>item.Name).ToList();
+            mailModel.RecipientsRoles = new MultiSelectList(roles, "Name");
+            return View(mailModel);
         }
 
        
-        [Route("SendNotification")]
-        public async Task<IActionResult> PostMessage(List<string> role, string message, string subject)
+        public async Task<IActionResult> PostMessage(MailViewModel mailModel)
         {
-            var users = new List<ApplicationUser>();
-
-            foreach(var r in role)
-            {
-                users.AddRange(await _userManager.GetUsersInRoleAsync(r));
-            }
-
-            var apiKey = _configuration.GetSection("SENDGRID_API_KEY").Value;
-            var client = new SendGridClient(apiKey);
-            
-            var from = new EmailAddress("olecsiuyae@gmail.com", "ADV Team");
-            List<EmailAddress> tos = new List<EmailAddress>();
-            foreach(var u in users)
-            {
-                tos.Add(new EmailAddress(u.Email));
-            }
-            var displayRecipients = false; // set this to true if you want recipients to see each others mail id 
-            var msg = MailHelper.CreateSingleEmailToMultipleRecipients(from, tos, subject, message, "", false);
-            var response = await client.SendEmailAsync(msg);
-            return LocalRedirect("Index");
+            await _emailSender.PostMessage(mailModel.Roles.ToList(), mailModel.Message, mailModel.Subject);
+            return RedirectToAction("Index");
         }
     }
 }

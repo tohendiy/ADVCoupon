@@ -5,6 +5,11 @@ using System.Threading.Tasks;
 using MimeKit;
 using ADVCoupon.Helpers;
 using MailKit.Net.Smtp;
+using AVDCoupon.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
+using SendGrid;
+using SendGrid.Helpers.Mail;
 
 namespace AVDCoupon.Services
 {
@@ -12,6 +17,15 @@ namespace AVDCoupon.Services
     // For more details see https://go.microsoft.com/fwlink/?LinkID=532713
     public class EmailSender : IEmailSender
     {
+
+        private UserManager<ApplicationUser> _userManager;
+        private readonly IConfiguration _configuration;
+
+        public EmailSender(UserManager<ApplicationUser> userManager, IConfiguration configuration)
+        {
+            _userManager = userManager;
+            _configuration = configuration;
+        }
         public async Task SendEmailAsync(string email, string subject, string message)
         {
             try
@@ -38,6 +52,30 @@ namespace AVDCoupon.Services
             }
             catch(Exception ex)
             { }
+
+        }
+
+        public async Task PostMessage(List<string> role, string message, string subject)
+        {
+            var users = new List<ApplicationUser>();
+
+            foreach (var r in role)
+            {
+                users.AddRange(await _userManager.GetUsersInRoleAsync(r));
+            }
+
+            var apiKey = _configuration.GetSection("SENDGRID_API_KEY").Value;
+            var client = new SendGridClient(apiKey);
+
+            var from = new EmailAddress(Constants.SMTP_EMAIL_FROM, Constants.SMTP_EMAIL_NAME);
+            List<EmailAddress> tos = new List<EmailAddress>();
+            foreach (var u in users)
+            {
+                tos.Add(new EmailAddress(u.Email));
+            }
+            var displayRecipients = false; // set this to true if you want recipients to see each others mail id 
+            var msg = MailHelper.CreateSingleEmailToMultipleRecipients(from, tos, subject, message, "", displayRecipients);
+            var response = await client.SendEmailAsync(msg);
 
         }
     }
