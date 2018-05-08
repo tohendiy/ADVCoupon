@@ -151,9 +151,10 @@ namespace ADVCoupon.Controllers
                 Networks = _networkService.GetSelectListNetworks(),
                 Name = applicationUser.UserName,
                 Email = applicationUser.Email,
-                Id = applicationUser.Id
+                Id = applicationUser.Id,
+                Role = _userManager.GetRolesAsync(applicationUser).Result[0]
 
-            };
+        };
 
             return View(model);
         }
@@ -163,7 +164,7 @@ namespace ADVCoupon.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Id,Email,Password")] UserViewModel applicationUserCreateModel)
+        public async Task<IActionResult> Edit(string id, [Bind("Id,Role,Email,Password")] UserViewModel applicationUserCreateModel)
         {
             if (id != applicationUserCreateModel.Id)
             {

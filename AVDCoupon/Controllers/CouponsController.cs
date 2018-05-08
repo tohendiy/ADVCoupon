@@ -292,44 +292,6 @@ namespace ADVCoupon.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Grid()
-        {
-            //var coupons = await _context.Coupons.ToListAsync();
-            //var couponsListViewModel = new List<CouponClientGridViewModel>(coupons.Count);
-            //couponsListViewModel = coupons.Select(item => new CouponClientGridViewModel
-            //{
-            //    Id = item.Id,
-            //    CouponName = item.CouponName,
-            //    CouponImage = item.CouponImage
-            //}).ToList();
-            return View();
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> ClientDetail(Guid? id)
-        {
-            //if (id == null)
-            //{
-            //    return NotFound();
-            //}
-
-            //var coupon = await _context.Coupons
-            //    .SingleOrDefaultAsync(m => m.Id == id);
-            //if (coupon == null)
-            //{
-            //    return NotFound();
-            //}
-            //var couponViewModel = new CouponClientGridViewModel
-            //{
-            //    Id = coupon.Id,
-            //    CouponName = coupon.CouponName,
-            //    CouponImage = coupon.CouponImage
-            //};
-
-            return View();
-        }
-
-        [HttpGet]
         [Route("/pdf/coupon")]
         public async Task<IActionResult> GenerateCoupon(string couponId, string userId)
         {
