@@ -14,6 +14,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Role"/>
 
             @*<div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
@@ -32,6 +33,8 @@
                 <input asp-for="Password" class="form-control" />
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
+
+
             @*<div class="form-group">
                 <label asp-for="ConfrimPassword" class="control-label"></label>
                 <input asp-for="ConfrimPassword" class="form-control" />

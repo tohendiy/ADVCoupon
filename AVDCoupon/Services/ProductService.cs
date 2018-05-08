@@ -29,7 +29,9 @@ namespace ADVCoupon.Services
 
         public async Task DeleteProductAsync(Guid Id)
         {
-            var product = await _context.Products.SingleOrDefaultAsync(m => m.Id == Id);
+            var product = await _context.Products.Include(i => i.Coupon).SingleOrDefaultAsync(m => m.Id == Id);
+            //product.Coupon = null;
+            //await _context.SaveChangesAsync();
             _context.Products.Remove(product);
             await _context.SaveChangesAsync();
         }

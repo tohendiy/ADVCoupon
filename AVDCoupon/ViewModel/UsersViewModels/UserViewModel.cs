@@ -31,6 +31,7 @@ namespace ADVCoupon.ViewModel.UsersViewModels
         [Display(Name = "Пароль")]
         [Required]
         [DataType(DataType.Password)]
+        [StringLength(maximumLength:100, ErrorMessage ="Пароль слишком короткий", MinimumLength = 6)]
         public string Password { get; set; }
 
         //[Display(Name = "Подтвердить пароль")]
