@@ -7,6 +7,8 @@ using Microsoft.EntityFrameworkCore;
 using AVDCoupon.Models;
 using ADVCoupon.Models;
 using Microsoft.EntityFrameworkCore.Design;
+using System.Threading;
+using System.Linq.Expressions;
 
 namespace AVDCoupon.Data
 {
@@ -56,10 +58,62 @@ namespace AVDCoupon.Data
                    .HasOne(uc => uc.Network)
                    .WithMany(uc => uc.NetworkCoupons)
                    .HasForeignKey(uc => uc.NetworkId);
+
+			foreach (var entityType in builder.Model.GetEntityTypes())
+            {
+                // 1. Add the IsDeleted property
+                entityType.GetOrAddProperty("IsDeleted", typeof(bool));
+
+                // 2. Create the query filter
+
+                var parameter = Expression.Parameter(entityType.ClrType);
+
+                // EF.Property<bool>(post, "IsDeleted")
+                var propertyMethodInfo = typeof(EF).GetMethod("Property").MakeGenericMethod(typeof(bool));
+                var isDeletedProperty = Expression.Call(propertyMethodInfo, parameter, Expression.Constant("IsDeleted"));
+
+                // EF.Property<bool>(post, "IsDeleted") == false
+                BinaryExpression compareExpression = Expression.MakeBinary(ExpressionType.Equal, isDeletedProperty, Expression.Constant(false));
+
+                // post => EF.Property<bool>(post, "IsDeleted") == false
+                var lambda = Expression.Lambda(compareExpression, parameter);
+
+                builder.Entity(entityType.ClrType).HasQueryFilter(lambda);
+            }
             // Customize the ASP.NET Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
         }
+
+		public override int SaveChanges(bool acceptAllChangesOnSuccess)
+        {
+            OnBeforeSaving();
+            return base.SaveChanges(acceptAllChangesOnSuccess);
+        }
+
+        public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            OnBeforeSaving();
+            return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+        }
+
+		private void OnBeforeSaving()
+		{
+			foreach (var entry in ChangeTracker.Entries())
+			{
+				switch (entry.State)
+				{
+					case EntityState.Added:
+						entry.CurrentValues["IsDeleted"] = false;
+						break;
+
+					case EntityState.Deleted:
+						entry.State = EntityState.Modified;
+						entry.CurrentValues["IsDeleted"] = true;
+						break;
+				}
+			}
+		}
     }
 
     public class ApplicationContextFactory : IDesignTimeDbContextFactory<ApplicationDbContext>
