@@ -247,7 +247,7 @@ namespace ADVCoupon.Controllers
                             networkPointList.Add(currentPoint);
                         }
 
-                        await _networkPointService.AddNetworkPoints(networkPointList);
+						await _networkPointService.AddNetworkPoints(new Guid(networkId), networkPointList);
 
                     }
 
