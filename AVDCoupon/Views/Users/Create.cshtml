@@ -14,6 +14,9 @@
         } else if(option==='@ADVCoupon.Helpers.Constants.MERCHANT_ROLE'){
             document.getElementById("providerSelect").hidden = true;
             document.getElementById("networkSelect").hidden = false;
+        } else if(option==='@ADVCoupon.Helpers.Constants.ADMIN_ROLE'){
+            document.getElementById("providerSelect").hidden = true;
+            document.getElementById("networkSelect").hidden = true;
         }
     };
 </script>
@@ -50,6 +53,7 @@
                 <select asp-for="Role" id="roleSelect" onchange="showNeededSelect(this)">
                     <option selected value="@ADVCoupon.Helpers.Constants.SUPPLIER_ROLE">Supplier</option>
                     <option value="@ADVCoupon.Helpers.Constants.MERCHANT_ROLE">Merchant</option>
+                    <option value="@ADVCoupon.Helpers.Constants.ADMIN_ROLE">Admin</option>
 
                 </select>
                 <span asp-validation-for="Role" class="text-danger"></span>
