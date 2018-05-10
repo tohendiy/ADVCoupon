@@ -105,57 +105,58 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-   <script type="text/javascript">
-        $(document).ready(function () {
+<script type="text/javascript">$(document).ready(function() {
+
+        removeButton();
+
+        var wrapper = $('.add-sets');
+
+        $(".btn-add-set").click(function(e) {
+            e.preventDefault();
+
+            var cloned = $('.add-set:last-child').clone(true).appendTo(wrapper);;
+
+            reasignNames();
+
+            $('.add-set .btn-remove-set').show();
+        });
+
+        $('.btn-remove-set').click(function(e) {
+            e.preventDefault();
+            $(this).parents('.add-set').remove();
+
+            reasignNames();
 
             removeButton();
-
-            var wrapper = $('.add-sets');
-
-            $(".btn-add-set").click(function (e) {
-                e.preventDefault();
-
-                var cloned = $('.add-set:last-child').clone(true).appendTo(wrapper);;
-
-                reasignNames();
-
-                $('.add-set .btn-remove-set').show();
-            });
-
-            $('.btn-remove-set').click(function (e) {
-                e.preventDefault();
-                $(this).parents('.add-set').remove();
-
-                reasignNames();
-
-                removeButton();
-            });
-
-            function reasignNames() {
-                debugger;
-
-                $('.add-sets .network-select').each(function (element) {
-                    $(this)[0].name = 'NetworkBarcodes[' + element + '].Networks';
-                });
-
-                $('.add-sets .barcode-select').each(function (element) {
-                    $(this)[0].name = 'NetworkBarcodes[' + element + '].BarcodeValue';
-                }); 
-            }
-
-            function removeButton() {
-                if ($('.add-set').length == 1) {
-                    $('.add-set .btn-remove-set').hide();
-                }
-            }
-
-    
-            $('.selection').multiselect({
-                enableFiltering: true,
-                includeSelectAllOption: true
-            });
-
-
         });
-    </script>
+
+        function reasignNames() {
+            debugger;
+
+            $('.add-sets .network-select').each(function(element) {
+                $(this)[0].name = 'NetworkBarcodes[' + element + '].Networks';
+            });
+
+            $('.add-sets .barcode-select').each(function(element) {
+                $(this)[0].name = 'NetworkBarcodes[' + element + '].BarcodeValue';
+            });
+        }
+
+        function removeButton() {
+            if ($('.add-set').length == 1) {
+                $('.add-set .btn-remove-set').hide();
+            }
+        }
+
+
+        $('.selection').multiselect({
+            enableFiltering: true,
+            includeSelectAllOption: true,
+            enableCollapsibleOptGroups: true,
+            enableClickableOptGroups: true,
+            collapseOptGroupsByDefault: true
+        });
+
+
+});</script>
 }

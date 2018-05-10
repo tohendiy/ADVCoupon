@@ -48,21 +48,33 @@ namespace ADVCoupon.Services
             await _context.SaveChangesAsync();
             return coupon;
         }
-
+        /// <summary>
+        /// Deletes the coupon async.
+        /// </summary>
+        /// <returns>The coupon async.</returns>
+        /// <param name="Id">Identifier.</param>
         public async Task DeleteCouponAsync(Guid Id)
         {
             var coupon = await GetCouponAsync(Id);
             _context.Coupons.Remove(coupon);
             await _context.SaveChangesAsync();
         }
-
+        /// <summary>
+        /// Gets the coupon async.
+        /// </summary>
+        /// <returns>The coupon async.</returns>
+        /// <param name="Id">Identifier.</param>
         public async Task<Coupon> GetCouponAsync(Guid Id)
         {
             var coupon = await _context.Coupons.Include(item => item.Products)
                .SingleOrDefaultAsync(m => m.Id == Id);
             return coupon;
         }
-
+        /// <summary>
+        /// Gets the coupon create item view model async.
+        /// </summary>
+        /// <returns>The coupon create item view model async.</returns>
+        /// <param name="Id">Identifier.</param>
         public async Task<CouponCreateItemViewModel> GetCouponCreateItemViewModelAsync(Guid Id)
         {
             var coupon = await _context.Coupons.Include(item => item.Products)
@@ -195,12 +207,12 @@ namespace ADVCoupon.Services
             couponModel.DiscountType = GetSelectListDiscountTypes();
             return couponModel;
         }
-
+        
         public MultiSelectList GetSelectListProducts()
         {
-            var products = _context.Products.Select(x => new { Id = x.Id, Value = x.Name });
+			var products = _context.Products.Include(item=> item.Provider).Select(x => new { Id = x.Id, Value = x.Name, Group = x.Provider.Name });
 
-            var productsSelectList = new MultiSelectList(products, "Id", "Value");
+			var productsSelectList = new MultiSelectList(products, "Id", "Value", null, "Group");
             return productsSelectList;
 
         }

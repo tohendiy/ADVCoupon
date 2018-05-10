@@ -60,7 +60,7 @@ namespace ADVCoupon.Controllers
             }
 
             var applicationUser = await _userManager.Users
-                .Include(x => x.Provider).Include(y => y.Network).SingleOrDefaultAsync(m => m.Id == id);
+			                                        .Include(x => x.Provider).Include(y => y.Network).SingleOrDefaultAsync(m => m.Id == id);
             if (applicationUser == null)
             {
                 return NotFound();
@@ -112,7 +112,7 @@ namespace ADVCoupon.Controllers
                 {
                     user.Network = await _networkService.GetNetwork(new Guid(applicationUserCreateModel.Network));
                 }
-                else
+				else if(applicationUserCreateModel.Role == Helpers.Constants.SUPPLIER_ROLE)
                 {
                     user.Provider = await _providerService.GetProvider(new Guid(applicationUserCreateModel.Provider));
                 }
