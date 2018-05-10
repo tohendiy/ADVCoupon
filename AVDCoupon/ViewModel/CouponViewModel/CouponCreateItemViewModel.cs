@@ -46,7 +46,7 @@ namespace ADVCoupon.ViewModel.CouponViewModel
         public DateTime EndDate { get; set; }
 
         [Display(Name = "Кол-во купонов")]
-        [Required]
+        
         [Range(0, int.MaxValue)]
         public int TotalCapacity { get; set; }
 

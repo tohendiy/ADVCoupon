@@ -18,8 +18,8 @@
                         columns.Add(model => model.DiscountTypeText).Titled(Html.DisplayNameFor(model => model.DiscountTypeText));
                         columns.Add(model => model.StartDate).Titled(Html.DisplayNameFor(model => model.StartDate)).Formatted("{0:d}");
                         columns.Add(model => model.EndDate).Titled(Html.DisplayNameFor(model => model.EndDate)).Formatted("{0:d}");
-                        columns.Add(model => model.TotalCapacity).Titled(Html.DisplayNameFor(model => model.TotalCapacity));
-                        columns.Add(model => model.CurrentCapacity).Titled(Html.DisplayNameFor(model => model.CurrentCapacity));
+                        //columns.Add(model => model.TotalCapacity).Titled(Html.DisplayNameFor(model => model.TotalCapacity));
+                        //columns.Add(model => model.CurrentCapacity).Titled(Html.DisplayNameFor(model => model.CurrentCapacity));
                         columns.Add(model => model.IsApproved).Titled(Html.DisplayNameFor(model => model.IsApproved));
                         columns.Add(model => $"<img style='width:80px; height:80px;' src='data:image/jpeg;base64,{(Convert.ToBase64String(model.ImageView))}'").Encoded(false).Titled(Html.DisplayNameFor(model => model.ImageView));
 
