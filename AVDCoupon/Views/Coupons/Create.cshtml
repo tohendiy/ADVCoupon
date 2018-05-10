@@ -70,7 +70,16 @@
                             <div class="form-group">
                                 <label asp-for="NetworkBarcodes.First().BarcodeValue" class="control-label"></label>
                                 <input asp-for="NetworkBarcodes.First().BarcodeValue" name="NetworkBarcodes[0].BarcodeValue" placeholder="Barcode value" class="form-control barcode-select" />
+
                                 <span asp-validation-for="NetworkBarcodes.First().BarcodeValue" class="text-danger" />
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label" asp-for="NetworkBarcodes.First().BarcodeType"></label>
+                                <select name="NetworkBarcodes[0].BarcodeType" class="form-control barcodetype-select">
+                                    <option value="@ADVCoupon.Helpers.Constants.BARCODE_TYPE_EAN8">@ADVCoupon.Helpers.Constants.BARCODE_TYPE_EAN8</option>
+                                    <option value="@ADVCoupon.Helpers.Constants.BARCODE_TYPE_EAN13">@ADVCoupon.Helpers.Constants.BARCODE_TYPE_EAN13</option>
+                                    <option value="@ADVCoupon.Helpers.Constants.BARCODE_TYPE_CODE128">@ADVCoupon.Helpers.Constants.BARCODE_TYPE_CODE128</option>
+                                </select>
                             </div>
 
                             <div class="form-group">
@@ -140,6 +149,10 @@
 
                 $('.add-sets .barcode-select').each(function (element) {
                     $(this)[0].name = 'NetworkBarcodes[' + element + '].BarcodeValue';
+                }); 
+
+                $('.add-sets .barcodetype-select').each(function (element) {
+                    $(this)[0].name = 'NetworkBarcodes[' + element + '].BarcodeType';
                 }); 
             }
 

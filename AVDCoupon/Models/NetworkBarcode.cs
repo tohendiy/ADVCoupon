@@ -10,6 +10,6 @@ namespace ADVCoupon.Models
         public Guid Id { get; set; }
         public List<Network> Networks { get; set; }
         public string BarcodeValue { get; set; }
-        
+        public string BarcodeType { get; set; }
     }
 }

@@ -15,5 +15,8 @@ namespace ADVCoupon.ViewModel.CouponViewModel
         [Display(Name = "Штрихкод")]
         [Required]
         public string BarcodeValue { get; set; }
+        [Display(Name = "Тип")]
+        [Required]
+        public string BarcodeType { get; set; }
     }
 }

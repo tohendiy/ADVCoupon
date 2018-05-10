@@ -126,6 +126,7 @@ namespace ADVCoupon.Services
                                   select new NetworkBarcode()
                                   {
                                       BarcodeValue = c.BarcodeValue,
+                                      BarcodeType = c.BarcodeType,
                                       Id = Guid.NewGuid(),
                                       Networks = _context.Networks.Where(x => c.Networks.Contains(x.Id)).ToList()
                                   };
