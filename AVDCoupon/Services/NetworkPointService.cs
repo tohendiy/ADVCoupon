@@ -190,8 +190,10 @@ namespace ADVCoupon.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task AddNetworkPoints(List<NetworkPoint> list)
+        public async Task AddNetworkPoints(Guid networkId, List<NetworkPoint> list)
         {
+			var existingNetworkPoints = _context.Networks.Where(item => item.Id == networkId).SelectMany(item1 => item1.NetworkPoints);
+			_context.NetworkPoints.RemoveRange(existingNetworkPoints);
             await _context.NetworkPoints.AddRangeAsync(list);
             await _context.SaveChangesAsync();
         }
