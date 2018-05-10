@@ -16,8 +16,10 @@ namespace ADVCoupon.ViewModel.NetworkPointViewModels
         public string Longitude { get; set; }
         [Display(Name = "Широта")]
         public string Latitude { get; set; }
-        [Display(Name = "Высота")]
-        public string Accuracy { get; set; }
+   
+        [Display(Name="Регион")]
+        [Required]
+        public string Region { get; set; }
 
         [Display(Name = "Страна")]
         [Required]
@@ -25,12 +27,10 @@ namespace ADVCoupon.ViewModel.NetworkPointViewModels
         [Display(Name = "Город")]
         [Required]
         public string City { get; set; }
-        [Display(Name = "Улица")]
+       
+        [Display(Name="Адресс")]
         [Required]
-        public string Street { get; set; }
-        [Display(Name = "Дом")]
-        [Required]
-        public string Building { get; set; }
+        public string Address { get; set; }
 
         [Display(Name = "Сеть")]
         [Required]

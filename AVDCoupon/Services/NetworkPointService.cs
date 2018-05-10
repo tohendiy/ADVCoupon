@@ -25,11 +25,10 @@ namespace ADVCoupon.Services
                 Name = networkPoint.Name,
                 Latitude = networkPoint.Geoposition?.Latitude,
                 Longitude = networkPoint.Geoposition?.Longitude,
-                Accuracy = networkPoint.Geoposition?.Accuracy,
                 Country = networkPoint.Geoposition?.Country,
+                Region = networkPoint.Geoposition?.Region,
                 City = networkPoint.Geoposition?.City,
-                Street = networkPoint.Geoposition?.Street,
-                Building = networkPoint.Geoposition?.Building
+                Address = networkPoint.Geoposition?.Address
             };
             return networkPointModel;
         }
@@ -42,13 +41,12 @@ namespace ADVCoupon.Services
                 Name = networkPointModel.Name,
                 Geoposition = new Geoposition()
                 {
-                    Accuracy = networkPointModel.Accuracy,
                     Longitude = networkPointModel.Longitude,
                     Latitude = networkPointModel.Latitude,
                     Country = networkPointModel.Country,
+                    Region = networkPointModel.Region,
                     City = networkPointModel.City,
-                    Street = networkPointModel.Street,
-                    Building = networkPointModel.Building,
+                    Address = networkPointModel.Address
                 }
             };
             return networkPoint;
@@ -70,13 +68,12 @@ namespace ADVCoupon.Services
                 Id = Guid.NewGuid(),
                 Geoposition = new Geoposition()
                 {
-                    Accuracy = networkPointModel.Accuracy,
                     Longitude = networkPointModel.Longitude,
                     Latitude = networkPointModel.Latitude,
                     Country = networkPointModel.Country,
+                    Region = networkPointModel.Region,
                     City = networkPointModel.City,
-                    Street = networkPointModel.Street,
-                    Building = networkPointModel.Building,
+                    Address = networkPointModel.Address,
                     Id = Guid.NewGuid()
                 },
                 Network = _context.Networks.FirstOrDefault(item=> item.Id == networkPointModel.NetworkId)
@@ -118,11 +115,10 @@ namespace ADVCoupon.Services
                 NetworkName = networkPoint.Network.Caption,
                 Latitude = networkPoint.Geoposition?.Latitude,
                 Longitude = networkPoint.Geoposition?.Longitude,
-                Accuracy = networkPoint.Geoposition?.Accuracy,
                 Country = networkPoint.Geoposition?.Country,
+                Region = networkPoint.Geoposition?.Region,
                 City = networkPoint.Geoposition?.City,
-                Street = networkPoint.Geoposition?.Street,
-                Building = networkPoint.Geoposition?.Building,
+                Address = networkPoint.Geoposition?.Address,
                 Networks = GetSelectListNetworks(),
                 NetworkId = networkPoint.Network.Id
             };
@@ -153,11 +149,10 @@ namespace ADVCoupon.Services
                 NetworkName = item.Network.Caption,
                 Latitude = item.Geoposition?.Latitude,
                 Longitude = item.Geoposition?.Longitude,
-                Accuracy = item.Geoposition?.Accuracy,
                 Country = item.Geoposition?.Country,
+                Region = item.Geoposition?.Region,
                 City = item.Geoposition?.City,
-                Street = item.Geoposition?.Street,
-                Building = item.Geoposition?.Building
+                Address = item.Geoposition?.Address
 
             }).ToList();
             return networkPointsListViewModel;
@@ -178,13 +173,12 @@ namespace ADVCoupon.Services
         {
             var networkPoint = await GetNetworkPoint(networkPointModel.Id);
             networkPoint.Name = networkPointModel.Name;
-            networkPoint.Geoposition.Accuracy = networkPointModel.Accuracy;
             networkPoint.Geoposition.Longitude = networkPointModel.Longitude;
             networkPoint.Geoposition.Latitude = networkPointModel.Latitude;
             networkPoint.Geoposition.Country = networkPointModel.Country;
+            networkPoint.Geoposition.Region = networkPointModel.Region;
             networkPoint.Geoposition.City = networkPointModel.City;
-            networkPoint.Geoposition.Street = networkPointModel.Street;
-            networkPoint.Geoposition.Building = networkPointModel.Building;
+            networkPoint.Geoposition.Address = networkPointModel.Address;
             networkPoint.Network = _context.Networks.FirstOrDefault(item => item.Id == networkPointModel.NetworkId);
             _context.Update(networkPoint);
             await _context.SaveChangesAsync();

@@ -48,23 +48,24 @@
             @Html.DisplayFor(model => model.Country)
         </dd>
         <dt>
+            @Html.DisplayNameFor(model => model.Region)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Region)
+        </dd>
+        <dt>
             @Html.DisplayNameFor(model => model.City)
         </dt>
         <dd>
             @Html.DisplayFor(model => model.City)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Street)
+            @Html.DisplayNameFor(model => model.Address)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Street)
+            @Html.DisplayFor(model => model.Address)
         </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Building)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Building)
-        </dd>
+
     </dl>
     
     <form asp-action="Delete">

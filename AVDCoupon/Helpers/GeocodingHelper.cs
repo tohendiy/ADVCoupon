@@ -13,26 +13,32 @@ namespace ADVCoupon.Helpers
     {
         public static async Task<Geoposition> GetCoordinatesByAddressAsync(Geoposition geoposition)
         {
-            IGeocoder geocoder = new GoogleGeocoder() { ApiKey = "AIzaSyCDDmQbMj74oDWZoLco5W7t4nMKP8 - 77Qg" };
+            try
+            {
+                IGeocoder geocoder = new GoogleGeocoder() { ApiKey = "AIzaSyCDDmQbMj74oDWZoLco5W7t4nMKP8 - 77Qg" };
 
-            var literalAddress = new StringBuilder();
-            literalAddress.Append(geoposition.Country)
-                .Append(' ')
-                .Append(geoposition.City)
-                .Append(' ')
-                .Append(geoposition.Street)
-                .Append(' ')
-                .Append(geoposition.Building)
-                .Append(' ');
-            
-            IEnumerable<Address> addresses = await geocoder.GeocodeAsync(literalAddress.ToString());
+                var literalAddress = new StringBuilder();
+                literalAddress.Append(geoposition.Country)
+                    .Append(' ')
+                    .Append(geoposition.City)
+                    .Append(' ')
+                    .Append(geoposition.Region)
+                    .Append(' ')
+                    .Append(geoposition.Address);
 
-            var firstAddress = addresses.First();
+                IEnumerable<Address> addresses = await geocoder.GeocodeAsync(literalAddress.ToString());
 
-            geoposition.Latitude = firstAddress.Coordinates.Latitude.ToString();
-            geoposition.Longitude = firstAddress.Coordinates.Longitude.ToString();
-            
-            return geoposition;
+                var firstAddress = addresses.First();
+
+                geoposition.Latitude = firstAddress.Coordinates.Latitude.ToString();
+                geoposition.Longitude = firstAddress.Coordinates.Longitude.ToString();
+
+                return geoposition;
+            }catch(Exception ex)
+            {
+                return geoposition;
+            }
         }
+        
     }
 }

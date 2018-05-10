@@ -179,6 +179,28 @@ namespace ADVCoupon.Controllers
             {
                 IFormFile file = Request.Form.Files[0];
                 var networkId = Request.Form["networkId"].ToString();
+
+                //fdata.append('networkName', $('#networkName').val());
+                //fdata.append('networkNameCell', $('#networkNameCell').val());
+                //fdata.append('nameCell', $('#nameCell').val());
+                //fdata.append('cityCell', $('#cityCell').val());
+                //fdata.append('addressCell', $('#addressCell').val());
+                //fdata.append('regionCell', $('#regionCell').val());
+
+                int nameCell = Convert.ToInt32(Request.Form["nameCell"]);
+                int addressCell = Convert.ToInt32(Request.Form["addressCell"].ToString());
+                int cityCell = Convert.ToInt32(Request.Form["cityCell"].ToString());
+                int regionCell = Convert.ToInt32(Request.Form["regionCell"].ToString());
+                int networkNameCell = Convert.ToInt32(Request.Form["networkNameCell"].ToString());
+                string networkName = Request.Form["networkName"].ToString();
+
+                //int nameCell = 2;
+                //int addressCell = 4;
+                //int cityCell = 3;
+                //int regionCell = 5;
+                //int networkNameCell = 1;
+                //string networkName = "АНЦ";
+
                 string folderName = "Upload";
                 string webRootPath = _hostingEnvironment.WebRootPath;
                 string newPath = Path.Combine(webRootPath, folderName);
@@ -211,16 +233,7 @@ namespace ADVCoupon.Controllers
                         }
                         IRow headerRow = sheet.GetRow(0); //Get Header Row
                         int cellCount = headerRow.LastCellNum;
-
-                        // it's possible to provide dynamic headers / keep in mind. AO
-
-                        //for (int j = 0; j < cellCount; j++)
-                        //{
-                        //    ICell cell = headerRow.GetCell(j);
-                        //    if (cell == null || string.IsNullOrWhiteSpace(cell.ToString())) continue;
-
-                        //    sb.Append("<th>" + cell.ToString() + "</th>");
-
+                        
                         var networkPointList = new List<NetworkPoint>();
 
                         for (int i = (sheet.FirstRowNum + 1); i <= sheet.LastRowNum; i++) //Read Excel File
@@ -234,13 +247,21 @@ namespace ADVCoupon.Controllers
                                 Network = network
                             };
 
-                            currentPoint.Name = row.GetCell(row.FirstCellNum).ToString();
+                            var currentNetworkName = row.GetCell(networkNameCell)?.ToString();
+
+                            if(currentNetworkName != networkName)
+                            {
+                                continue;
+                            }
+
+                            currentPoint.Name = row.GetCell(nameCell).ToString();
+
                             currentPoint.Geoposition = new Geoposition()
                             {
-                                Country = row.GetCell(row.FirstCellNum + 1).ToString(),
-                                City = row.GetCell(row.FirstCellNum + 2).ToString(),
-                                Street = row.GetCell(row.FirstCellNum + 3).ToString(),
-                                Building = row.GetCell(row.FirstCellNum + 4).ToString()
+                                Country = "Україна",
+                                City = row.GetCell(cityCell)?.ToString(),
+                                Region = row.GetCell(regionCell)?.ToString(),
+                                Address = row.GetCell(addressCell)?.ToString()
                             };
 
                             currentPoint.Geoposition = await Helpers.GeocodingHelper.GetCoordinatesByAddressAsync(currentPoint.Geoposition);
@@ -253,13 +274,12 @@ namespace ADVCoupon.Controllers
 
                     Directory.Delete(newPath, true);
                 }
-
-                return RedirectToAction("Index", "NetworkPoints", null);
+                return Content("Import finished.");
 
             }
             catch(Exception ex)
             {
-                return NotFound();
+                return Content("Import failed." + ex.Message);
             }
             
         }
@@ -276,5 +296,15 @@ namespace ADVCoupon.Controllers
         {
             return _service.IsExist(id);
         }
+
+
+        // it's possible to provide dynamic headers / keep in mind. AO
+
+        //for (int j = 0; j < cellCount; j++)
+        //{
+        //    ICell cell = headerRow.GetCell(j);
+        //    if (cell == null || string.IsNullOrWhiteSpace(cell.ToString())) continue;
+
+        //    sb.Append("<th>" + cell.ToString() + "</th>");
     }
 }

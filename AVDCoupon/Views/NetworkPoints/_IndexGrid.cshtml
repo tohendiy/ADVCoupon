@@ -19,8 +19,9 @@
                         columns.Add(model => model.Latitude).Titled(Html.DisplayNameFor(model => model.Latitude));
                         columns.Add(model => model.Country).Titled(Html.DisplayNameFor(model => model.Country));
                         columns.Add(model => model.City).Titled(Html.DisplayNameFor(model => model.City));
-                        columns.Add(model => model.Street).Titled(Html.DisplayNameFor(model => model.Street));
-                        columns.Add(model => model.Building).Titled(Html.DisplayNameFor(model => model.Building));
+                        columns.Add(model => model.Region).Titled(Html.DisplayNameFor(model => model.Region));
+                        columns.Add(model => model.Address).Titled(Html.DisplayNameFor(model => model.Address));
+                       
                     })
                     .Empty("No data found")
                     .Id("my-ajax-grid")

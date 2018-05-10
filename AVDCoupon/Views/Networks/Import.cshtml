@@ -22,9 +22,14 @@
         var fdata = new FormData();
         var fileUpload = $("#fUpload").get(0);
         var files = fileUpload.files;
-        console.log(files);
             fdata.append(files[0].name, files[0]);
             fdata.append('networkId', '@ViewBag.NetworkId');
+            fdata.append('networkName', $('#networkName').val());
+            fdata.append('networkNameCell', $('#networkNameCell').val());
+            fdata.append('nameCell', $('#nameCell').val());
+            fdata.append('cityCell', $('#cityCell').val());
+            fdata.append('addressCell', $('#addressCell').val());
+            fdata.append('regionCell', $('#regionCell').val());
         $.ajax({
             type: "POST",
             url: "/Networks/OnPostImport",
@@ -63,10 +68,34 @@
 
     <form method="post" enctype="multipart/form-data">
         <div class="row">
-            <div class="col-md-4">
+            <div class="form-group">
+                <label class="control-label">Network name</label>
+                <input id="networkName" class="form-control" required/>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Network name cell number</label>
+                <input id="networkNameCell" class="form-control" required/>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Point name cell number</label>
+                <input id="nameCell" class="form-control" required/>
+            </div>
+            <div class="form-group">
+                <label class="control-label">City cell number</label>
+                <input id="cityCell" class="form-control" required/>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Address cell number</label>
+                <input id="addressCell" class="form-control" required/>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Region cell number</label>
+                <input id="regionCell" class="form-control" required/>
+            </div>
+            <div class="form-group">
                 <input type="file" id="fUpload" name="files" class="form-control" />
             </div>
-            <div class="col-md-8">
+            <div class="form-group">
                 <input type="button" id="btnUpload" value="Upload" />
             </div>
         </div>
