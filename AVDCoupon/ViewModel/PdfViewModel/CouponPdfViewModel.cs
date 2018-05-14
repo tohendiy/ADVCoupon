@@ -9,14 +9,14 @@ namespace ADVCoupon.ViewModel.PdfViewModel
     public class CouponPdfViewModel
     {
         public string Caption { get; set; }
-        public double? DiscountAbsolute { get; set; }
-        public double? DiscountPercentage { get; set; }
+        public string DiscountType { get; set; }
+        public double Discount { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public Product Product { get; set; }
-        public List<NetworkCoupon> NetworkCoupons { get; set; }
+        public byte[] Image { get; set; }
+        public List<byte[]> NetworkImages {get;set;} 
         public string BarcodeLink { get; set; }
-        public string Barcode { get; set; }
+        
     }
 }
 

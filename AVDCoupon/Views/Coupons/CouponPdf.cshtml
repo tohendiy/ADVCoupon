@@ -10,10 +10,27 @@
 <body>
     <div>
         <b> @Model.Caption</b>
-        <b> BLIAT EBAT</b>
     </div>
     <div>
-        <img src="http://www.barcodes4.me/barcode/c39/AnyValueYouWish.png" />
+        <img src="data:image/png;base64, @(Convert.ToBase64String(Model.Image))" />
     </div>
+    <div>
+        <b> @Model.DiscountType</b>
+    </div> 
+    <div>
+        <b> @Model.Discount</b>
+    </div>
+    <div>
+        <b> From @Model.StartDate to @Model.EndDate</b>
+    </div>
+    <div>
+        <img src="@Model.BarcodeLink" />
+    </div>
+
+    @foreach(var item in Model.NetworkImages)
+    {
+        <img src="data:image/png;base64, @(Convert.ToBase64String(item))" />
+    }
+
 </body>
 </html>

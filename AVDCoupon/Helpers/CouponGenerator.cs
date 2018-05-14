@@ -41,34 +41,34 @@ namespace ADVCoupon.Helpers
             return output;
         }
 
-        public static async Task<byte[]> GenerateImage(ApplicationDbContext context, ITemplateService templateService, ICouponService couponService, Guid couponId, string userId)
-        {
-            var currentUserCoupon = couponService.GetUserCoupon(userId, couponId);
-            var currentCoupon = await couponService.GetCouponById(couponId);
+    //    public static async Task<byte[]> GenerateImage(ApplicationDbContext context, ITemplateService templateService, ICouponService couponService, Guid couponId, string userId)
+    //    {
+    //        var currentUserCoupon = couponService.GetUserCoupon(userId, couponId);
+    //        var currentCoupon = await couponService.GetCouponById(couponId);
             
-            string documentContent = await templateService.RenderTemplateAsync(
-    "Coupons/CouponPdf", ConvertUserCouponToPdfViewModel(currentUserCoupon, currentCoupon));
+    //        string documentContent = await templateService.RenderTemplateAsync(
+    //"Coupons/CouponPdf", ConvertUserCouponToPdfViewModel(currentUserCoupon, currentCoupon));
             
-            var htmlToImageConv = new NReco.ImageGenerator.HtmlToImageConverter();
-            var jpegBytes = htmlToImageConv.GenerateImage(documentContent, ImageFormat.Jpeg);
+    //        var htmlToImageConv = new NReco.ImageGenerator.HtmlToImageConverter();
+    //        var jpegBytes = htmlToImageConv.GenerateImage(documentContent, ImageFormat.Jpeg);
 
-            return jpegBytes;
-        }
+    //        return jpegBytes;
+    //    }
 
-        public static async Task<byte[]> GenerateImageTest(ApplicationDbContext context, ITemplateService templateService, ICouponService couponService)
-        {
+    //    public static async Task<byte[]> GenerateImageTest(ApplicationDbContext context, ITemplateService templateService, ICouponService couponService)
+    //    {
           
-            string documentContent = await templateService.RenderTemplateAsync(
-    "Coupons/CouponPdf", new CouponPdfViewModel()
-    {
-        Caption = "TEST"
-    });
+    //        string documentContent = await templateService.RenderTemplateAsync(
+    //"Coupons/CouponPdf", new CouponPdfViewModel()
+    //{
+    //    Caption = "TEST"
+    //});
 
-            var htmlToImageConv = new NReco.ImageGenerator.HtmlToImageConverter();
-            var jpegBytes = htmlToImageConv.GenerateImage(documentContent, ImageFormat.Jpeg);
+    //        var htmlToImageConv = new NReco.ImageGenerator.HtmlToImageConverter();
+    //        var jpegBytes = htmlToImageConv.GenerateImage(documentContent, ImageFormat.Jpeg);
 
-            return jpegBytes;
-        }
+    //        return jpegBytes;
+    //    }
 
         //    public static async Task<byte[]> GenerateImage(ApplicationDbContext context, ITemplateService templateService, ICouponService couponService, Guid couponId, string userId)
         //    {
@@ -106,28 +106,25 @@ namespace ADVCoupon.Helpers
         //        return output;
         //    }
 
-        private static CouponPdfViewModel ConvertUserCouponToPdfViewModel(UserCoupon userCoupon, Coupon coupon)
+        public static CouponPdfViewModel ConvertUserCouponToPdfViewModel(UserCoupon userCoupon, Coupon coupon)
         {
-            //var networkBarcode = coupon.Product.NetworkBarcodes.
-            //FirstOrDefault(x => x.Networks.FirstOrDefault(y => y.Id == userCoupon.NetworkId) != null).BarcodeValue;
+            var networkBarcode = coupon.NetworkBarcodes.
+            FirstOrDefault(x => x.Networks.FirstOrDefault(y => y.Id == userCoupon.NetworkId) != null);
 
-            //var networkBarcode = coupon.Product.BarCode;
+            var images = networkBarcode.Networks.Select(x => x.LogoImage).ToList();
 
-            //var vm = new CouponPdfViewModel
-            //{
-            //    Caption = coupon.Caption,
-            //    DiscountAbsolute = coupon.DiscountAbsolute,
-            //    DiscountPercentage = coupon.DiscountPercentage,
-            //    EndDate = coupon.EndDate,
-            //    NetworkCoupons = coupon.NetworkCoupons,
-            //    Product = coupon.Product,
-            //    StartDate = coupon.StartDate,
-            //    BarcodeLink = Helpers.BarcodeGenerator.GenerateBarcode("c128c", networkBarcode),
-            //    Barcode = networkBarcode
-            //};
-
-            //return vm;
-            var vm = new CouponPdfViewModel();
+            var vm = new CouponPdfViewModel
+            {
+                Caption = coupon.Caption,
+                Discount = coupon.Discount,
+                DiscountType = coupon.DiscountType,
+                EndDate = coupon.EndDate,
+                StartDate = coupon.StartDate,
+                Image = coupon.Image,
+                NetworkImages = images,
+                BarcodeLink = BarcodeGenerator.GenerateBarcode(networkBarcode.BarcodeType, networkBarcode.BarcodeValue)
+            };
+           
             return vm;
         }
     }

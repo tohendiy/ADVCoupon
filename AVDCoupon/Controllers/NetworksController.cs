@@ -21,7 +21,7 @@ using ADVCoupon.Helpers;
 
 namespace ADVCoupon.Controllers
 {
-    [Authorize(Roles = Constants.ADMIN_ROLE)]
+    [Microsoft.AspNetCore.Authorization.Authorize(Roles = Constants.ADMIN_ROLE)]
     public class NetworksController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -238,6 +238,7 @@ namespace ADVCoupon.Controllers
 
                         for (int i = (sheet.FirstRowNum + 1); i <= sheet.LastRowNum; i++) //Read Excel File
                         {
+
                             IRow row = sheet.GetRow(i);
                             if (row == null) continue;
                             if (row.Cells.All(d => d.CellType == CellType.Blank)) continue;
@@ -307,4 +308,23 @@ namespace ADVCoupon.Controllers
 
         //    sb.Append("<th>" + cell.ToString() + "</th>");
     }
+
+    //public class ProgressHub : Hub
+    //{
+    //    public void NotifyStart(string taskId)
+    //    {
+    //        var hubContext = GlobalHost.ConnectionManager.GetHubContext<ProgressHub>();
+    //        hubContext.Clients.All.initProgressBar(taskId);
+    //    }
+    //    public void NotifyProgress(string taskId, int percentage)
+    //    {
+    //        var hubContext = GlobalHost.ConnectionManager.GetHubContext<ProgressHub>();
+    //        hubContext.Clients.All.updateProgressBar(taskId, percentage);
+    //    }
+    //    public void NotifyEnd(string taskId)
+    //    {
+    //        var hubContext = GlobalHost.ConnectionManager.GetHubContext<ProgressHub>();
+    //        hubContext.Clients.All.clearProgressBar(taskId);
+    //    }
+    //}
 }

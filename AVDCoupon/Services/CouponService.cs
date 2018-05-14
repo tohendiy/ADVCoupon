@@ -24,7 +24,7 @@ namespace ADVCoupon.Services
 
         public async Task<Coupon> GetCouponById(Guid id)
         {
-            return await _context.Coupons.FirstOrDefaultAsync(x => x.Id == id);
+            return await _context.Coupons.Include("NetworkBarcodes.Networks").FirstOrDefaultAsync(x => x.Id == id);
         }
 
 

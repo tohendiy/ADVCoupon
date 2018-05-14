@@ -291,18 +291,25 @@ namespace ADVCoupon.Controllers
             return _couponService.IsExist(id);
         }
 
+        [Route("pdf/test")]
+        public async Task<IActionResult> CouponPdf(string couponId, string userId)
+        {
+
+            var currentUserCoupon = _couponService.GetUserCoupon(userId, new Guid(couponId));
+            var currentCoupon = await _couponService.GetCouponById(new Guid(couponId));
+            var model = CouponGenerator.ConvertUserCouponToPdfViewModel(currentUserCoupon, currentCoupon);
+
+            return View(model);
+
+        }
+
         [HttpGet]
+        [AllowAnonymous]
         [Route("/pdf/coupon")]
         public async Task<IActionResult> GenerateCoupon(string couponId, string userId)
         {
             var output = await Helpers.CouponGenerator.GeneratePDF(_context, _templateService, _couponService, new Guid(couponId), userId);
             return File(output, "application/pdf");
-
-            // 367952bf-85d3-4867-a302-6a2517e51b7c - user
-            // 
-
-            //var output = await Helpers.CouponGenerator.GenerateImageTest(_context, _templateService, _couponService);
-            //return File(output, "image/jpeg");
         }
 
         public async Task<IActionResult> ActivateCoupon(Guid? id)
